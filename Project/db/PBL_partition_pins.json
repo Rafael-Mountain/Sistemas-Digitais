@@ -12,6 +12,26 @@
 					"strict" : false
 				},
 				{
+					"name" : "red[0]",
+					"strict" : false
+				},
+				{
+					"name" : "red[1]",
+					"strict" : false
+				},
+				{
+					"name" : "red[2]",
+					"strict" : false
+				},
+				{
+					"name" : "red[3]",
+					"strict" : false
+				},
+				{
+					"name" : "red[4]",
+					"strict" : false
+				},
+				{
 					"name" : "red[5]",
 					"strict" : false
 				},
@@ -24,6 +44,26 @@
 					"strict" : false
 				},
 				{
+					"name" : "green[0]",
+					"strict" : false
+				},
+				{
+					"name" : "green[1]",
+					"strict" : false
+				},
+				{
+					"name" : "green[2]",
+					"strict" : false
+				},
+				{
+					"name" : "green[3]",
+					"strict" : false
+				},
+				{
+					"name" : "green[4]",
+					"strict" : false
+				},
+				{
 					"name" : "green[5]",
 					"strict" : false
 				},
@@ -33,6 +73,26 @@
 				},
 				{
 					"name" : "green[7]",
+					"strict" : false
+				},
+				{
+					"name" : "blue[0]",
+					"strict" : false
+				},
+				{
+					"name" : "blue[1]",
+					"strict" : false
+				},
+				{
+					"name" : "blue[2]",
+					"strict" : false
+				},
+				{
+					"name" : "blue[3]",
+					"strict" : false
+				},
+				{
+					"name" : "blue[4]",
 					"strict" : false
 				},
 				{
@@ -57,6 +117,10 @@
 				},
 				{
 					"name" : "clk",
+					"strict" : false
+				},
+				{
+					"name" : "reset_button",
 					"strict" : false
 				}
 			]

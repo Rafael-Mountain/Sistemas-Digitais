@@ -1,66 +1,94 @@
 module main (
-    input wire clk,        // Clock de entrada (pode ser 50 MHz ou outra frequência)
-    output wire hsync,     // HSYNC para VGA
-    output wire vsync,     // VSYNC para VGA
-    output wire [7:0] red, // Cor vermelha
-    output wire [7:0] green, // Cor verde
-    output wire [7:0] blue,  // Cor azul
-    output wire sync,      // Sync para VGA
-    output wire clk_out,   // Clock para o VGA
-    output wire blank      // Blank para VGA
+    input  wire clk,            // Clock principal (50 MHz)
+    input  wire reset_button,   // Botão de reset externo
+    output wire hsync,
+    output wire vsync,
+    output wire [7:0] red,
+    output wire [7:0] green,
+    output wire [7:0] blue,
+    output wire sync,
+    output wire clk_out,
+    output wire blank
 );
 
-    // Sinais internos
-    wire nclk;                // Clock dividido de 25 MHz
-    wire [9:0] next_x_internal;  // Coordenada X do próximo pixel
-    wire [9:0] next_y_internal;  // Coordenada Y do próximo pixel
-    reg [7:0] color_in; 
-    reg [16:0] rom_address;      // Endereço para o ROM (17 bits)
-    wire [7:0] rom_data;  
-
-    Rom inst_rom (
-        .address(rom_address),  // Endereço do ROM
-        .clock(nclk),           // Clock do ROM (pode ser o mesmo nclk)
-        .q(rom_data)            // Dados lidos do ROM
-    );    
-
-    // Instância do módulo Clock_25MHz
+    // --- Clock dividido para VGA ---
+    wire nclk;  // 25 MHz
     Clock_25MHz clk_div_inst (
-        .clk(clk),      // Clock de entrada (principal)
-        .nclk(nclk)     // Clock dividido (25 MHz)
+        .clk(clk),
+        .nclk(nclk)
     );
 
-    // Instância do módulo vga_module
-    vga_module vga_inst (
-        .clock(~nclk),            // Clock dividido de 25 MHz
-        .reset(reset),           // Reset do sistema
-        .color_in(color_in),     // Cor de entrada (RGB)
-        .next_x(next_x_internal),// Coordenada X do próximo pixel
-        .next_y(next_y_internal),// Coordenada Y do próximo pixel
-        .hsync(hsync),           // HSYNC para VGA
-        .vsync(vsync),           // VSYNC para VGA
-        .red(red),               // Cor vermelha
-        .green(green),           // Cor verde
-        .blue(blue),             // Cor azul
-        .sync(sync),             // Sync para VGA
-        .clk(clk_out),           // Clock para VGA
-        .blank(blank)            // Blank para VGA
+    // --- Sinais VGA ---
+    wire [9:0] next_x_internal;
+    wire [9:0] next_y_internal;
+    reg [7:0] color_in;
+
+    // --- Sincroniza botão de reset com clock ---
+    reg reset_sync;
+    always @(posedge nclk) begin
+        reset_sync <= reset_button;
+    end
+
+    // --- Instância do RAM access ---
+    wire [7:0] ram_data_out;
+    wire init_done;
+    reg [18:0] ram_address;
+    reg [7:0] ram_data_in;
+    reg ram_wren;
+
+    Ram_access ram_access_inst (
+        .clock(nclk),
+        .reset(reset_sync),
+        .address(ram_address),
+        .data_in(ram_data_in),
+        .wren_in(ram_wren),
+        .q_out(ram_data_out),
+        .init_done(init_done)
     );
-	 
-    
-    // Offset para centralizar a imagem (160 na horizontal e 120 na vertical)
+
+    // --- Instância do VGA ---
+    vga_module vga_inst (
+        .clock(~nclk),
+        .reset(reset_sync),
+        .color_in(color_in),
+        .next_x(next_x_internal),
+        .next_y(next_y_internal),
+        .hsync(hsync),
+        .vsync(vsync),
+        .red(red),
+        .green(green),
+        .blue(blue),
+        .sync(sync),
+        .clk(clk_out),
+        .blank(blank)
+    );
+
+    // --- Offset para centralizar imagem ---
     localparam OFFSET_X = 160;
     localparam OFFSET_Y = 120;
 
+    // --- Lógica de leitura da RAM para o VGA ---
     always @(posedge nclk) begin
-        // Adicionando o offset para centralizar a imagem
-        rom_address <= ((next_y_internal - OFFSET_Y) * 320) + (next_x_internal - OFFSET_X);
-        
-        // Lógica para enviar a cor com base nas coordenadas
-        if ((120 <= next_y_internal) && (next_y_internal <= 360) && (160 <= next_x_internal) && (next_x_internal <= 480)) begin
-            color_in <= rom_data;  
+        if (!init_done) begin
+            // Enquanto RAM não estiver inicializada, tela preta
+            color_in <= 8'd0;
+            ram_address <= 19'd0;
+            ram_data_in <= 8'd0;
+            ram_wren <= 1'b0;
         end else begin
-            color_in <= 8'b00000000;  // Enviar a cor preta
+            // Quando RAM pronta, calcula endereço baseado no pixel
+            if ((next_x_internal >= OFFSET_X) && (next_x_internal < OFFSET_X+320) &&
+                (next_y_internal >= OFFSET_Y) && (next_y_internal < OFFSET_Y+240)) begin
+                ram_address <= ((next_y_internal - OFFSET_Y) * 320) + (next_x_internal - OFFSET_X);
+                color_in <= ram_data_out;
+            end else begin
+                ram_address <= 19'd0; // endereço qualquer fora da área
+                color_in <= 8'd0;     // cor preta
+            end
+
+            // Nenhuma escrita externa neste exemplo
+            ram_data_in <= 8'd0;
+            ram_wren    <= 1'b0;
         end
     end
 

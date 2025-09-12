@@ -1,13 +1,13 @@
-Analysis & Synthesis Status : Successful - Wed Sep 10 15:12:27 2025
-Quartus Prime Version : 23.1std.0 Build 991 11/28/2023 SC Lite Edition
+Analysis & Synthesis Status : Successful - Thu Sep 11 23:30:31 2025
+Quartus Prime Version : 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
 Revision Name : PBL
 Top-level Entity Name : main
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A
-Total registers : 69
-Total pins : 30
+Total registers : 151
+Total pins : 31
 Total virtual pins : 0
-Total block memory bits : 230,400
+Total block memory bits : 3,072,000
 Total DSP Blocks : 0
 Total HSSI RX PCSs : 0
 Total HSSI PMA RX Deserializers : 0
