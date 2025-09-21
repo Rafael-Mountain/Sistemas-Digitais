@@ -1,6 +1,6 @@
 EDA Netlist Writer report for PBL
-Thu Sep 11 23:32:44 2025
-Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+Fri Sep 19 16:32:17 2025
+Quartus Prime Version 23.1std.0 Build 991 11/28/2023 SC Lite Edition
 
 
 ---------------------
@@ -17,27 +17,27 @@ Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
 ----------------
 ; Legal Notice ;
 ----------------
-Copyright (C) 2025  Altera Corporation. All rights reserved.
-Your use of Altera Corporation's design tools, logic functions 
+Copyright (C) 2023  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
 and other software and tools, and any partner logic 
 functions, and any output files from any of the foregoing 
 (including device programming or simulation files), and any 
 associated documentation or information are expressly subject 
-to the terms and conditions of the Altera Program License 
-Subscription Agreement, the Altera Quartus Prime License Agreement,
-the Altera IP License Agreement, or other applicable license
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
 agreement, including, without limitation, that your use is for
 the sole purpose of programming logic devices manufactured by
-Altera and sold by Altera or its authorized distributors.  Please
-refer to the Altera Software License Subscription Agreements 
-on the Quartus Prime software download page.
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
 
 
 
 +-------------------------------------------------------------------+
 ; EDA Netlist Writer Summary                                        ;
 +---------------------------+---------------------------------------+
-; EDA Netlist Writer Status ; Successful - Thu Sep 11 23:32:44 2025 ;
+; EDA Netlist Writer Status ; Successful - Fri Sep 19 16:32:17 2025 ;
 ; Revision Name             ; PBL                                   ;
 ; Top-level Entity Name     ; main                                  ;
 ; Family                    ; Cyclone V                             ;
@@ -66,13 +66,13 @@ on the Quartus Prime software download page.
 +---------------------------------------------------------------------------------------------------+-----------------------------+
 
 
-+------------------------------------------------------------------------------------------------------+
-; Simulation Generated Files                                                                           ;
-+------------------------------------------------------------------------------------------------------+
-; Generated Files                                                                                      ;
-+------------------------------------------------------------------------------------------------------+
-; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/simulation/questa/PBL.vo ;
-+------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------+
+; Simulation Generated Files                                                                   ;
++----------------------------------------------------------------------------------------------+
+; Generated Files                                                                              ;
++----------------------------------------------------------------------------------------------+
+; /home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/simulation/questa/PBL.vo ;
++----------------------------------------------------------------------------------------------+
 
 
 +-----------------------------+
@@ -80,15 +80,15 @@ on the Quartus Prime software download page.
 +-----------------------------+
 Info: *******************************************************************
 Info: Running Quartus Prime EDA Netlist Writer
-    Info: Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
-    Info: Processing started: Thu Sep 11 23:32:42 2025
+    Info: Version 23.1std.0 Build 991 11/28/2023 SC Lite Edition
+    Info: Processing started: Fri Sep 19 16:32:17 2025
 Info: Command: quartus_eda --read_settings_files=off --write_settings_files=off PBL -c PBL
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
-Info (204019): Generated file PBL.vo in folder "C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/simulation/questa/" for EDA simulation tool
+Info (204019): Generated file PBL.vo in folder "/home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/simulation/questa/" for EDA simulation tool
 Info: Quartus Prime EDA Netlist Writer was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 4760 megabytes
-    Info: Processing ended: Thu Sep 11 23:32:44 2025
-    Info: Elapsed time: 00:00:02
-    Info: Total CPU time (on all processors): 00:00:02
+    Info: Peak virtual memory: 686 megabytes
+    Info: Processing ended: Fri Sep 19 16:32:17 2025
+    Info: Elapsed time: 00:00:00
+    Info: Total CPU time (on all processors): 00:00:01
 
 

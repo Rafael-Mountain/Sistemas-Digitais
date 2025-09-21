@@ -1,12 +1,12 @@
-Fitter Status : Successful - Thu Sep 11 23:32:07 2025
-Quartus Prime Version : 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+Fitter Status : Successful - Fri Sep 19 16:32:03 2025
+Quartus Prime Version : 23.1std.0 Build 991 11/28/2023 SC Lite Edition
 Revision Name : PBL
 Top-level Entity Name : main
 Family : Cyclone V
 Device : 5CSEMA5F31C6
 Timing Models : Final
-Logic utilization (in ALMs) : 273 / 32,070 ( < 1 % )
-Total registers : 176
+Logic utilization (in ALMs) : 282 / 32,070 ( < 1 % )
+Total registers : 164
 Total pins : 31 / 457 ( 7 % )
 Total virtual pins : 0
 Total block memory bits : 3,072,000 / 4,065,280 ( 76 % )

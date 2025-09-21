@@ -1,0 +1,22 @@
+module ControlUnity(
+	input [1:0]InstructionType,
+	input [31:0]data,
+	
+	input reset
+);
+
+	wire [7:0]pixel;
+	wire write;
+	
+	always @(posedge reset)begin
+		assign pixel = 8b0;
+		assign write = 1b0;
+	end
+
+	always @()begin 
+		case()
+	
+	
+	end
+
+endmodule

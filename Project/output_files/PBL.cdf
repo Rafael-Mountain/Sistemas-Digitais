@@ -6,7 +6,7 @@ JedecChain;
 	P ActionCode(Ign)
 		Device PartName(SOCVHPS) MfrSpec(OpMask(0));
 	P ActionCode(Cfg)
-		Device PartName(5CSEMA5F31) Path("/home/aluno/Downloads/Pbl_dos_monstro/output_files/") File("PBL.sof") MfrSpec(OpMask(1));
+		Device PartName(5CSEMA5F31) Path("/home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/output_files/") File("PBL.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

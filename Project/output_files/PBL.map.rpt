@@ -1,6 +1,6 @@
 Analysis & Synthesis report for PBL
-Thu Sep 11 23:30:31 2025
-Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+Fri Sep 19 17:13:23 2025
+Quartus Prime Version 23.1std.0 Build 991 11/28/2023 SC Lite Edition
 
 
 ---------------------
@@ -10,69 +10,46 @@ Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
   2. Analysis & Synthesis Summary
   3. Analysis & Synthesis Settings
   4. Parallel Compilation
-  5. Analysis & Synthesis Source Files Read
-  6. Analysis & Synthesis Resource Usage Summary
-  7. Analysis & Synthesis Resource Utilization by Entity
-  8. Analysis & Synthesis RAM Summary
-  9. Analysis & Synthesis IP Cores Summary
- 10. State Machine - |main|vga_module:vga_inst|v_state
- 11. State Machine - |main|vga_module:vga_inst|h_state
- 12. Registers Removed During Synthesis
- 13. General Register Statistics
- 14. Multiplexer Restructuring Statistics (Restructuring Performed)
- 15. Source assignments for Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component|altsyncram_71g1:auto_generated
- 16. Source assignments for Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated
- 17. Parameter Settings for User Entity Instance: Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component
- 18. Parameter Settings for User Entity Instance: Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component
- 19. Parameter Settings for User Entity Instance: vga_module:vga_inst
- 20. altsyncram Parameter Settings by Entity Instance
- 21. Post-Synthesis Netlist Statistics for Top Partition
- 22. Elapsed Time Per Partition
- 23. Analysis & Synthesis Messages
+  5. Analysis & Synthesis Messages
 
 
 
 ----------------
 ; Legal Notice ;
 ----------------
-Copyright (C) 2025  Altera Corporation. All rights reserved.
-Your use of Altera Corporation's design tools, logic functions 
+Copyright (C) 2023  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
 and other software and tools, and any partner logic 
 functions, and any output files from any of the foregoing 
 (including device programming or simulation files), and any 
 associated documentation or information are expressly subject 
-to the terms and conditions of the Altera Program License 
-Subscription Agreement, the Altera Quartus Prime License Agreement,
-the Altera IP License Agreement, or other applicable license
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
 agreement, including, without limitation, that your use is for
 the sole purpose of programming logic devices manufactured by
-Altera and sold by Altera or its authorized distributors.  Please
-refer to the Altera Software License Subscription Agreements 
-on the Quartus Prime software download page.
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
 
 
 
-+-----------------------------------------------------------------------------------+
-; Analysis & Synthesis Summary                                                      ;
-+---------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Thu Sep 11 23:30:31 2025           ;
-; Quartus Prime Version           ; 24.1std.0 Build 1077 03/04/2025 SC Lite Edition ;
-; Revision Name                   ; PBL                                             ;
-; Top-level Entity Name           ; main                                            ;
-; Family                          ; Cyclone V                                       ;
-; Logic utilization (in ALMs)     ; N/A                                             ;
-; Total registers                 ; 151                                             ;
-; Total pins                      ; 31                                              ;
-; Total virtual pins              ; 0                                               ;
-; Total block memory bits         ; 3,072,000                                       ;
-; Total DSP Blocks                ; 0                                               ;
-; Total HSSI RX PCSs              ; 0                                               ;
-; Total HSSI PMA RX Deserializers ; 0                                               ;
-; Total HSSI TX PCSs              ; 0                                               ;
-; Total HSSI PMA TX Serializers   ; 0                                               ;
-; Total PLLs                      ; 0                                               ;
-; Total DLLs                      ; 0                                               ;
-+---------------------------------+-------------------------------------------------+
++------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                 ;
++-----------------------------+------------------------------------------------+
+; Analysis & Synthesis Status ; Failed - Fri Sep 19 17:13:23 2025              ;
+; Quartus Prime Version       ; 23.1std.0 Build 991 11/28/2023 SC Lite Edition ;
+; Revision Name               ; PBL                                            ;
+; Top-level Entity Name       ; main                                           ;
+; Family                      ; Cyclone V                                      ;
+; Logic utilization (in ALMs) ; N/A until Partition Merge                      ;
+; Total registers             ; N/A until Partition Merge                      ;
+; Total pins                  ; N/A until Partition Merge                      ;
+; Total virtual pins          ; N/A until Partition Merge                      ;
+; Total block memory bits     ; N/A until Partition Merge                      ;
+; Total PLLs                  ; N/A until Partition Merge                      ;
+; Total DLLs                  ; N/A until Partition Merge                      ;
++-----------------------------+------------------------------------------------+
 
 
 +---------------------------------------------------------------------------------------------------------------------------+
@@ -167,450 +144,15 @@ on the Quartus Prime software download page.
 +----------------------------+-------------+
 ; Processors                 ; Number      ;
 +----------------------------+-------------+
-; Number detected on machine ; 4           ;
-; Maximum allowed            ; 4           ;
+; Number detected on machine ; 20          ;
+; Maximum allowed            ; 14          ;
 ;                            ;             ;
 ; Average used               ; 1.00        ;
-; Maximum used               ; 4           ;
+; Maximum used               ; 1           ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   0.0%      ;
-;     Processor 3            ;   0.0%      ;
-;     Processor 4            ;   0.0%      ;
 +----------------------------+-------------+
-
-
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                                                               ;
-+----------------------------------+-----------------+----------------------------------+----------------------------------------------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type                        ; File Name with Absolute Path                                                                       ; Library ;
-+----------------------------------+-----------------+----------------------------------+----------------------------------------------------------------------------------------------------+---------+
-; image/tree.mif                   ; yes             ; User Memory Initialization File  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/image/tree.mif         ;         ;
-; vga_module.v                     ; yes             ; User Verilog HDL File            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/vga_module.v           ;         ;
-; main.v                           ; yes             ; User Verilog HDL File            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/main.v                 ;         ;
-; Clock_25MHz.v                    ; yes             ; User Verilog HDL File            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Clock_25MHz.v          ;         ;
-; Rom.v                            ; yes             ; User Wizard-Generated File       ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Rom.v                  ;         ;
-; Ram.v                            ; yes             ; User Wizard-Generated File       ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Ram.v                  ;         ;
-; Ram_access.v                     ; yes             ; User Verilog HDL File            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Ram_access.v           ;         ;
-; altsyncram.tdf                   ; yes             ; Megafunction                     ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altsyncram.tdf                           ;         ;
-; stratix_ram_block.inc            ; yes             ; Megafunction                     ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/stratix_ram_block.inc                    ;         ;
-; lpm_mux.inc                      ; yes             ; Megafunction                     ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/lpm_mux.inc                              ;         ;
-; lpm_decode.inc                   ; yes             ; Megafunction                     ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/lpm_decode.inc                           ;         ;
-; aglobal241.inc                   ; yes             ; Megafunction                     ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/aglobal241.inc                           ;         ;
-; a_rdenreg.inc                    ; yes             ; Megafunction                     ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/a_rdenreg.inc                            ;         ;
-; altrom.inc                       ; yes             ; Megafunction                     ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altrom.inc                               ;         ;
-; altram.inc                       ; yes             ; Megafunction                     ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altram.inc                               ;         ;
-; altdpram.inc                     ; yes             ; Megafunction                     ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altdpram.inc                             ;         ;
-; db/altsyncram_71g1.tdf           ; yes             ; Auto-Generated Megafunction      ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/altsyncram_71g1.tdf ;         ;
-; db/decode_g2a.tdf                ; yes             ; Auto-Generated Megafunction      ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/decode_g2a.tdf      ;         ;
-; db/mux_7hb.tdf                   ; yes             ; Auto-Generated Megafunction      ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/mux_7hb.tdf         ;         ;
-; db/altsyncram_3rl1.tdf           ; yes             ; Auto-Generated Megafunction      ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/altsyncram_3rl1.tdf ;         ;
-; db/decode_3na.tdf                ; yes             ; Auto-Generated Megafunction      ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/decode_3na.tdf      ;         ;
-; db/decode_s2a.tdf                ; yes             ; Auto-Generated Megafunction      ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/decode_s2a.tdf      ;         ;
-; db/mux_jhb.tdf                   ; yes             ; Auto-Generated Megafunction      ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/mux_jhb.tdf         ;         ;
-+----------------------------------+-----------------+----------------------------------+----------------------------------------------------------------------------------------------------+---------+
-
-
-+-----------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Usage Summary                                 ;
-+---------------------------------------------+-------------------------------+
-; Resource                                    ; Usage                         ;
-+---------------------------------------------+-------------------------------+
-; Estimate of Logic utilization (ALMs needed) ; 290                           ;
-;                                             ;                               ;
-; Combinational ALUT usage for logic          ; 379                           ;
-;     -- 7 input functions                    ; 2                             ;
-;     -- 6 input functions                    ; 176                           ;
-;     -- 5 input functions                    ; 63                            ;
-;     -- 4 input functions                    ; 15                            ;
-;     -- <=3 input functions                  ; 123                           ;
-;                                             ;                               ;
-; Dedicated logic registers                   ; 151                           ;
-;                                             ;                               ;
-; I/O pins                                    ; 31                            ;
-; Total MLAB memory bits                      ; 0                             ;
-; Total block memory bits                     ; 3072000                       ;
-;                                             ;                               ;
-; Total DSP Blocks                            ; 0                             ;
-;                                             ;                               ;
-; Maximum fan-out node                        ; Clock_25MHz:clk_div_inst|nclk ;
-; Maximum fan-out                             ; 536                           ;
-; Total fan-out                               ; 8655                          ;
-; Average fan-out                             ; 8.87                          ;
-+---------------------------------------------+-------------------------------+
-
-
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                          ;
-+----------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-------------------------------------------------------------------------------------------------------------------------------------+-----------------+--------------+
-; Compilation Hierarchy Node                   ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                                 ; Entity Name     ; Library Name ;
-+----------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-------------------------------------------------------------------------------------------------------------------------------------+-----------------+--------------+
-; |main                                        ; 379 (161)           ; 151 (28)                  ; 3072000           ; 0          ; 31   ; 0            ; |main                                                                                                                               ; main            ; work         ;
-;    |Clock_25MHz:clk_div_inst|                ; 1 (1)               ; 1 (1)                     ; 0                 ; 0          ; 0    ; 0            ; |main|Clock_25MHz:clk_div_inst                                                                                                      ; Clock_25MHz     ; work         ;
-;    |Ram_access:ram_access_inst|              ; 151 (57)            ; 67 (47)                   ; 3072000           ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst                                                                                                    ; Ram_access      ; work         ;
-;       |Ram:inst_ram|                         ; 84 (0)              ; 12 (0)                    ; 2457600           ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst|Ram:inst_ram                                                                                       ; Ram             ; work         ;
-;          |altsyncram:altsyncram_component|   ; 84 (0)              ; 12 (0)                    ; 2457600           ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component                                                       ; altsyncram      ; work         ;
-;             |altsyncram_3rl1:auto_generated| ; 84 (0)              ; 12 (12)                   ; 2457600           ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated                        ; altsyncram_3rl1 ; work         ;
-;                |decode_3na:decode3|          ; 42 (42)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|decode_3na:decode3     ; decode_3na      ; work         ;
-;                |decode_s2a:rden_decode|      ; 42 (42)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|decode_s2a:rden_decode ; decode_s2a      ; work         ;
-;       |Rom:inst_rom|                         ; 10 (0)              ; 8 (0)                     ; 614400            ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst|Rom:inst_rom                                                                                       ; Rom             ; work         ;
-;          |altsyncram:altsyncram_component|   ; 10 (0)              ; 8 (0)                     ; 614400            ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component                                                       ; altsyncram      ; work         ;
-;             |altsyncram_71g1:auto_generated| ; 10 (0)              ; 8 (8)                     ; 614400            ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component|altsyncram_71g1:auto_generated                        ; altsyncram_71g1 ; work         ;
-;                |decode_g2a:rden_decode|      ; 10 (10)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |main|Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component|altsyncram_71g1:auto_generated|decode_g2a:rden_decode ; decode_g2a      ; work         ;
-;    |vga_module:vga_inst|                     ; 66 (66)             ; 55 (55)                   ; 0                 ; 0          ; 0    ; 0            ; |main|vga_module:vga_inst                                                                                                           ; vga_module      ; work         ;
-+----------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-------------------------------------------------------------------------------------------------------------------------------------+-----------------+--------------+
-Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
-
-
-+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis RAM Summary                                                                                                                                                                                                ;
-+-------------------------------------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+---------+------------------+
-; Name                                                                                                              ; Type ; Mode        ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size    ; MIF              ;
-+-------------------------------------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+---------+------------------+
-; Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|ALTSYNCRAM ; AUTO ; Single Port ; 307200       ; 8            ; --           ; --           ; 2457600 ; None             ;
-; Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component|altsyncram_71g1:auto_generated|ALTSYNCRAM ; AUTO ; ROM         ; 76800        ; 8            ; --           ; --           ; 614400  ; ./image/tree.mif ;
-+-------------------------------------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+---------+------------------+
-
-
-+---------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis IP Cores Summary                                                                                           ;
-+--------+--------------+---------+--------------+--------------+-----------------------------------------------+-----------------+
-; Vendor ; IP Core Name ; Version ; Release Date ; License Type ; Entity Instance                               ; IP Include File ;
-+--------+--------------+---------+--------------+--------------+-----------------------------------------------+-----------------+
-; Altera ; RAM: 1-PORT  ; 24.1    ; N/A          ; N/A          ; |main|Ram_access:ram_access_inst|Ram:inst_ram ; Ram.v           ;
-; Altera ; ROM: 1-PORT  ; 24.1    ; N/A          ; N/A          ; |main|Ram_access:ram_access_inst|Rom:inst_rom ; Rom.v           ;
-+--------+--------------+---------+--------------+--------------+-----------------------------------------------+-----------------+
-
-
-Encoding Type:  One-Hot
-+------------------------------------------------------------------------------------------------------------------------+
-; State Machine - |main|vga_module:vga_inst|v_state                                                                      ;
-+------------------------+----------------------+-----------------------+-----------------------+------------------------+
-; Name                   ; v_state.V_BACK_STATE ; v_state.V_PULSE_STATE ; v_state.V_FRONT_STATE ; v_state.V_ACTIVE_STATE ;
-+------------------------+----------------------+-----------------------+-----------------------+------------------------+
-; v_state.V_ACTIVE_STATE ; 0                    ; 0                     ; 0                     ; 0                      ;
-; v_state.V_FRONT_STATE  ; 0                    ; 0                     ; 1                     ; 1                      ;
-; v_state.V_PULSE_STATE  ; 0                    ; 1                     ; 0                     ; 1                      ;
-; v_state.V_BACK_STATE   ; 1                    ; 0                     ; 0                     ; 1                      ;
-+------------------------+----------------------+-----------------------+-----------------------+------------------------+
-
-
-Encoding Type:  One-Hot
-+------------------------------------------------------------------------------------------------------------------------+
-; State Machine - |main|vga_module:vga_inst|h_state                                                                      ;
-+------------------------+----------------------+-----------------------+-----------------------+------------------------+
-; Name                   ; h_state.H_BACK_STATE ; h_state.H_PULSE_STATE ; h_state.H_FRONT_STATE ; h_state.H_ACTIVE_STATE ;
-+------------------------+----------------------+-----------------------+-----------------------+------------------------+
-; h_state.H_ACTIVE_STATE ; 0                    ; 0                     ; 0                     ; 0                      ;
-; h_state.H_FRONT_STATE  ; 0                    ; 0                     ; 1                     ; 1                      ;
-; h_state.H_PULSE_STATE  ; 0                    ; 1                     ; 0                     ; 1                      ;
-; h_state.H_BACK_STATE   ; 1                    ; 0                     ; 0                     ; 1                      ;
-+------------------------+----------------------+-----------------------+-----------------------+------------------------+
-
-
-+---------------------------------------------------------------------------------+
-; Registers Removed During Synthesis                                              ;
-+----------------------------------------+----------------------------------------+
-; Register name                          ; Reason for Removal                     ;
-+----------------------------------------+----------------------------------------+
-; ram_wren                               ; Stuck at GND due to stuck port data_in ;
-; ram_data_in[0..7]                      ; Stuck at GND due to stuck port data_in ;
-; vga_module:vga_inst|v_state~5          ; Lost fanout                            ;
-; vga_module:vga_inst|v_state~6          ; Lost fanout                            ;
-; vga_module:vga_inst|v_state~7          ; Lost fanout                            ;
-; vga_module:vga_inst|v_state~8          ; Lost fanout                            ;
-; vga_module:vga_inst|v_state~9          ; Lost fanout                            ;
-; vga_module:vga_inst|v_state~10         ; Lost fanout                            ;
-; vga_module:vga_inst|v_state~11         ; Lost fanout                            ;
-; vga_module:vga_inst|v_state~12         ; Lost fanout                            ;
-; vga_module:vga_inst|h_state~5          ; Lost fanout                            ;
-; vga_module:vga_inst|h_state~6          ; Lost fanout                            ;
-; vga_module:vga_inst|h_state~7          ; Lost fanout                            ;
-; vga_module:vga_inst|h_state~8          ; Lost fanout                            ;
-; vga_module:vga_inst|h_state~9          ; Lost fanout                            ;
-; vga_module:vga_inst|h_state~10         ; Lost fanout                            ;
-; vga_module:vga_inst|h_state~11         ; Lost fanout                            ;
-; vga_module:vga_inst|h_state~12         ; Lost fanout                            ;
-; Total Number of Removed Registers = 25 ;                                        ;
-+----------------------------------------+----------------------------------------+
-
-
-+------------------------------------------------------+
-; General Register Statistics                          ;
-+----------------------------------------------+-------+
-; Statistic                                    ; Value ;
-+----------------------------------------------+-------+
-; Total registers                              ; 151   ;
-; Number of registers using Synchronous Clear  ; 93    ;
-; Number of registers using Synchronous Load   ; 18    ;
-; Number of registers using Asynchronous Clear ; 0     ;
-; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 53    ;
-; Number of registers using Preset             ; 0     ;
-+----------------------------------------------+-------+
-
-
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                                                                               ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                                                                     ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------------------------------------------------------------------------------------+
-; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |main|ram_address[16]                                                                                                                          ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |main|Ram_access:ram_access_inst|ram_addr[17]                                                                                                  ;
-; 3:1                ; 17 bits   ; 34 LEs        ; 0 LEs                ; 34 LEs                 ; Yes        ; |main|Ram_access:ram_access_inst|ram_addr[16]                                                                                                  ;
-; 3:1                ; 17 bits   ; 34 LEs        ; 0 LEs                ; 34 LEs                 ; Yes        ; |main|Ram_access:ram_access_inst|rom_addr[9]                                                                                                   ;
-; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |main|ram_address[1]                                                                                                                           ;
-; 11:1               ; 8 bits    ; 56 LEs        ; 48 LEs               ; 8 LEs                  ; Yes        ; |main|Ram_access:ram_access_inst|ram_data[6]                                                                                                   ;
-; 10:1               ; 10 bits   ; 60 LEs        ; 0 LEs                ; 60 LEs                 ; Yes        ; |main|vga_module:vga_inst|v_counter[1]                                                                                                         ;
-; 10:1               ; 10 bits   ; 60 LEs        ; 0 LEs                ; 60 LEs                 ; Yes        ; |main|vga_module:vga_inst|h_counter[9]                                                                                                         ;
-; 35:1               ; 8 bits    ; 184 LEs       ; 176 LEs              ; 8 LEs                  ; Yes        ; |main|color_in[6]                                                                                                                              ;
-; 5:1                ; 8 bits    ; 24 LEs        ; 24 LEs               ; 0 LEs                  ; No         ; |main|Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|mux_jhb:mux2|l3_w7_n4_mux_dataout ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------------------------------------------------------------------------------------+
-
-
-+-------------------------------------------------------------------------------------------------------------------------------+
-; Source assignments for Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component|altsyncram_71g1:auto_generated ;
-+---------------------------------+--------------------+------+-----------------------------------------------------------------+
-; Assignment                      ; Value              ; From ; To                                                              ;
-+---------------------------------+--------------------+------+-----------------------------------------------------------------+
-; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                                               ;
-+---------------------------------+--------------------+------+-----------------------------------------------------------------+
-
-
-+-------------------------------------------------------------------------------------------------------------------------------+
-; Source assignments for Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated ;
-+---------------------------------+--------------------+------+-----------------------------------------------------------------+
-; Assignment                      ; Value              ; From ; To                                                              ;
-+---------------------------------+--------------------+------+-----------------------------------------------------------------+
-; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                                               ;
-+---------------------------------+--------------------+------+-----------------------------------------------------------------+
-
-
-+----------------------------------------------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component ;
-+------------------------------------+----------------------+----------------------------------------------------------+
-; Parameter Name                     ; Value                ; Type                                                     ;
-+------------------------------------+----------------------+----------------------------------------------------------+
-; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                                                  ;
-; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                                               ;
-; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                                             ;
-; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                                             ;
-; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                                           ;
-; WIDTH_BYTEENA                      ; 1                    ; Untyped                                                  ;
-; OPERATION_MODE                     ; ROM                  ; Untyped                                                  ;
-; WIDTH_A                            ; 8                    ; Signed Integer                                           ;
-; WIDTHAD_A                          ; 17                   ; Signed Integer                                           ;
-; NUMWORDS_A                         ; 76800                ; Signed Integer                                           ;
-; OUTDATA_REG_A                      ; CLOCK0               ; Untyped                                                  ;
-; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                                                  ;
-; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                                                  ;
-; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                                                  ;
-; INDATA_ACLR_A                      ; NONE                 ; Untyped                                                  ;
-; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                                                  ;
-; WIDTH_B                            ; 1                    ; Untyped                                                  ;
-; WIDTHAD_B                          ; 1                    ; Untyped                                                  ;
-; NUMWORDS_B                         ; 1                    ; Untyped                                                  ;
-; INDATA_REG_B                       ; CLOCK1               ; Untyped                                                  ;
-; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                                                  ;
-; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                                                  ;
-; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                                                  ;
-; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                                                  ;
-; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                                                  ;
-; INDATA_ACLR_B                      ; NONE                 ; Untyped                                                  ;
-; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                  ;
-; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                                                  ;
-; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                                                  ;
-; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                  ;
-; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                                                  ;
-; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                                           ;
-; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                                                  ;
-; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                                                  ;
-; BYTE_SIZE                          ; 8                    ; Untyped                                                  ;
-; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                                                  ;
-; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                                                  ;
-; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                                                  ;
-; INIT_FILE                          ; ./image/tree.mif     ; Untyped                                                  ;
-; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                                                  ;
-; MAXIMUM_DEPTH                      ; 0                    ; Untyped                                                  ;
-; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                                                  ;
-; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                                                  ;
-; CLOCK_ENABLE_OUTPUT_A              ; BYPASS               ; Untyped                                                  ;
-; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                                                  ;
-; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                                                  ;
-; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                                                  ;
-; ENABLE_ECC                         ; FALSE                ; Untyped                                                  ;
-; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                                                  ;
-; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                                                  ;
-; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                                                  ;
-; CBXI_PARAMETER                     ; altsyncram_71g1      ; Untyped                                                  ;
-+------------------------------------+----------------------+----------------------------------------------------------+
-Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
-
-
-+----------------------------------------------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component ;
-+------------------------------------+----------------------+----------------------------------------------------------+
-; Parameter Name                     ; Value                ; Type                                                     ;
-+------------------------------------+----------------------+----------------------------------------------------------+
-; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                                                  ;
-; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                                               ;
-; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                                             ;
-; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                                             ;
-; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                                           ;
-; WIDTH_BYTEENA                      ; 1                    ; Untyped                                                  ;
-; OPERATION_MODE                     ; SINGLE_PORT          ; Untyped                                                  ;
-; WIDTH_A                            ; 8                    ; Signed Integer                                           ;
-; WIDTHAD_A                          ; 19                   ; Signed Integer                                           ;
-; NUMWORDS_A                         ; 307200               ; Signed Integer                                           ;
-; OUTDATA_REG_A                      ; CLOCK0               ; Untyped                                                  ;
-; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                                                  ;
-; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                                                  ;
-; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                                                  ;
-; INDATA_ACLR_A                      ; NONE                 ; Untyped                                                  ;
-; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                                                  ;
-; WIDTH_B                            ; 1                    ; Untyped                                                  ;
-; WIDTHAD_B                          ; 1                    ; Untyped                                                  ;
-; NUMWORDS_B                         ; 1                    ; Untyped                                                  ;
-; INDATA_REG_B                       ; CLOCK1               ; Untyped                                                  ;
-; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                                                  ;
-; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                                                  ;
-; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                                                  ;
-; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                                                  ;
-; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                                                  ;
-; INDATA_ACLR_B                      ; NONE                 ; Untyped                                                  ;
-; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                  ;
-; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                                                  ;
-; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                                                  ;
-; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                  ;
-; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                                                  ;
-; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                                           ;
-; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                                                  ;
-; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                                                  ;
-; BYTE_SIZE                          ; 8                    ; Untyped                                                  ;
-; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                                                  ;
-; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                                                  ;
-; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                                                  ;
-; INIT_FILE                          ; UNUSED               ; Untyped                                                  ;
-; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                                                  ;
-; MAXIMUM_DEPTH                      ; 0                    ; Untyped                                                  ;
-; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                                                  ;
-; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                                                  ;
-; CLOCK_ENABLE_OUTPUT_A              ; BYPASS               ; Untyped                                                  ;
-; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                                                  ;
-; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                                                  ;
-; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                                                  ;
-; ENABLE_ECC                         ; FALSE                ; Untyped                                                  ;
-; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                                                  ;
-; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                                                  ;
-; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                                                  ;
-; CBXI_PARAMETER                     ; altsyncram_3rl1      ; Untyped                                                  ;
-+------------------------------------+----------------------+----------------------------------------------------------+
-Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
-
-
-+------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: vga_module:vga_inst ;
-+----------------+------------+------------------------------------+
-; Parameter Name ; Value      ; Type                               ;
-+----------------+------------+------------------------------------+
-; H_ACTIVE       ; 1001111111 ; Unsigned Binary                    ;
-; H_FRONT        ; 0000001111 ; Unsigned Binary                    ;
-; H_PULSE        ; 0001011111 ; Unsigned Binary                    ;
-; H_BACK         ; 0000101111 ; Unsigned Binary                    ;
-; V_ACTIVE       ; 0111011111 ; Unsigned Binary                    ;
-; V_FRONT        ; 0000001001 ; Unsigned Binary                    ;
-; V_PULSE        ; 0000000001 ; Unsigned Binary                    ;
-; V_BACK         ; 0000100000 ; Unsigned Binary                    ;
-; LOW            ; 0          ; Unsigned Binary                    ;
-; HIGH           ; 1          ; Unsigned Binary                    ;
-; H_ACTIVE_STATE ; 00000000   ; Unsigned Binary                    ;
-; H_FRONT_STATE  ; 00000001   ; Unsigned Binary                    ;
-; H_PULSE_STATE  ; 00000010   ; Unsigned Binary                    ;
-; H_BACK_STATE   ; 00000011   ; Unsigned Binary                    ;
-; V_ACTIVE_STATE ; 00000000   ; Unsigned Binary                    ;
-; V_FRONT_STATE  ; 00000001   ; Unsigned Binary                    ;
-; V_PULSE_STATE  ; 00000010   ; Unsigned Binary                    ;
-; V_BACK_STATE   ; 00000011   ; Unsigned Binary                    ;
-+----------------+------------+------------------------------------+
-Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
-
-
-+---------------------------------------------------------------------------------------------------------------------+
-; altsyncram Parameter Settings by Entity Instance                                                                    ;
-+-------------------------------------------+-------------------------------------------------------------------------+
-; Name                                      ; Value                                                                   ;
-+-------------------------------------------+-------------------------------------------------------------------------+
-; Number of entity instances                ; 2                                                                       ;
-; Entity Instance                           ; Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component ;
-;     -- OPERATION_MODE                     ; ROM                                                                     ;
-;     -- WIDTH_A                            ; 8                                                                       ;
-;     -- NUMWORDS_A                         ; 76800                                                                   ;
-;     -- OUTDATA_REG_A                      ; CLOCK0                                                                  ;
-;     -- WIDTH_B                            ; 1                                                                       ;
-;     -- NUMWORDS_B                         ; 1                                                                       ;
-;     -- ADDRESS_REG_B                      ; CLOCK1                                                                  ;
-;     -- OUTDATA_REG_B                      ; UNREGISTERED                                                            ;
-;     -- RAM_BLOCK_TYPE                     ; AUTO                                                                    ;
-;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                                               ;
-; Entity Instance                           ; Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component ;
-;     -- OPERATION_MODE                     ; SINGLE_PORT                                                             ;
-;     -- WIDTH_A                            ; 8                                                                       ;
-;     -- NUMWORDS_A                         ; 307200                                                                  ;
-;     -- OUTDATA_REG_A                      ; CLOCK0                                                                  ;
-;     -- WIDTH_B                            ; 1                                                                       ;
-;     -- NUMWORDS_B                         ; 1                                                                       ;
-;     -- ADDRESS_REG_B                      ; CLOCK1                                                                  ;
-;     -- OUTDATA_REG_B                      ; UNREGISTERED                                                            ;
-;     -- RAM_BLOCK_TYPE                     ; AUTO                                                                    ;
-;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                                               ;
-+-------------------------------------------+-------------------------------------------------------------------------+
-
-
-+-----------------------------------------------------+
-; Post-Synthesis Netlist Statistics for Top Partition ;
-+-----------------------+-----------------------------+
-; Type                  ; Count                       ;
-+-----------------------+-----------------------------+
-; arriav_ff             ; 151                         ;
-;     ENA               ; 26                          ;
-;     ENA SCLR          ; 27                          ;
-;     SCLR              ; 49                          ;
-;     SCLR SLD          ; 17                          ;
-;     SLD               ; 1                           ;
-;     plain             ; 31                          ;
-; arriav_lcell_comb     ; 381                         ;
-;     arith             ; 72                          ;
-;         0 data inputs ; 2                           ;
-;         1 data inputs ; 37                          ;
-;         2 data inputs ; 25                          ;
-;         3 data inputs ; 4                           ;
-;         5 data inputs ; 4                           ;
-;     extend            ; 2                           ;
-;         7 data inputs ; 2                           ;
-;     normal            ; 307                         ;
-;         0 data inputs ; 1                           ;
-;         1 data inputs ; 2                           ;
-;         2 data inputs ; 12                          ;
-;         3 data inputs ; 42                          ;
-;         4 data inputs ; 15                          ;
-;         5 data inputs ; 59                          ;
-;         6 data inputs ; 176                         ;
-; boundary_port         ; 31                          ;
-; stratixv_ram_block    ; 384                         ;
-;                       ;                             ;
-; Max LUT depth         ; 4.10                        ;
-; Average LUT depth     ; 2.37                        ;
-+-----------------------+-----------------------------+
-
-
-+-------------------------------+
-; Elapsed Time Per Partition    ;
-+----------------+--------------+
-; Partition Name ; Elapsed Time ;
-+----------------+--------------+
-; Top            ; 00:00:01     ;
-+----------------+--------------+
 
 
 +-------------------------------+
@@ -618,100 +160,29 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-------------------------------+
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
-    Info: Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
-    Info: Processing started: Thu Sep 11 23:30:15 2025
+    Info: Version 23.1std.0 Build 991 11/28/2023 SC Lite Edition
+    Info: Processing started: Fri Sep 19 17:13:19 2025
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off PBL -c PBL
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
-Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
+Info (20030): Parallel compilation is enabled and will use 14 of the 14 processors detected
 Info (12021): Found 1 design units, including 1 entities, in source file vga_module.v
-    Info (12023): Found entity 1: vga_module File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/vga_module.v Line: 1
+    Info (12023): Found entity 1: vga_module File: /home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/vga_module.v Line: 1
+Warning (10463): Verilog HDL Declaration warning at main.v(5): "type" is SystemVerilog-2005 keyword File: /home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/main.v Line: 5
 Info (12021): Found 1 design units, including 1 entities, in source file main.v
-    Info (12023): Found entity 1: main File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/main.v Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file clock_25mhz.v
-    Info (12023): Found entity 1: Clock_25MHz File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Clock_25MHz.v Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file rom.v
-    Info (12023): Found entity 1: Rom File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Rom.v Line: 40
-Info (12021): Found 1 design units, including 1 entities, in source file ram.v
-    Info (12023): Found entity 1: Ram File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Ram.v Line: 40
-Info (12021): Found 1 design units, including 1 entities, in source file ram_access.v
-    Info (12023): Found entity 1: Ram_access File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Ram_access.v Line: 1
-Info (12127): Elaborating entity "main" for the top level hierarchy
-Warning (10230): Verilog HDL assignment warning at main.v(82): truncated value with size 32 to match size of target (19) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/main.v Line: 82
-Info (12128): Elaborating entity "Clock_25MHz" for hierarchy "Clock_25MHz:clk_div_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/main.v Line: 19
-Info (12128): Elaborating entity "Ram_access" for hierarchy "Ram_access:ram_access_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/main.v Line: 47
-Info (12128): Elaborating entity "Rom" for hierarchy "Ram_access:ram_access_inst|Rom:inst_rom" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Ram_access.v Line: 27
-Info (12128): Elaborating entity "altsyncram" for hierarchy "Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Rom.v Line: 82
-Info (12130): Elaborated megafunction instantiation "Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Rom.v Line: 82
-Info (12133): Instantiated megafunction "Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component" with the following parameter: File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Rom.v Line: 82
-    Info (12134): Parameter "address_aclr_a" = "NONE"
-    Info (12134): Parameter "clock_enable_input_a" = "BYPASS"
-    Info (12134): Parameter "clock_enable_output_a" = "BYPASS"
-    Info (12134): Parameter "init_file" = "./image/tree.mif"
-    Info (12134): Parameter "intended_device_family" = "Cyclone V"
-    Info (12134): Parameter "lpm_hint" = "ENABLE_RUNTIME_MOD=NO"
-    Info (12134): Parameter "lpm_type" = "altsyncram"
-    Info (12134): Parameter "numwords_a" = "76800"
-    Info (12134): Parameter "operation_mode" = "ROM"
-    Info (12134): Parameter "outdata_aclr_a" = "NONE"
-    Info (12134): Parameter "outdata_reg_a" = "CLOCK0"
-    Info (12134): Parameter "widthad_a" = "17"
-    Info (12134): Parameter "width_a" = "8"
-    Info (12134): Parameter "width_byteena_a" = "1"
-Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_71g1.tdf
-    Info (12023): Found entity 1: altsyncram_71g1 File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/altsyncram_71g1.tdf Line: 32
-Info (12128): Elaborating entity "altsyncram_71g1" for hierarchy "Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component|altsyncram_71g1:auto_generated" File: c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
-Info (12021): Found 1 design units, including 1 entities, in source file db/decode_g2a.tdf
-    Info (12023): Found entity 1: decode_g2a File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/decode_g2a.tdf Line: 23
-Info (12128): Elaborating entity "decode_g2a" for hierarchy "Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component|altsyncram_71g1:auto_generated|decode_g2a:rden_decode" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/altsyncram_71g1.tdf Line: 41
-Info (12021): Found 1 design units, including 1 entities, in source file db/mux_7hb.tdf
-    Info (12023): Found entity 1: mux_7hb File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/mux_7hb.tdf Line: 23
-Info (12128): Elaborating entity "mux_7hb" for hierarchy "Ram_access:ram_access_inst|Rom:inst_rom|altsyncram:altsyncram_component|altsyncram_71g1:auto_generated|mux_7hb:mux2" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/altsyncram_71g1.tdf Line: 42
-Info (12128): Elaborating entity "Ram" for hierarchy "Ram_access:ram_access_inst|Ram:inst_ram" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Ram_access.v Line: 36
-Info (12128): Elaborating entity "altsyncram" for hierarchy "Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Ram.v Line: 86
-Info (12130): Elaborated megafunction instantiation "Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Ram.v Line: 86
-Info (12133): Instantiated megafunction "Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component" with the following parameter: File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/Ram.v Line: 86
-    Info (12134): Parameter "clock_enable_input_a" = "BYPASS"
-    Info (12134): Parameter "clock_enable_output_a" = "BYPASS"
-    Info (12134): Parameter "intended_device_family" = "Cyclone V"
-    Info (12134): Parameter "lpm_hint" = "ENABLE_RUNTIME_MOD=NO"
-    Info (12134): Parameter "lpm_type" = "altsyncram"
-    Info (12134): Parameter "numwords_a" = "307200"
-    Info (12134): Parameter "operation_mode" = "SINGLE_PORT"
-    Info (12134): Parameter "outdata_aclr_a" = "NONE"
-    Info (12134): Parameter "outdata_reg_a" = "CLOCK0"
-    Info (12134): Parameter "power_up_uninitialized" = "FALSE"
-    Info (12134): Parameter "read_during_write_mode_port_a" = "NEW_DATA_NO_NBE_READ"
-    Info (12134): Parameter "widthad_a" = "19"
-    Info (12134): Parameter "width_a" = "8"
-    Info (12134): Parameter "width_byteena_a" = "1"
-Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_3rl1.tdf
-    Info (12023): Found entity 1: altsyncram_3rl1 File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/altsyncram_3rl1.tdf Line: 34
-Info (12128): Elaborating entity "altsyncram_3rl1" for hierarchy "Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated" File: c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
-Info (12021): Found 1 design units, including 1 entities, in source file db/decode_3na.tdf
-    Info (12023): Found entity 1: decode_3na File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/decode_3na.tdf Line: 23
-Info (12128): Elaborating entity "decode_3na" for hierarchy "Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|decode_3na:decode3" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/altsyncram_3rl1.tdf Line: 45
-Info (12021): Found 1 design units, including 1 entities, in source file db/decode_s2a.tdf
-    Info (12023): Found entity 1: decode_s2a File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/decode_s2a.tdf Line: 23
-Info (12128): Elaborating entity "decode_s2a" for hierarchy "Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|decode_s2a:rden_decode" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/altsyncram_3rl1.tdf Line: 46
-Info (12021): Found 1 design units, including 1 entities, in source file db/mux_jhb.tdf
-    Info (12023): Found entity 1: mux_jhb File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/mux_jhb.tdf Line: 23
-Info (12128): Elaborating entity "mux_jhb" for hierarchy "Ram_access:ram_access_inst|Ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|mux_jhb:mux2" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/db/altsyncram_3rl1.tdf Line: 47
-Info (12128): Elaborating entity "vga_module" for hierarchy "vga_module:vga_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/main.v Line: 64
-Warning (13024): Output pins are stuck at VCC or GND
-    Warning (13410): Pin "sync" is stuck at GND File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Pbl/Project/main.v Line: 9
-Info (286030): Timing-Driven Synthesis is running
-Info (17049): 16 registers lost all their fanouts during netlist optimizations.
-Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
-    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 858 device resources after synthesis - the final resource count might be different
-    Info (21058): Implemented 2 input pins
-    Info (21059): Implemented 29 output pins
-    Info (21061): Implemented 443 logic cells
-    Info (21064): Implemented 384 RAM segments
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 4 warnings
-    Info: Peak virtual memory: 4889 megabytes
-    Info: Processing ended: Thu Sep 11 23:30:31 2025
-    Info: Elapsed time: 00:00:16
-    Info: Total CPU time (on all processors): 00:00:27
+    Info (12023): Found entity 1: main File: /home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/main.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file Clock_25MHz.v
+    Info (12023): Found entity 1: Clock_25MHz File: /home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/Clock_25MHz.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file Rom.v
+    Info (12023): Found entity 1: Rom File: /home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/Rom.v Line: 40
+Info (12021): Found 1 design units, including 1 entities, in source file Ram.v
+    Info (12023): Found entity 1: Ram File: /home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/Ram.v Line: 40
+Error (10170): Verilog HDL syntax error at Ram_access.v(9) near text: "output";  expecting ")". Check for and fix any syntax errors that appear immediately before or at the specified keyword. The Intel FPGA Knowledge Database contains many articles with specific details on how to resolve this error. Visit the Knowledge Database at https://www.altera.com/support/support-resources/knowledge-base/search.html and search for this specific error message number. File: /home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/Ram_access.v Line: 9
+Error (10112): Ignored design unit "Ram_access" at Ram_access.v(1) due to previous errors File: /home/aluno/Downloads/drive-download-20250919T185033Z-1-001/Project/Ram_access.v Line: 1
+Info (12021): Found 0 design units, including 0 entities, in source file Ram_access.v
+Error: Quartus Prime Analysis & Synthesis was unsuccessful. 2 errors, 2 warnings
+    Error: Peak virtual memory: 406 megabytes
+    Error: Processing ended: Fri Sep 19 17:13:23 2025
+    Error: Elapsed time: 00:00:04
+    Error: Total CPU time (on all processors): 00:00:13
 
 
