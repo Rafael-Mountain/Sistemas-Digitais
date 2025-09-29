@@ -122,6 +122,18 @@
 				{
 					"name" : "reset_button",
 					"strict" : false
+				},
+				{
+					"name" : "algorithm_select",
+					"strict" : false
+				},
+				{
+					"name" : "zoom_in_button",
+					"strict" : false
+				},
+				{
+					"name" : "zoom_out_button",
+					"strict" : false
 				}
 			]
 		}

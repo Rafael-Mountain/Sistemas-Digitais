@@ -1,0 +1,82 @@
+// Arquivo: video_controller.v
+// Descrição: Módulo dedicado para controlar a exibição VGA.
+// - Calcula o endereço de RAM para o pixel a ser exibido.
+// - Centraliza a imagem na tela.
+// - Instancia o vga_module para gerar os sinais de temporização.
+
+module video_controller (
+    // --- Entradas de Controle ---
+    input  wire        clk,            // Clock de 25MHz (nclk)
+    input  wire        reset,          // Reset síncrono
+    input  wire [1:0]  display_mode,   // Modo de exibição (original, zoom-in, zoom-out)
+    input  wire [7:0]  ram_data_in,    // Dado de cor vindo da RAM
+
+    // --- Saída para a RAM ---
+    output reg  [18:0] ram_addr_out,   // Endereço a ser lido da RAM
+
+    // --- Saídas Finais para o Conector VGA ---
+    output wire        hsync,
+    output wire        vsync,
+    output wire [7:0]  red,
+    output wire [7:0]  green,
+    output wire [7:0]  blue,
+    output wire        sync,
+    output wire        clk_out,
+    output wire        blank
+);
+
+    // Parâmetros para o modo de exibição
+    localparam D_ORIGINAL = 2'd0, D_ZOOM_IN = 2'd1, D_ZOOM_OUT = 2'd2;
+
+    // Fios internos para comunicação com o vga_module
+    wire [9:0] vga_x, vga_y;
+
+    // Lógica para determinar o tamanho e a posição da imagem
+    reg [15:0] current_img_width, current_img_height;
+
+    always @(*) begin 
+        case(display_mode)
+            D_ZOOM_IN:  begin current_img_width = 16'd640; current_img_height = 16'd480; end
+            D_ZOOM_OUT: begin current_img_width = 16'd160; current_img_height = 16'd120; end
+            default:    begin current_img_width = 16'd320; current_img_height = 16'd240; end
+        endcase
+    end
+    
+    wire [9:0] offset_x = (640 - current_img_width) >> 1;
+    wire [9:0] offset_y = (480 - current_img_height) >> 1;
+
+    // Lógica principal de cálculo de endereço para a RAM
+    always @(posedge clk) begin
+        if (reset) begin
+            ram_addr_out <= 19'd0;
+        end else begin
+            // Verifica se as coordenadas do VGA estão dentro da área da imagem a ser exibida
+            if ((vga_x >= offset_x) && (vga_x < offset_x + current_img_width) &&
+                (vga_y >= offset_y) && (vga_y < offset_y + current_img_height)) begin
+                // Calcula o endereço linear na RAM
+                ram_addr_out <= ((vga_y - offset_y) * current_img_width) + (vga_x - offset_x);
+            end else begin
+                // Fora da imagem, pode apontar para o endereço 0 (fundo preto)
+                ram_addr_out <= 19'd0; 
+            end
+        end
+    end
+
+    // Instância do gerador de sinais VGA
+    vga_module vga_inst (
+        .clock(~clk),         // O vga_module original usava o clock invertido
+        .reset(reset),
+        .color_in(ram_data_in), // Recebe o dado de cor que vem da RAM
+        .next_x(vga_x),       // Recebe as coordenadas do próximo pixel
+        .next_y(vga_y),
+        .hsync(hsync),
+        .vsync(vsync),
+        .red(red),
+        .green(green),
+        .blue(blue),
+        .sync(sync),
+        .clk(clk_out),
+        .blank(blank)
+    );
+
+endmodule

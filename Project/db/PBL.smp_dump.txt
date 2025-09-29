@@ -1,14 +1,52 @@
 
-State Machine - |main|vga_module:vga_inst|v_state
+State Machine - |main|processing_op
+Name processing_op.OP_ZOOM_OUT processing_op.OP_ZOOM_IN processing_op.OP_NONE processing_op.OP_COPY processing_op.OP_ORIGINAL 
+processing_op.OP_COPY 0 0 0 0 0 
+processing_op.OP_NONE 0 0 1 1 0 
+processing_op.OP_ZOOM_IN 0 1 0 1 0 
+processing_op.OP_ZOOM_OUT 1 0 0 1 0 
+processing_op.OP_ORIGINAL 0 0 0 1 1 
+
+State Machine - |main|video_controller:video_inst|vga_module:vga_inst|v_state
 Name v_state.V_BACK_STATE v_state.V_PULSE_STATE v_state.V_FRONT_STATE v_state.V_ACTIVE_STATE 
 v_state.V_ACTIVE_STATE 0 0 0 0 
 v_state.V_FRONT_STATE 0 0 1 1 
 v_state.V_PULSE_STATE 0 1 0 1 
 v_state.V_BACK_STATE 1 0 0 1 
 
-State Machine - |main|vga_module:vga_inst|h_state
+State Machine - |main|video_controller:video_inst|vga_module:vga_inst|h_state
 Name h_state.H_BACK_STATE h_state.H_PULSE_STATE h_state.H_FRONT_STATE h_state.H_ACTIVE_STATE 
 h_state.H_ACTIVE_STATE 0 0 0 0 
 h_state.H_FRONT_STATE 0 0 1 1 
 h_state.H_PULSE_STATE 0 1 0 1 
 h_state.H_BACK_STATE 1 0 0 1 
+
+State Machine - |main|zoom_out_block_average:zo_ba_inst|state
+Name state.S_DONE state.S_CALC_AND_WRITE state.S_READ_PIXEL_11 state.S_READ_PIXEL_10 state.S_READ_PIXEL_01 state.S_READ_PIXEL_00 state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 0 
+state.S_READ_PIXEL_00 0 0 0 0 0 1 1 
+state.S_READ_PIXEL_01 0 0 0 0 1 0 1 
+state.S_READ_PIXEL_10 0 0 0 1 0 0 1 
+state.S_READ_PIXEL_11 0 0 1 0 0 0 1 
+state.S_CALC_AND_WRITE 0 1 0 0 0 0 1 
+state.S_DONE 1 0 0 0 0 0 1 
+
+State Machine - |main|zoom_in_nearest_neighbor:zi_nn_inst|state
+Name state.S_DONE state.S_WRITE_RAM state.S_READ_ROM state.S_IDLE 
+state.S_IDLE 0 0 0 0 
+state.S_READ_ROM 0 0 1 1 
+state.S_WRITE_RAM 0 1 0 1 
+state.S_DONE 1 0 0 1 
+
+State Machine - |main|zoom_out_decimation:zo_dec_inst|state
+Name state.S_IDLE state.S_DONE state.S_PROCESS 
+state.S_IDLE 0 0 0 
+state.S_PROCESS 1 0 1 
+state.S_DONE 1 1 0 
+
+State Machine - |main|zoom_in_replication:zi_rep_inst|state
+Name state.S_DONE state.S_WRITE_RAM state.S_READ_ROM state.S_IDLE 
+state.S_IDLE 0 0 0 0 
+state.S_READ_ROM 0 0 1 1 
+state.S_WRITE_RAM 0 1 0 1 
+state.S_DONE 1 0 0 1 

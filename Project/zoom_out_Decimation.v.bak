@@ -1,0 +1,21 @@
+module zoom_out_Decimation(
+	 input  wire         clock,
+    input  wire         reset,
+    input  wire [15:0]  img_width,    // largura imagem original
+    input  wire [15:0]  img_height,   // altura imagem original
+    input  wire [7:0]   rom_data_in,  // pixel da ROM
+
+    output reg  [16:0]  rom_addr,     // endereço ROM
+    output reg  [18:0]  ram_addr,     // endereço RAM
+    output reg  [7:0]   ram_data,     // dado RAM
+    output reg          ram_wren,     // enable escrita
+    output reg          done          // terminou
+
+);
+
+
+
+
+endmodule
+
+
