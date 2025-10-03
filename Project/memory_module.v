@@ -27,7 +27,7 @@ module memory_module(
 
     // --- Instância da ROM ---
     // A ROM é controlada diretamente pelas entradas do módulo.
-    Rom inst_rom (
+    rom inst_rom (
         .address (rom_address_ext),
         .clock   (clock),
         .q       (q_out_rom)
@@ -35,7 +35,7 @@ module memory_module(
 
     // --- Instância da RAM ---
     // A RAM é controlada diretamente pelas entradas do módulo.
-    Ram inst_ram (
+    ram inst_ram (
         .address (ram_address),
         .clock   (clock),
         .data    (ram_data_in),

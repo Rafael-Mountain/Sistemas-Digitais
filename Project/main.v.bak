@@ -1,10 +1,5 @@
-module main();
-
-
-
-
-
-
-
-
-endmodule
+module main (
+	// Entradas da FPGA
+	input wire clock_50,
+	input wire reset_button,
+);

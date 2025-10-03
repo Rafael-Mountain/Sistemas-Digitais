@@ -1,13 +1,13 @@
-// main.v - Versão Final Completa
-// Lógica de apagar a tela delegada ao módulo video_controller
+// main.v - Top-Level Module (Modularizado e Corrigido)
 module main (
-    input  wire clk,                // Clock de 50MHz da placa
-    input  wire reset_button,       // Botão de reset (ativo-baixo)
-    input  wire zoom_in_button,    // Botão de zoom in (ativo-baixo)
-    input  wire zoom_out_button,   // Botão de zoom out (ativo-baixo)
-    input  wire algorithm_select,   // Chave: 0 para Set 1, 1 para Set 2
+    // Entradas da FPGA
+    input wire clock_50,          // Clock de 50MHz da placa
+    input wire reset_button,      // Botão de reset (ativo-baixo)
+    input wire zoom_out_button,
+    input wire zoom_in_button,
+    input wire algorithm_select,  // Chave: 0 para Set 1, 1 para Set 2
 
-    // --- Saídas VGA ---
+    // Saidas para o VGA
     output wire hsync,
     output wire vsync,
     output wire [7:0] red,
@@ -19,226 +19,126 @@ module main (
 );
 
     // --- PARÂMETROS GLOBAIS ---
-    // Cor de fundo para as bordas e para a tela durante o processamento.
-    // Formato RRRGGGBB. Ex: Cinza escuro = 8'h24 (001 001 00)
     localparam [7:0] SCREEN_COLOR = 8'h24;
+
+    // =========================================================
+    // 1. FIOS DE CONTROLE E DADOS (Declaração obrigatória antes do uso)
+    // =========================================================
     
-    // =================================================================
-    // --- 1. CLOCKS E RESETS ---
-    // =================================================================
-    wire nclk; // Clock de 25MHz para VGA e lógica de controle
-    Clock_25MHz clk_div_inst (.clk(clk), .nclk(nclk));
-
-    wire pll_clk, pll_locked; // Clock rápido para memória (usado apenas para o sinal de 'locked')
-    pll pll_inst (.refclk(clk), .rst(~reset_button), .outclk_0(pll_clk), .locked(pll_locked));
-
-    reg reset_sync;
-    always @(posedge nclk) begin
-        reset_sync <= ~reset_button | ~pll_locked; 
-    end
+    // Clock e Reset
+    wire clock_25;     // Clock de 25MHz
+    wire reset_sync;   // Reset sincronizado (ativo-alto)
     
-    // =================================================================
-    // --- 2. FSM DE CONTROLE PRINCIPAL ---
-    // =================================================================
-    localparam S_IDLE       = 1'b0;
-    localparam S_PROCESSING = 1'b1;
-    reg state, next_state;
+    // Sinais de Controle da FSM (Vindos da control_unit)
+    wire program_state;  // 1'b0 (WAITING/IDLE) ou 1'b1 (PROCESSING)
+    wire [1:0] operation;  // ORIGINAL, ZOOM_OUT, ZOOM_IN, NONE
+    wire [1:0] display_mode; // ORIGINAL, ZOOM_OUT, ZOOM_IN
+    wire processing_done; // Sinal de conclusão (vindo da processing_unit)
 
-    // Registrador para armazenar a operação solicitada
-    localparam OP_NONE     = 3'd0, OP_COPY = 3'd1, OP_ZOOM_IN = 3'd2, OP_ZOOM_OUT = 3'd3, OP_ORIGINAL = 3'd4;
-    reg [2:0] processing_op;
-
-    // Registrador para armazenar o modo de exibição atual
-    localparam D_ORIGINAL = 2'd0, D_ZOOM_IN = 2'd1, D_ZOOM_OUT = 2'd2;
-    reg [1:0] display_mode;
+    // Sinais de Memória do Processador (Vindos da processing_unit)
+    wire [18:0] proc_ram_address;
+    wire [7:0]  proc_ram_data_in;
+    wire        proc_ram_wren; // Corrigido para 1 bit, se ram_wren for 1 bit
+    wire [16:0] proc_rom_address;
     
-    // =================================================================
-    // --- 3. DETECÇÃO DE BOTÕES ---
-    // =================================================================
-    wire zoom_in_signal           = ~zoom_in_button;
-    reg  zoom_in_signal_r;
-    reg  zoom_in_signal_r_anterior;
-    wire zoom_out_signal          = ~zoom_out_button;
-    reg  zoom_out_signal_r;
-    reg  zoom_out_signal_r_anterior;
-
-    always @(posedge nclk) begin
-        zoom_in_signal_r           <= zoom_in_signal;
-        zoom_in_signal_r_anterior  <= zoom_in_signal_r;
-        zoom_out_signal_r          <= zoom_out_signal;
-        zoom_out_signal_r_anterior <= zoom_out_signal_r;
-    end
-    wire zoom_in_pressed  = ~zoom_in_signal_r_anterior & zoom_in_signal_r;
-    wire zoom_out_pressed = ~zoom_out_signal_r_anterior & zoom_out_signal_r;
-    
-    // =================================================================
-    // --- 4. INSTÂNCIAS DOS MÓDULOS DE PROCESSAMENTO ---
-    // =================================================================
-    wire processing_done;
-    wire [7:0] proc_rom_q_out;
-
-    // --- Fios para o Módulo de Cópia ---
-    wire [16:0] rom_addr_copy; wire [18:0] ram_addr_copy; wire [7:0] ram_data_copy;
-    wire ram_wren_copy; wire done_copy;
-    
-    copy_rom_to_ram copy_inst (
-        .clk(nclk), .reset(reset_sync), .start(state == S_PROCESSING && (processing_op == OP_COPY || processing_op == OP_ORIGINAL)),
-        .rom_addr(rom_addr_copy), .rom_data(proc_rom_q_out),
-        .ram_addr(ram_addr_copy), .ram_data(ram_data_copy), .ram_wren(ram_wren_copy),
-        .done(done_copy)
-    );
-
-    // --- Fios e Instâncias para o SET 1 de Algoritmos (Replication / Decimation) ---
-    wire [16:0] rom_addr_zi1; wire [18:0] ram_addr_zi1; wire [7:0] ram_data_zi1;
-    wire ram_wren_zi1; wire done_zi1;
-    wire [16:0] rom_addr_zo1; wire [18:0] ram_addr_zo1; wire [7:0] ram_data_zo1;
-    wire ram_wren_zo1; wire done_zo1;
-    
-    zoom_in_replication zi_rep_inst (
-        .clk(nclk), .reset(reset_sync), .start(state == S_PROCESSING && processing_op == OP_ZOOM_IN && !algorithm_select),
-        .rom_addr(rom_addr_zi1), .rom_data(proc_rom_q_out),
-        .ram_addr(ram_addr_zi1), .ram_data(ram_data_zi1), .ram_wren(ram_wren_zi1),
-        .done(done_zi1)
-    );
-    zoom_out_decimation zo_dec_inst (
-        .clk(nclk), .reset(reset_sync), .start(state == S_PROCESSING && processing_op == OP_ZOOM_OUT && !algorithm_select),
-        .rom_addr(rom_addr_zo1), .rom_data(proc_rom_q_out),
-        .ram_addr(ram_addr_zo1), .ram_data(ram_data_zo1), .ram_wren(ram_wren_zo1),
-        .done(done_zo1)
-    );
-
-    // --- Fios e Instâncias para o SET 2 de Algoritmos (Nearest Neighbor / Block Average) ---
-    wire [16:0] rom_addr_zi2; wire [18:0] ram_addr_zi2; wire [7:0] ram_data_zi2;
-    wire ram_wren_zi2; wire done_zi2;
-    wire [16:0] rom_addr_zo2; wire [18:0] ram_addr_zo2; wire [7:0] ram_data_zo2;
-    wire ram_wren_zo2; wire done_zo2;
-
-    zoom_in_nearest_neighbor zi_nn_inst (
-        .clk(nclk), .reset(reset_sync), .start(state == S_PROCESSING && processing_op == OP_ZOOM_IN && algorithm_select),
-        .rom_addr(rom_addr_zi2), .rom_data(proc_rom_q_out),
-        .ram_addr(ram_addr_zi2), .ram_data(ram_data_zi2), .ram_wren(ram_wren_zi2),
-        .done(done_zi2)
-    );
-    zoom_out_block_average zo_ba_inst (
-        .clk(nclk), .reset(reset_sync), .start(state == S_PROCESSING && processing_op == OP_ZOOM_OUT && algorithm_select),
-        .rom_addr(rom_addr_zo2), .rom_data(proc_rom_q_out),
-        .ram_addr(ram_addr_zo2), .ram_data(ram_data_zo2), .ram_wren(ram_wren_zo2),
-        .done(done_zo2)
-    );
-    
-    // =================================================================
-    // --- 5. ÁRBITRO DE MEMÓRIA (Processamento) ---
-    // =================================================================
-    wire [16:0] proc_rom_address; wire [18:0] proc_ram_address;
-    wire [7:0]  proc_ram_data_in; wire proc_ram_wren;
-
-    assign proc_rom_address = (processing_op == OP_COPY || processing_op == OP_ORIGINAL) ? rom_addr_copy :
-                              (processing_op == OP_ZOOM_IN)                               ? (algorithm_select ? rom_addr_zi2 : rom_addr_zi1) :
-                              (processing_op == OP_ZOOM_OUT)                              ? (algorithm_select ? rom_addr_zo2 : rom_addr_zo1) : 17'd0;
-
-    assign proc_ram_address = (processing_op == OP_COPY || processing_op == OP_ORIGINAL) ? ram_addr_copy :
-                              (processing_op == OP_ZOOM_IN)                               ? (algorithm_select ? ram_addr_zi2 : ram_addr_zi1) :
-                              (processing_op == OP_ZOOM_OUT)                              ? (algorithm_select ? ram_addr_zo2 : ram_addr_zo1) : 19'd0;
-
-    assign proc_ram_data_in = (processing_op == OP_COPY || processing_op == OP_ORIGINAL) ? ram_data_copy :
-                              (processing_op == OP_ZOOM_IN)                               ? (algorithm_select ? ram_data_zi2 : ram_data_zi1) :
-                              (processing_op == OP_ZOOM_OUT)                              ? (algorithm_select ? ram_data_zo2 : ram_data_zo1) : 8'd0;
-
-    assign proc_ram_wren    = (processing_op == OP_COPY || processing_op == OP_ORIGINAL) ? ram_wren_copy :
-                              (processing_op == OP_ZOOM_IN)                               ? (algorithm_select ? ram_wren_zi2 : ram_wren_zi1) :
-                              (processing_op == OP_ZOOM_OUT)                              ? (algorithm_select ? ram_wren_zo2 : ram_wren_zo1) : 1'b0;
-
-    assign processing_done  = (processing_op == OP_COPY || processing_op == OP_ORIGINAL) ? done_copy :
-                              (processing_op == OP_ZOOM_IN)                               ? (algorithm_select ? done_zi2 : done_zi1) :
-                              (processing_op == OP_ZOOM_OUT)                              ? (algorithm_select ? done_zo2 : done_zo1) : 1'b0;
-    
-    // =================================================================
-    // --- 7. ÁRBITRO DE MEMÓRIA (VGA vs. Processador) ---
-    // =================================================================
-    wire [18:0] video_ram_address; // Endereço solicitado pelo controlador de vídeo
+    // Sinais de Memória Final (Árbitro)
     wire [18:0] final_ram_address;
     wire        final_ram_wren;
-    wire [7:0]  ram_q_out;         // Saída da RAM
-
-    assign final_ram_address = (state == S_IDLE) ? video_ram_address : proc_ram_address;
-    assign final_ram_wren    = (state == S_IDLE) ? 1'b0 : proc_ram_wren;
     
-    // =================================================================
-    // --- 8. INSTÂNCIAS DE MÓDULOS CORE ---
-    // =================================================================
-    memory_module mem_inst (
-        .clock(nclk), .reset(reset_sync),
-        .ram_address(final_ram_address),
-        .ram_data_in(proc_ram_data_in),
-        .wren_in(final_ram_wren),
-        .q_out_ram(ram_q_out),
-        .rom_address_ext(proc_rom_address),
-        .q_out_rom(proc_rom_q_out),
-        .done() 
+    // Sinais de Dados (Lidos/Escritos na memory_module)
+    wire [7:0]  proc_rom_q_out;  // Dado lido da ROM (para processing_unit)
+    wire [7:0]  ram_q_out;     // Dado lido da RAM (para video_controller)
+
+    // Sinais de Memória do Vídeo (Vindos da video_controller)
+    wire [18:0] video_ram_address;
+
+    // =========================================================
+    // 2. MÓDULOS BASE (Clock e Reset)
+    // =========================================================
+
+    // Módulo Divisor de Clock (50MHz -> 25MHz)
+    clock_divider clock_divider_inst (
+        .clock_in(clock_50),
+        .clock_out(clock_25)
+    );
+    
+    // Módulo de Sincronização e Reset (garante reset síncrono)
+    sync_reset_button sync_reset_button_inst (
+        .clock(clock_25),
+        .reset_button_in(reset_button), // Botão ativo-baixo
+        .reset_sync_out(reset_sync)     // Reset sincronizado ativo-alto
     );
 
+    // =========================================================
+    // 3. UNIDADES DE CONTROLE E PROCESSAMENTO
+    // =========================================================
+
+    // Unidade de Controle (FSM e Detecção de Botões)
+    control_unit control_unit_inst (
+        .clock(clock_25),
+        .reset(reset_sync),
+        .zoom_in_signal(~zoom_in_button), // Converte para ativo-alto
+        .zoom_out_signal(~zoom_out_button), // Converte para ativo-alto
+        .processing_done(processing_done),
+
+        .program_state(program_state), 
+        .operation(operation),       
+        .display_mode(display_mode)  
+    );
+    
+    // Unidade de Processamento (Instanciação de Algoritmos e Arbitragem Interna)
+    processing_unit processing_unit_inst (
+        .clock(clock_25),
+        .reset(reset_sync),
+        .algorithm_select(algorithm_select),
+        
+        .program_state(program_state),
+        .operation(operation),
+        
+        .rom_q_out_in(proc_rom_q_out),
+        .rom_addr_out(proc_rom_address),
+        .ram_addr_out(proc_ram_address),
+        .ram_data_out(proc_ram_data_in),
+        .ram_wren_out(proc_ram_wren),
+        
+        .processing_done(processing_done)
+        // A porta 'display_mode' foi removida do módulo, pois não era utilizada.
+    );
+    
+    // =========================================================
+    // 4. MÓDULOS CORE (Memória e Vídeo)
+    // =========================================================
+
+    // MÓDULO DE ARBITRAGEM DE MEMÓRIA FINAL (Processador vs. VGA)
+    // O Processador (program_state = 1) tem prioridade de escrita.
+    assign final_ram_address = (program_state == 1'b1) ? proc_ram_address : video_ram_address;
+    assign final_ram_wren    = (program_state == 1'b1) ? proc_ram_wren : 1'b0;
+
+    // MÓDULO DE MEMÓRIA (RAM e ROM)
+    memory_module mem_inst (
+        .clock(clock_25), .reset(reset_sync),
+        .ram_address(final_ram_address),    // Endereço arbitrado
+        .ram_data_in(proc_ram_data_in),     // Dados da Processing Unit
+        .wren_in(final_ram_wren),           // wren arbitrado
+        .q_out_ram(ram_q_out),              // Dados de saída para o VGA
+        .rom_address_ext(proc_rom_address), // Endereço de leitura da ROM
+        .q_out_rom(proc_rom_q_out),         // Dados de saída para a Processing Unit
+        .done()
+    );
+
+    // MÓDULO DE VÍDEO (Controlador VGA)
     video_controller video_inst (
-        .clk(nclk),
+        .clk(clock_25),
         .reset(reset_sync),
         .display_mode(display_mode),
-        .ram_data_in(ram_q_out),
-        .processing_active(state == S_PROCESSING), // Informa ao controlador de vídeo o estado da FSM
-        .ram_addr_out(video_ram_address),
-        // Conexões diretas para as saídas VGA
-        .hsync(hsync),
-        .vsync(vsync),
-        .red(red),
-        .green(green),
-        .blue(blue),
-        .sync(sync),
-        .clk_out(clk_out),
-        .blank(blank)
+        .ram_data_in(ram_q_out),           
+        .processing_active(program_state), 
+        .ram_addr_out(video_ram_address),   
+        
+        // Saídas VGA
+        .hsync(hsync), .vsync(vsync), .red(red), .green(green), 
+        .blue(blue), .sync(sync), .clk_out(clk_out), .blank(blank)
     );
-    // Sobrescreve o parâmetro de cor de fundo no video_controller
     defparam video_inst.BACKGROUND_COLOR = SCREEN_COLOR;
-    
-    // =================================================================
-    // --- 9. LÓGICA DA FSM PRINCIPAL ---
-    // =================================================================
-    always @(posedge nclk or posedge reset_sync) begin
-        if (reset_sync) begin
-            state <= S_PROCESSING;
-            processing_op <= OP_COPY;
-            display_mode <= D_ORIGINAL;
-        end else begin
-            state <= next_state;
 
-            if (state == S_IDLE && next_state == S_PROCESSING) begin
-                if (zoom_in_pressed && display_mode != D_ORIGINAL)      processing_op <= OP_ORIGINAL;
-                else if (zoom_out_pressed && display_mode != D_ORIGINAL)processing_op <= OP_ORIGINAL;
-                else if (zoom_in_pressed && display_mode != D_ZOOM_IN)  processing_op <= OP_ZOOM_IN;
-                else if (zoom_out_pressed && display_mode != D_ZOOM_OUT)processing_op <= OP_ZOOM_OUT;
-                else                                                    processing_op <= OP_NONE;
-            end
-
-            if (state == S_PROCESSING && processing_done) begin
-                case(processing_op)
-                    OP_ZOOM_IN:  display_mode <= D_ZOOM_IN;
-                    OP_ZOOM_OUT: display_mode <= D_ZOOM_OUT;
-                    default:     display_mode <= D_ORIGINAL;
-                endcase
-            end
-        end
-    end
-
-    always @(*) begin
-        next_state = state;
-        case(state)
-            S_IDLE:
-                if ((zoom_in_pressed && display_mode != D_ZOOM_IN) || (zoom_out_pressed && display_mode != D_ZOOM_OUT)) begin
-                    next_state = S_PROCESSING;
-                end
-
-            S_PROCESSING:
-                if (processing_done) begin
-                    next_state = S_IDLE;
-                end
-        endcase
-    end
-
-    endmodule
+endmodule

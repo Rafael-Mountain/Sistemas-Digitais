@@ -1,0 +1,952 @@
+Analysis & Synthesis report for zoom_digital
+Fri Oct  3 20:33:04 2025
+Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. Analysis & Synthesis RAM Summary
+  9. Analysis & Synthesis DSP Block Usage Summary
+ 10. Analysis & Synthesis IP Cores Summary
+ 11. State Machine - |main|video_controller:video_inst|vga_module:vga_inst|v_state
+ 12. State Machine - |main|video_controller:video_inst|vga_module:vga_inst|h_state
+ 13. State Machine - |main|processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|state
+ 14. State Machine - |main|processing_unit:processing_unit_inst|zoom_in_nearest_neighbor:zi_nn_inst|state
+ 15. State Machine - |main|processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|state
+ 16. State Machine - |main|processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst|state
+ 17. Registers Removed During Synthesis
+ 18. General Register Statistics
+ 19. Inverted Register Statistics
+ 20. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 21. Source assignments for memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated
+ 22. Source assignments for memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated
+ 23. Parameter Settings for User Entity Instance: memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component
+ 24. Parameter Settings for User Entity Instance: memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component
+ 25. Parameter Settings for User Entity Instance: video_controller:video_inst
+ 26. Parameter Settings for User Entity Instance: video_controller:video_inst|vga_module:vga_inst
+ 27. altsyncram Parameter Settings by Entity Instance
+ 28. Port Connectivity Checks: "memory_module:mem_inst"
+ 29. Post-Synthesis Netlist Statistics for Top Partition
+ 30. Elapsed Time Per Partition
+ 31. Analysis & Synthesis Messages
+ 32. Analysis & Synthesis Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2025  Altera Corporation. All rights reserved.
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, the Altera Quartus Prime License Agreement,
+the Altera IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Altera and sold by Altera or its authorized distributors.  Please
+refer to the Altera Software License Subscription Agreements 
+on the Quartus Prime software download page.
+
+
+
++-----------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                      ;
++---------------------------------+-------------------------------------------------+
+; Analysis & Synthesis Status     ; Successful - Fri Oct  3 20:33:04 2025           ;
+; Quartus Prime Version           ; 24.1std.0 Build 1077 03/04/2025 SC Lite Edition ;
+; Revision Name                   ; zoom_digital                                    ;
+; Top-level Entity Name           ; main                                            ;
+; Family                          ; Cyclone V                                       ;
+; Logic utilization (in ALMs)     ; N/A                                             ;
+; Total registers                 ; 302                                             ;
+; Total pins                      ; 34                                              ;
+; Total virtual pins              ; 0                                               ;
+; Total block memory bits         ; 3,072,000                                       ;
+; Total DSP Blocks                ; 1                                               ;
+; Total HSSI RX PCSs              ; 0                                               ;
+; Total HSSI PMA RX Deserializers ; 0                                               ;
+; Total HSSI TX PCSs              ; 0                                               ;
+; Total HSSI PMA TX Serializers   ; 0                                               ;
+; Total PLLs                      ; 0                                               ;
+; Total DLLs                      ; 0                                               ;
++---------------------------------+-------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                             ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                          ; Setting            ; Default Value      ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                          ; 5CSEMA5F31C6       ;                    ;
+; Top-level entity name                                                           ; main               ; zoom_digital       ;
+; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
+; Use smart compilation                                                           ; Off                ; Off                ;
+; Enable parallel Assembler and Timing Analyzer during compilation                ; On                 ; On                 ;
+; Enable compact report table                                                     ; Off                ; Off                ;
+; Restructure Multiplexers                                                        ; Auto               ; Auto               ;
+; MLAB Add Timing Constraints For Mixed-Port Feed-Through Mode Setting Don't Care ; Off                ; Off                ;
+; Create Debugging Nodes for IP Cores                                             ; Off                ; Off                ;
+; Preserve fewer node names                                                       ; On                 ; On                 ;
+; Intel FPGA IP Evaluation Mode                                                   ; Enable             ; Enable             ;
+; Verilog Version                                                                 ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                                    ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                        ; Auto               ; Auto               ;
+; Safe State Machine                                                              ; Off                ; Off                ;
+; Extract Verilog State Machines                                                  ; On                 ; On                 ;
+; Extract VHDL State Machines                                                     ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                               ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                      ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                                  ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                         ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                       ; On                 ; On                 ;
+; Parallel Synthesis                                                              ; On                 ; On                 ;
+; DSP Block Balancing                                                             ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                              ; On                 ; On                 ;
+; Power-Up Don't Care                                                             ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                                    ; Off                ; Off                ;
+; Remove Duplicate Registers                                                      ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                            ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                          ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                           ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                       ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                            ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                             ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                                  ; Off                ; Off                ;
+; Optimization Technique                                                          ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                              ; 70                 ; 70                 ;
+; Auto Carry Chains                                                               ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                            ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                           ; Off                ; Off                ;
+; Auto ROM Replacement                                                            ; On                 ; On                 ;
+; Auto RAM Replacement                                                            ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                      ; On                 ; On                 ;
+; Auto Shift Register Replacement                                                 ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                                 ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                                   ; On                 ; On                 ;
+; Strict RAM Replacement                                                          ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                               ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                           ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                                   ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                             ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                               ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                         ; On                 ; On                 ;
+; Report Parameter Settings                                                       ; On                 ; On                 ;
+; Report Source Assignments                                                       ; On                 ; On                 ;
+; Report Connectivity Checks                                                      ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                              ; Off                ; Off                ;
+; Synchronization Register Chain Length                                           ; 3                  ; 3                  ;
+; Power Optimization During Synthesis                                             ; Normal compilation ; Normal compilation ;
+; HDL message level                                                               ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                                 ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                        ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                              ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                       ; 100                ; 100                ;
+; Clock MUX Protection                                                            ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                     ; Off                ; Off                ;
+; Block Design Naming                                                             ; Auto               ; Auto               ;
+; SDC constraint protection                                                       ; Off                ; Off                ;
+; Synthesis Effort                                                                ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal                    ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                            ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                              ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                     ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                          ; On                 ; On                 ;
+; Automatic Parallel Synthesis                                                    ; On                 ; On                 ;
+; Partial Reconfiguration Bitstream ID                                            ; Off                ; Off                ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 4           ;
+; Maximum allowed            ; 4           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 4           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
+;     Processor 3            ;   0.0%      ;
+;     Processor 4            ;   0.0%      ;
++----------------------------+-------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                                                       ;
++----------------------------------+-----------------+----------------------------------------+----------------------------------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                              ; File Name with Absolute Path                                                                                         ; Library ;
++----------------------------------+-----------------+----------------------------------------+----------------------------------------------------------------------------------------------------------------------+---------+
+; original.v                       ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/original.v                 ;         ;
+; zoom_out_decimation.v            ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_decimation.v      ;         ;
+; zoom_out_block_average.v         ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v   ;         ;
+; zoom_in_replication.v            ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_replication.v      ;         ;
+; zoom_in_nearest_neighbor.v       ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_nearest_neighbor.v ;         ;
+; main.v                           ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/main.v                     ;         ;
+; clock_divider.v                  ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/clock_divider.v            ;         ;
+; sync_reset_button.v              ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/sync_reset_button.v        ;         ;
+; control_unit.v                   ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/control_unit.v             ;         ;
+; processing_unit.v                ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/processing_unit.v          ;         ;
+; video_controller.v               ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/video_controller.v         ;         ;
+; vga_module.v                     ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/vga_module.v               ;         ;
+; memory_module.v                  ; yes             ; User Verilog HDL File                  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/memory_module.v            ;         ;
+; rom.v                            ; yes             ; User Wizard-Generated File             ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/rom.v                      ;         ;
+; altsyncram.tdf                   ; yes             ; Megafunction                           ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altsyncram.tdf                                             ;         ;
+; stratix_ram_block.inc            ; yes             ; Megafunction                           ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/stratix_ram_block.inc                                      ;         ;
+; lpm_mux.inc                      ; yes             ; Megafunction                           ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/lpm_mux.inc                                                ;         ;
+; lpm_decode.inc                   ; yes             ; Megafunction                           ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/lpm_decode.inc                                             ;         ;
+; aglobal241.inc                   ; yes             ; Megafunction                           ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/aglobal241.inc                                             ;         ;
+; a_rdenreg.inc                    ; yes             ; Megafunction                           ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/a_rdenreg.inc                                              ;         ;
+; altrom.inc                       ; yes             ; Megafunction                           ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altrom.inc                                                 ;         ;
+; altram.inc                       ; yes             ; Megafunction                           ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altram.inc                                                 ;         ;
+; altdpram.inc                     ; yes             ; Megafunction                           ; c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altdpram.inc                                               ;         ;
+; db/altsyncram_4bh1.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/altsyncram_4bh1.tdf     ;         ;
+; ../Images_processing/tree.mif    ; yes             ; Auto-Found Memory Initialization File  ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Images_processing/tree.mif         ;         ;
+; db/decode_g2a.tdf                ; yes             ; Auto-Generated Megafunction            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/decode_g2a.tdf          ;         ;
+; db/mux_7hb.tdf                   ; yes             ; Auto-Generated Megafunction            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/mux_7hb.tdf             ;         ;
+; ram.v                            ; yes             ; Auto-Found Wizard-Generated File       ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/ram.v                      ;         ;
+; db/altsyncram_3rl1.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/altsyncram_3rl1.tdf     ;         ;
+; db/decode_3na.tdf                ; yes             ; Auto-Generated Megafunction            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/decode_3na.tdf          ;         ;
+; db/decode_s2a.tdf                ; yes             ; Auto-Generated Megafunction            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/decode_s2a.tdf          ;         ;
+; db/mux_jhb.tdf                   ; yes             ; Auto-Generated Megafunction            ; C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/mux_jhb.tdf             ;         ;
++----------------------------------+-----------------+----------------------------------------+----------------------------------------------------------------------------------------------------------------------+---------+
+
+
++------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                                              ;
++---------------------------------------------+--------------------------------------------+
+; Resource                                    ; Usage                                      ;
++---------------------------------------------+--------------------------------------------+
+; Estimate of Logic utilization (ALMs needed) ; 647                                        ;
+;                                             ;                                            ;
+; Combinational ALUT usage for logic          ; 892                                        ;
+;     -- 7 input functions                    ; 8                                          ;
+;     -- 6 input functions                    ; 381                                        ;
+;     -- 5 input functions                    ; 69                                         ;
+;     -- 4 input functions                    ; 48                                         ;
+;     -- <=3 input functions                  ; 386                                        ;
+;                                             ;                                            ;
+; Dedicated logic registers                   ; 302                                        ;
+;                                             ;                                            ;
+; I/O pins                                    ; 34                                         ;
+; Total MLAB memory bits                      ; 0                                          ;
+; Total block memory bits                     ; 3072000                                    ;
+;                                             ;                                            ;
+; Total DSP Blocks                            ; 1                                          ;
+;                                             ;                                            ;
+; Maximum fan-out node                        ; clock_divider:clock_divider_inst|clock_out ;
+; Maximum fan-out                             ; 687                                        ;
+; Total fan-out                               ; 11198                                      ;
+; Average fan-out                             ; 6.80                                       ;
++---------------------------------------------+--------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                                ;
++-----------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+---------------------------------------------------------------------------------------------------------------------------------+--------------------------+--------------+
+; Compilation Hierarchy Node                    ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                             ; Entity Name              ; Library Name ;
++-----------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+---------------------------------------------------------------------------------------------------------------------------------+--------------------------+--------------+
+; |main                                         ; 892 (78)            ; 302 (0)                   ; 3072000           ; 1          ; 34   ; 0            ; |main                                                                                                                           ; main                     ; work         ;
+;    |clock_divider:clock_divider_inst|         ; 1 (1)               ; 1 (1)                     ; 0                 ; 0          ; 0    ; 0            ; |main|clock_divider:clock_divider_inst                                                                                          ; clock_divider            ; work         ;
+;    |control_unit:control_unit_inst|           ; 15 (15)             ; 9 (9)                     ; 0                 ; 0          ; 0    ; 0            ; |main|control_unit:control_unit_inst                                                                                            ; control_unit             ; work         ;
+;    |memory_module:mem_inst|                   ; 142 (0)             ; 20 (0)                    ; 3072000           ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst                                                                                                    ; memory_module            ; work         ;
+;       |ram:inst_ram|                          ; 100 (0)             ; 12 (0)                    ; 2457600           ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|ram:inst_ram                                                                                       ; ram                      ; work         ;
+;          |altsyncram:altsyncram_component|    ; 100 (0)             ; 12 (0)                    ; 2457600           ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component                                                       ; altsyncram               ; work         ;
+;             |altsyncram_3rl1:auto_generated|  ; 100 (0)             ; 12 (12)                   ; 2457600           ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated                        ; altsyncram_3rl1          ; work         ;
+;                |decode_3na:decode3|           ; 45 (45)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|decode_3na:decode3     ; decode_3na               ; work         ;
+;                |decode_s2a:rden_decode|       ; 38 (38)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|decode_s2a:rden_decode ; decode_s2a               ; work         ;
+;                |mux_jhb:mux2|                 ; 17 (17)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|mux_jhb:mux2           ; mux_jhb                  ; work         ;
+;       |rom:inst_rom|                          ; 42 (0)              ; 8 (0)                     ; 614400            ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|rom:inst_rom                                                                                       ; rom                      ; work         ;
+;          |altsyncram:altsyncram_component|    ; 42 (0)              ; 8 (0)                     ; 614400            ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component                                                       ; altsyncram               ; work         ;
+;             |altsyncram_4bh1:auto_generated|  ; 42 (0)              ; 8 (8)                     ; 614400            ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated                        ; altsyncram_4bh1          ; work         ;
+;                |decode_g2a:rden_decode|       ; 10 (10)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated|decode_g2a:rden_decode ; decode_g2a               ; work         ;
+;                |mux_7hb:mux2|                 ; 32 (32)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |main|memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated|mux_7hb:mux2           ; mux_7hb                  ; work         ;
+;    |processing_unit:processing_unit_inst|     ; 436 (63)            ; 197 (0)                   ; 0                 ; 0          ; 0    ; 0            ; |main|processing_unit:processing_unit_inst                                                                                      ; processing_unit          ; work         ;
+;       |original:original_inst|                ; 27 (27)             ; 22 (22)                   ; 0                 ; 0          ; 0    ; 0            ; |main|processing_unit:processing_unit_inst|original:original_inst                                                               ; original                 ; work         ;
+;       |zoom_in_nearest_neighbor:zi_nn_inst|   ; 75 (75)             ; 41 (41)                   ; 0                 ; 0          ; 0    ; 0            ; |main|processing_unit:processing_unit_inst|zoom_in_nearest_neighbor:zi_nn_inst                                                  ; zoom_in_nearest_neighbor ; work         ;
+;       |zoom_in_replication:zi_rep_inst|       ; 95 (95)             ; 41 (41)                   ; 0                 ; 0          ; 0    ; 0            ; |main|processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst                                                      ; zoom_in_replication      ; work         ;
+;       |zoom_out_block_average:zo_ba_inst|     ; 105 (105)           ; 64 (64)                   ; 0                 ; 0          ; 0    ; 0            ; |main|processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst                                                    ; zoom_out_block_average   ; work         ;
+;       |zoom_out_decimation:zo_dec_inst|       ; 71 (71)             ; 29 (29)                   ; 0                 ; 0          ; 0    ; 0            ; |main|processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst                                                      ; zoom_out_decimation      ; work         ;
+;    |sync_reset_button:sync_reset_button_inst| ; 1 (1)               ; 1 (1)                     ; 0                 ; 0          ; 0    ; 0            ; |main|sync_reset_button:sync_reset_button_inst                                                                                  ; sync_reset_button        ; work         ;
+;    |video_controller:video_inst|              ; 219 (66)            ; 74 (19)                   ; 0                 ; 1          ; 0    ; 0            ; |main|video_controller:video_inst                                                                                               ; video_controller         ; work         ;
+;       |vga_module:vga_inst|                   ; 153 (153)           ; 55 (55)                   ; 0                 ; 0          ; 0    ; 0            ; |main|video_controller:video_inst|vga_module:vga_inst                                                                           ; vga_module               ; work         ;
++-----------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+---------------------------------------------------------------------------------------------------------------------------------+--------------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis RAM Summary                                                                                                                                                                                                         ;
++---------------------------------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+---------+-------------------------------+
+; Name                                                                                                          ; Type ; Mode        ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size    ; MIF                           ;
++---------------------------------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+---------+-------------------------------+
+; memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|ALTSYNCRAM ; AUTO ; Single Port ; 307200       ; 8            ; --           ; --           ; 2457600 ; None                          ;
+; memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated|ALTSYNCRAM ; AUTO ; ROM         ; 76800        ; 8            ; --           ; --           ; 614400  ; ../Images_processing/tree.mif ;
++---------------------------------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+---------+-------------------------------+
+
+
++-----------------------------------------------+
+; Analysis & Synthesis DSP Block Usage Summary  ;
++---------------------------------+-------------+
+; Statistic                       ; Number Used ;
++---------------------------------+-------------+
+; Independent 27x27               ; 1           ;
+; Total number of DSP blocks      ; 1           ;
+;                                 ;             ;
+; Fixed Point Unsigned Multiplier ; 1           ;
++---------------------------------+-------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis IP Cores Summary                                                                                       ;
++--------+--------------+---------+--------------+--------------+-------------------------------------------+-----------------+
+; Vendor ; IP Core Name ; Version ; Release Date ; License Type ; Entity Instance                           ; IP Include File ;
++--------+--------------+---------+--------------+--------------+-------------------------------------------+-----------------+
+; Altera ; ROM: 1-PORT  ; 23.1    ; N/A          ; N/A          ; |main|memory_module:mem_inst|rom:inst_rom ; rom.v           ;
++--------+--------------+---------+--------------+--------------+-------------------------------------------+-----------------+
+
+
+Encoding Type:  One-Hot
++------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |main|video_controller:video_inst|vga_module:vga_inst|v_state                                          ;
++------------------------+----------------------+-----------------------+-----------------------+------------------------+
+; Name                   ; v_state.V_BACK_STATE ; v_state.V_PULSE_STATE ; v_state.V_FRONT_STATE ; v_state.V_ACTIVE_STATE ;
++------------------------+----------------------+-----------------------+-----------------------+------------------------+
+; v_state.V_ACTIVE_STATE ; 0                    ; 0                     ; 0                     ; 0                      ;
+; v_state.V_FRONT_STATE  ; 0                    ; 0                     ; 1                     ; 1                      ;
+; v_state.V_PULSE_STATE  ; 0                    ; 1                     ; 0                     ; 1                      ;
+; v_state.V_BACK_STATE   ; 1                    ; 0                     ; 0                     ; 1                      ;
++------------------------+----------------------+-----------------------+-----------------------+------------------------+
+
+
+Encoding Type:  One-Hot
++------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |main|video_controller:video_inst|vga_module:vga_inst|h_state                                          ;
++------------------------+----------------------+-----------------------+-----------------------+------------------------+
+; Name                   ; h_state.H_BACK_STATE ; h_state.H_PULSE_STATE ; h_state.H_FRONT_STATE ; h_state.H_ACTIVE_STATE ;
++------------------------+----------------------+-----------------------+-----------------------+------------------------+
+; h_state.H_ACTIVE_STATE ; 0                    ; 0                     ; 0                     ; 0                      ;
+; h_state.H_FRONT_STATE  ; 0                    ; 0                     ; 1                     ; 1                      ;
+; h_state.H_PULSE_STATE  ; 0                    ; 1                     ; 0                     ; 1                      ;
+; h_state.H_BACK_STATE   ; 1                    ; 0                     ; 0                     ; 1                      ;
++------------------------+----------------------+-----------------------+-----------------------+------------------------+
+
+
+Encoding Type:  One-Hot
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |main|processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|state                                                                            ;
++------------------------+--------------+------------------------+-----------------------+-----------------------+-----------------------+-----------------------+--------------+
+; Name                   ; state.S_DONE ; state.S_CALC_AND_WRITE ; state.S_READ_PIXEL_11 ; state.S_READ_PIXEL_10 ; state.S_READ_PIXEL_01 ; state.S_READ_PIXEL_00 ; state.S_IDLE ;
++------------------------+--------------+------------------------+-----------------------+-----------------------+-----------------------+-----------------------+--------------+
+; state.S_IDLE           ; 0            ; 0                      ; 0                     ; 0                     ; 0                     ; 0                     ; 0            ;
+; state.S_READ_PIXEL_00  ; 0            ; 0                      ; 0                     ; 0                     ; 0                     ; 1                     ; 1            ;
+; state.S_READ_PIXEL_01  ; 0            ; 0                      ; 0                     ; 0                     ; 1                     ; 0                     ; 1            ;
+; state.S_READ_PIXEL_10  ; 0            ; 0                      ; 0                     ; 1                     ; 0                     ; 0                     ; 1            ;
+; state.S_READ_PIXEL_11  ; 0            ; 0                      ; 1                     ; 0                     ; 0                     ; 0                     ; 1            ;
+; state.S_CALC_AND_WRITE ; 0            ; 1                      ; 0                     ; 0                     ; 0                     ; 0                     ; 1            ;
+; state.S_DONE           ; 1            ; 0                      ; 0                     ; 0                     ; 0                     ; 0                     ; 1            ;
++------------------------+--------------+------------------------+-----------------------+-----------------------+-----------------------+-----------------------+--------------+
+
+
+Encoding Type:  One-Hot
++------------------------------------------------------------------------------------------------------+
+; State Machine - |main|processing_unit:processing_unit_inst|zoom_in_nearest_neighbor:zi_nn_inst|state ;
++-------------------+--------------+-------------------+------------------+----------------------------+
+; Name              ; state.S_DONE ; state.S_WRITE_RAM ; state.S_READ_ROM ; state.S_IDLE               ;
++-------------------+--------------+-------------------+------------------+----------------------------+
+; state.S_IDLE      ; 0            ; 0                 ; 0                ; 0                          ;
+; state.S_READ_ROM  ; 0            ; 0                 ; 1                ; 1                          ;
+; state.S_WRITE_RAM ; 0            ; 1                 ; 0                ; 1                          ;
+; state.S_DONE      ; 1            ; 0                 ; 0                ; 1                          ;
++-------------------+--------------+-------------------+------------------+----------------------------+
+
+
+Encoding Type:  One-Hot
++--------------------------------------------------------------------------------------------------+
+; State Machine - |main|processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|state ;
++-----------------+--------------+--------------+--------------------------------------------------+
+; Name            ; state.S_IDLE ; state.S_DONE ; state.S_PROCESS                                  ;
++-----------------+--------------+--------------+--------------------------------------------------+
+; state.S_IDLE    ; 0            ; 0            ; 0                                                ;
+; state.S_PROCESS ; 1            ; 0            ; 1                                                ;
+; state.S_DONE    ; 1            ; 1            ; 0                                                ;
++-----------------+--------------+--------------+--------------------------------------------------+
+
+
+Encoding Type:  One-Hot
++--------------------------------------------------------------------------------------------------+
+; State Machine - |main|processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst|state ;
++-------------------+--------------+-------------------+------------------+------------------------+
+; Name              ; state.S_DONE ; state.S_WRITE_RAM ; state.S_READ_ROM ; state.S_IDLE           ;
++-------------------+--------------+-------------------+------------------+------------------------+
+; state.S_IDLE      ; 0            ; 0                 ; 0                ; 0                      ;
+; state.S_READ_ROM  ; 0            ; 0                 ; 1                ; 1                      ;
+; state.S_WRITE_RAM ; 0            ; 1                 ; 0                ; 1                      ;
+; state.S_DONE      ; 1            ; 0                 ; 0                ; 1                      ;
++-------------------+--------------+-------------------+------------------+------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                                                                           ;
++----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
+; Register name                                                                    ; Reason for Removal                                                                        ;
++----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_x[8]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_x[7] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_x[7]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_x[6] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_x[6]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_x[5] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_x[5]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_x[4] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_x[4]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_x[3] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_x[3]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_x[2] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_x[2]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_x[1] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_x[1]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_x[0] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_y[7]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_y[6] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_y[6]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_y[5] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_y[5]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_y[4] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_y[4]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_y[3] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_y[3]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_y[2] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_y[2]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_y[1] ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_y[1]    ; Merged with processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_y[0] ;
+; video_controller:video_inst|vga_module:vga_inst|v_state~5                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|v_state~6                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|v_state~7                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|v_state~8                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|v_state~9                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|v_state~10                       ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|v_state~11                       ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|v_state~12                       ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|h_state~5                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|h_state~6                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|h_state~7                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|h_state~8                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|h_state~9                        ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|h_state~10                       ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|h_state~11                       ; Lost fanout                                                                               ;
+; video_controller:video_inst|vga_module:vga_inst|h_state~12                       ; Lost fanout                                                                               ;
+; processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|state~4   ; Lost fanout                                                                               ;
+; processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|state~5   ; Lost fanout                                                                               ;
+; processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|state~6   ; Lost fanout                                                                               ;
+; processing_unit:processing_unit_inst|zoom_in_nearest_neighbor:zi_nn_inst|state~4 ; Lost fanout                                                                               ;
+; processing_unit:processing_unit_inst|zoom_in_nearest_neighbor:zi_nn_inst|state~5 ; Lost fanout                                                                               ;
+; processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst|state~4     ; Lost fanout                                                                               ;
+; processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst|state~5     ; Lost fanout                                                                               ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_x[0]    ; Stuck at GND due to stuck port data_in                                                    ;
+; processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|rom_y[0]    ; Stuck at GND due to stuck port data_in                                                    ;
+; Total Number of Removed Registers = 40                                           ;                                                                                           ;
++----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 302   ;
+; Number of registers using Synchronous Clear  ; 190   ;
+; Number of registers using Synchronous Load   ; 0     ;
+; Number of registers using Asynchronous Clear ; 45    ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 139   ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++--------------------------------------------------+
+; Inverted Register Statistics                     ;
++----------------------------------------+---------+
+; Inverted Register                      ; Fan out ;
++----------------------------------------+---------+
+; control_unit:control_unit_inst|state   ; 47      ;
+; Total number of inverted registers = 1 ;         ;
++----------------------------------------+---------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                                                                           ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                                                                 ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |main|processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|p00[5]                                                        ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |main|processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|p01[3]                                                        ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |main|processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|p10[1]                                                        ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |main|processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|p11[5]                                                        ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |main|processing_unit:processing_unit_inst|zoom_in_nearest_neighbor:zi_nn_inst|pixel_buffer[0]                                             ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |main|processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst|pixel_buffer[4]                                                 ;
+; 3:1                ; 19 bits   ; 38 LEs        ; 0 LEs                ; 38 LEs                 ; Yes        ; |main|video_controller:video_inst|ram_addr_out[16]                                                                                         ;
+; 3:1                ; 19 bits   ; 38 LEs        ; 0 LEs                ; 38 LEs                 ; Yes        ; |main|processing_unit:processing_unit_inst|original:original_inst|addr_counter[5]                                                          ;
+; 10:1               ; 10 bits   ; 60 LEs        ; 0 LEs                ; 60 LEs                 ; Yes        ; |main|video_controller:video_inst|vga_module:vga_inst|v_counter[3]                                                                         ;
+; 10:1               ; 10 bits   ; 60 LEs        ; 0 LEs                ; 60 LEs                 ; Yes        ; |main|video_controller:video_inst|vga_module:vga_inst|h_counter[1]                                                                         ;
+; 3:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|ram_y                                                         ;
+; 3:1                ; 9 bits    ; 18 LEs        ; 18 LEs               ; 0 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_in_nearest_neighbor:zi_nn_inst|ram_y                                                       ;
+; 3:1                ; 9 bits    ; 18 LEs        ; 18 LEs               ; 0 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst|rom_x                                                           ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst|rom_y                                                           ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_x                                                           ;
+; 3:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|ram_y                                                           ;
+; 5:1                ; 8 bits    ; 24 LEs        ; 24 LEs               ; 0 LEs                  ; No         ; |main|memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|mux_jhb:mux2|l3_w0_n4_mux_dataout ;
+; 6:1                ; 6 bits    ; 24 LEs        ; 24 LEs               ; 0 LEs                  ; No         ; |main|final_ram_address[6]                                                                                                                 ;
+; 6:1                ; 5 bits    ; 20 LEs        ; 20 LEs               ; 0 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|rom_addr_out[5]                                                                                 ;
+; 6:1                ; 4 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; No         ; |main|final_ram_address[16]                                                                                                                ;
+; 7:1                ; 8 bits    ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|ram_data_out[3]                                                                                 ;
+; 9:1                ; 8 bits    ; 48 LEs        ; 48 LEs               ; 0 LEs                  ; No         ; |main|memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated|mux_7hb:mux2|l4_w0_n0_mux_dataout ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst|Selector28                                                    ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_in_nearest_neighbor:zi_nn_inst|Selector21                                                  ;
+; 6:1                ; 3 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst|Selector34                                                      ;
+; 8:1                ; 8 bits    ; 40 LEs        ; 40 LEs               ; 0 LEs                  ; No         ; |main|final_ram_address[10]                                                                                                                ;
+; 7:1                ; 2 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst|Selector20                                                      ;
+; 7:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |main|processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst|Selector21                                                      ;
+; 10:1               ; 10 bits   ; 60 LEs        ; 50 LEs               ; 10 LEs                 ; No         ; |main|processing_unit:processing_unit_inst|rom_addr_out[12]                                                                                ;
+; 36:1               ; 8 bits    ; 192 LEs       ; 192 LEs              ; 0 LEs                  ; No         ; |main|video_controller:video_inst|vga_module:vga_inst|red_reg                                                                              ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Source assignments for memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated ;
++---------------------------------+--------------------+------+-------------------------------------------------------------+
+; Assignment                      ; Value              ; From ; To                                                          ;
++---------------------------------+--------------------+------+-------------------------------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                                           ;
++---------------------------------+--------------------+------+-------------------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Source assignments for memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated ;
++---------------------------------+--------------------+------+-------------------------------------------------------------+
+; Assignment                      ; Value              ; From ; To                                                          ;
++---------------------------------+--------------------+------+-------------------------------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                                           ;
++---------------------------------+--------------------+------+-------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component ;
++------------------------------------+-------------------------------+---------------------------------------------+
+; Parameter Name                     ; Value                         ; Type                                        ;
++------------------------------------+-------------------------------+---------------------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                             ; Untyped                                     ;
+; AUTO_CARRY_CHAINS                  ; ON                            ; AUTO_CARRY                                  ;
+; IGNORE_CARRY_BUFFERS               ; OFF                           ; IGNORE_CARRY                                ;
+; AUTO_CASCADE_CHAINS                ; ON                            ; AUTO_CASCADE                                ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                           ; IGNORE_CASCADE                              ;
+; WIDTH_BYTEENA                      ; 1                             ; Untyped                                     ;
+; OPERATION_MODE                     ; ROM                           ; Untyped                                     ;
+; WIDTH_A                            ; 8                             ; Signed Integer                              ;
+; WIDTHAD_A                          ; 17                            ; Signed Integer                              ;
+; NUMWORDS_A                         ; 76800                         ; Signed Integer                              ;
+; OUTDATA_REG_A                      ; CLOCK0                        ; Untyped                                     ;
+; ADDRESS_ACLR_A                     ; NONE                          ; Untyped                                     ;
+; OUTDATA_ACLR_A                     ; NONE                          ; Untyped                                     ;
+; WRCONTROL_ACLR_A                   ; NONE                          ; Untyped                                     ;
+; INDATA_ACLR_A                      ; NONE                          ; Untyped                                     ;
+; BYTEENA_ACLR_A                     ; NONE                          ; Untyped                                     ;
+; WIDTH_B                            ; 1                             ; Untyped                                     ;
+; WIDTHAD_B                          ; 1                             ; Untyped                                     ;
+; NUMWORDS_B                         ; 1                             ; Untyped                                     ;
+; INDATA_REG_B                       ; CLOCK1                        ; Untyped                                     ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1                        ; Untyped                                     ;
+; RDCONTROL_REG_B                    ; CLOCK1                        ; Untyped                                     ;
+; ADDRESS_REG_B                      ; CLOCK1                        ; Untyped                                     ;
+; OUTDATA_REG_B                      ; UNREGISTERED                  ; Untyped                                     ;
+; BYTEENA_REG_B                      ; CLOCK1                        ; Untyped                                     ;
+; INDATA_ACLR_B                      ; NONE                          ; Untyped                                     ;
+; WRCONTROL_ACLR_B                   ; NONE                          ; Untyped                                     ;
+; ADDRESS_ACLR_B                     ; NONE                          ; Untyped                                     ;
+; OUTDATA_ACLR_B                     ; NONE                          ; Untyped                                     ;
+; RDCONTROL_ACLR_B                   ; NONE                          ; Untyped                                     ;
+; BYTEENA_ACLR_B                     ; NONE                          ; Untyped                                     ;
+; WIDTH_BYTEENA_A                    ; 1                             ; Signed Integer                              ;
+; WIDTH_BYTEENA_B                    ; 1                             ; Untyped                                     ;
+; RAM_BLOCK_TYPE                     ; AUTO                          ; Untyped                                     ;
+; BYTE_SIZE                          ; 8                             ; Untyped                                     ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                     ; Untyped                                     ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ          ; Untyped                                     ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ          ; Untyped                                     ;
+; INIT_FILE                          ; ../Images_processing/tree.mif ; Untyped                                     ;
+; INIT_FILE_LAYOUT                   ; PORT_A                        ; Untyped                                     ;
+; MAXIMUM_DEPTH                      ; 0                             ; Untyped                                     ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS                        ; Untyped                                     ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL                        ; Untyped                                     ;
+; CLOCK_ENABLE_OUTPUT_A              ; BYPASS                        ; Untyped                                     ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL                        ; Untyped                                     ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN               ; Untyped                                     ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN               ; Untyped                                     ;
+; ENABLE_ECC                         ; FALSE                         ; Untyped                                     ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                         ; Untyped                                     ;
+; WIDTH_ECCSTATUS                    ; 3                             ; Untyped                                     ;
+; DEVICE_FAMILY                      ; Cyclone V                     ; Untyped                                     ;
+; CBXI_PARAMETER                     ; altsyncram_4bh1               ; Untyped                                     ;
++------------------------------------+-------------------------------+---------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component ;
++------------------------------------+----------------------+------------------------------------------------------+
+; Parameter Name                     ; Value                ; Type                                                 ;
++------------------------------------+----------------------+------------------------------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                                              ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                                           ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                                         ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                                         ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                                       ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                                              ;
+; OPERATION_MODE                     ; SINGLE_PORT          ; Untyped                                              ;
+; WIDTH_A                            ; 8                    ; Signed Integer                                       ;
+; WIDTHAD_A                          ; 19                   ; Signed Integer                                       ;
+; NUMWORDS_A                         ; 307200               ; Signed Integer                                       ;
+; OUTDATA_REG_A                      ; CLOCK0               ; Untyped                                              ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                                              ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                                              ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                                              ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                                              ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                                              ;
+; WIDTH_B                            ; 1                    ; Untyped                                              ;
+; WIDTHAD_B                          ; 1                    ; Untyped                                              ;
+; NUMWORDS_B                         ; 1                    ; Untyped                                              ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                                              ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                                              ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                                              ;
+; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                                              ;
+; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                                              ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                                              ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                                              ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                                              ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                                              ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                                              ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                                              ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                                              ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                                       ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                                              ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                                              ;
+; BYTE_SIZE                          ; 8                    ; Untyped                                              ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                                              ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                                              ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                                              ;
+; INIT_FILE                          ; UNUSED               ; Untyped                                              ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                                              ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                                              ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                                              ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                                              ;
+; CLOCK_ENABLE_OUTPUT_A              ; BYPASS               ; Untyped                                              ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                                              ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                                              ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                                              ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                                              ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                                              ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                                              ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                                              ;
+; CBXI_PARAMETER                     ; altsyncram_3rl1      ; Untyped                                              ;
++------------------------------------+----------------------+------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: video_controller:video_inst ;
++------------------+----------+--------------------------------------------+
+; Parameter Name   ; Value    ; Type                                       ;
++------------------+----------+--------------------------------------------+
+; BACKGROUND_COLOR ; 00100100 ; Unsigned Binary                            ;
++------------------+----------+--------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: video_controller:video_inst|vga_module:vga_inst ;
++----------------+------------+----------------------------------------------------------------+
+; Parameter Name ; Value      ; Type                                                           ;
++----------------+------------+----------------------------------------------------------------+
+; H_ACTIVE       ; 1001111111 ; Unsigned Binary                                                ;
+; H_FRONT        ; 0000001111 ; Unsigned Binary                                                ;
+; H_PULSE        ; 0001011111 ; Unsigned Binary                                                ;
+; H_BACK         ; 0000101111 ; Unsigned Binary                                                ;
+; V_ACTIVE       ; 0111011111 ; Unsigned Binary                                                ;
+; V_FRONT        ; 0000001001 ; Unsigned Binary                                                ;
+; V_PULSE        ; 0000000001 ; Unsigned Binary                                                ;
+; V_BACK         ; 0000100000 ; Unsigned Binary                                                ;
+; LOW            ; 0          ; Unsigned Binary                                                ;
+; HIGH           ; 1          ; Unsigned Binary                                                ;
+; H_ACTIVE_STATE ; 00000000   ; Unsigned Binary                                                ;
+; H_FRONT_STATE  ; 00000001   ; Unsigned Binary                                                ;
+; H_PULSE_STATE  ; 00000010   ; Unsigned Binary                                                ;
+; H_BACK_STATE   ; 00000011   ; Unsigned Binary                                                ;
+; V_ACTIVE_STATE ; 00000000   ; Unsigned Binary                                                ;
+; V_FRONT_STATE  ; 00000001   ; Unsigned Binary                                                ;
+; V_PULSE_STATE  ; 00000010   ; Unsigned Binary                                                ;
+; V_BACK_STATE   ; 00000011   ; Unsigned Binary                                                ;
++----------------+------------+----------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------------+
+; altsyncram Parameter Settings by Entity Instance                                                                ;
++-------------------------------------------+---------------------------------------------------------------------+
+; Name                                      ; Value                                                               ;
++-------------------------------------------+---------------------------------------------------------------------+
+; Number of entity instances                ; 2                                                                   ;
+; Entity Instance                           ; memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component ;
+;     -- OPERATION_MODE                     ; ROM                                                                 ;
+;     -- WIDTH_A                            ; 8                                                                   ;
+;     -- NUMWORDS_A                         ; 76800                                                               ;
+;     -- OUTDATA_REG_A                      ; CLOCK0                                                              ;
+;     -- WIDTH_B                            ; 1                                                                   ;
+;     -- NUMWORDS_B                         ; 1                                                                   ;
+;     -- ADDRESS_REG_B                      ; CLOCK1                                                              ;
+;     -- OUTDATA_REG_B                      ; UNREGISTERED                                                        ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                                                ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                                           ;
+; Entity Instance                           ; memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component ;
+;     -- OPERATION_MODE                     ; SINGLE_PORT                                                         ;
+;     -- WIDTH_A                            ; 8                                                                   ;
+;     -- NUMWORDS_A                         ; 307200                                                              ;
+;     -- OUTDATA_REG_A                      ; CLOCK0                                                              ;
+;     -- WIDTH_B                            ; 1                                                                   ;
+;     -- NUMWORDS_B                         ; 1                                                                   ;
+;     -- ADDRESS_REG_B                      ; CLOCK1                                                              ;
+;     -- OUTDATA_REG_B                      ; UNREGISTERED                                                        ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                                                ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                                           ;
++-------------------------------------------+---------------------------------------------------------------------+
+
+
++----------------------------------------------------+
+; Port Connectivity Checks: "memory_module:mem_inst" ;
++------+--------+----------+-------------------------+
+; Port ; Type   ; Severity ; Details                 ;
++------+--------+----------+-------------------------+
+; done ; Output ; Info     ; Explicitly unconnected  ;
++------+--------+----------+-------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; arriav_ff             ; 302                         ;
+;     CLR               ; 22                          ;
+;     ENA               ; 58                          ;
+;     ENA CLR           ; 4                           ;
+;     ENA CLR SCLR      ; 19                          ;
+;     ENA SCLR          ; 58                          ;
+;     SCLR              ; 113                         ;
+;     plain             ; 28                          ;
+; arriav_lcell_comb     ; 894                         ;
+;     arith             ; 219                         ;
+;         0 data inputs ; 7                           ;
+;         1 data inputs ; 142                         ;
+;         2 data inputs ; 56                          ;
+;         3 data inputs ; 4                           ;
+;         4 data inputs ; 10                          ;
+;     extend            ; 8                           ;
+;         7 data inputs ; 8                           ;
+;     normal            ; 591                         ;
+;         0 data inputs ; 1                           ;
+;         1 data inputs ; 5                           ;
+;         2 data inputs ; 47                          ;
+;         3 data inputs ; 50                          ;
+;         4 data inputs ; 38                          ;
+;         5 data inputs ; 69                          ;
+;         6 data inputs ; 381                         ;
+;     shared            ; 76                          ;
+;         0 data inputs ; 8                           ;
+;         1 data inputs ; 14                          ;
+;         2 data inputs ; 43                          ;
+;         3 data inputs ; 11                          ;
+; arriav_mac            ; 1                           ;
+; boundary_port         ; 34                          ;
+; stratixv_ram_block    ; 384                         ;
+;                       ;                             ;
+; Max LUT depth         ; 5.80                        ;
+; Average LUT depth     ; 3.20                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:03     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+    Info: Processing started: Fri Oct  3 20:32:48 2025
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off zoom_digital -c zoom_digital
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
+Info (12021): Found 1 design units, including 1 entities, in source file original.v
+    Info (12023): Found entity 1: original File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/original.v Line: 4
+Info (12021): Found 1 design units, including 1 entities, in source file zoom_out_decimation.v
+    Info (12023): Found entity 1: zoom_out_decimation File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_decimation.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file zoom_out_block_average.v
+    Info (12023): Found entity 1: zoom_out_block_average File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file zoom_in_replication.v
+    Info (12023): Found entity 1: zoom_in_replication File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_replication.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file zoom_in_nearest_neighbor.v
+    Info (12023): Found entity 1: zoom_in_nearest_neighbor File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_nearest_neighbor.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file main.v
+    Info (12023): Found entity 1: main File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/main.v Line: 2
+Info (12021): Found 1 design units, including 1 entities, in source file clock_divider.v
+    Info (12023): Found entity 1: clock_divider File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/clock_divider.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file sync_reset_button.v
+    Info (12023): Found entity 1: sync_reset_button File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/sync_reset_button.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file control_unit.v
+    Info (12023): Found entity 1: control_unit File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/control_unit.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file processing_unit.v
+    Info (12023): Found entity 1: processing_unit File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/processing_unit.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file video_controller.v
+    Info (12023): Found entity 1: video_controller File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/video_controller.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file vga_module.v
+    Info (12023): Found entity 1: vga_module File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/vga_module.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file memory_module.v
+    Info (12023): Found entity 1: memory_module File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/memory_module.v Line: 6
+Info (12021): Found 1 design units, including 1 entities, in source file rom.v
+    Info (12023): Found entity 1: rom File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/rom.v Line: 40
+Info (12127): Elaborating entity "main" for the top level hierarchy
+Info (12128): Elaborating entity "clock_divider" for hierarchy "clock_divider:clock_divider_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/main.v Line: 63
+Info (12128): Elaborating entity "sync_reset_button" for hierarchy "sync_reset_button:sync_reset_button_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/main.v Line: 70
+Info (12128): Elaborating entity "control_unit" for hierarchy "control_unit:control_unit_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/main.v Line: 87
+Info (10264): Verilog HDL Case Statement information at control_unit.v(80): all case item expressions in this case statement are onehot File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/control_unit.v Line: 80
+Info (12128): Elaborating entity "processing_unit" for hierarchy "processing_unit:processing_unit_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/main.v Line: 106
+Info (12128): Elaborating entity "original" for hierarchy "processing_unit:processing_unit_inst|original:original_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/processing_unit.v Line: 68
+Warning (10230): Verilog HDL assignment warning at original.v(48): truncated value with size 32 to match size of target (19) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/original.v Line: 48
+Info (12128): Elaborating entity "zoom_in_replication" for hierarchy "processing_unit:processing_unit_inst|zoom_in_replication:zi_rep_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/processing_unit.v Line: 76
+Warning (10230): Verilog HDL assignment warning at zoom_in_replication.v(113): truncated value with size 32 to match size of target (17) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_replication.v Line: 113
+Warning (10230): Verilog HDL assignment warning at zoom_in_replication.v(117): truncated value with size 32 to match size of target (19) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_replication.v Line: 117
+Warning (10230): Verilog HDL assignment warning at zoom_in_replication.v(118): truncated value with size 32 to match size of target (19) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_replication.v Line: 118
+Warning (10230): Verilog HDL assignment warning at zoom_in_replication.v(119): truncated value with size 32 to match size of target (19) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_replication.v Line: 119
+Warning (10230): Verilog HDL assignment warning at zoom_in_replication.v(120): truncated value with size 32 to match size of target (19) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_replication.v Line: 120
+Info (12128): Elaborating entity "zoom_out_decimation" for hierarchy "processing_unit:processing_unit_inst|zoom_out_decimation:zo_dec_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/processing_unit.v Line: 83
+Warning (10230): Verilog HDL assignment warning at zoom_out_decimation.v(91): truncated value with size 32 to match size of target (8) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_decimation.v Line: 91
+Warning (10230): Verilog HDL assignment warning at zoom_out_decimation.v(92): truncated value with size 32 to match size of target (7) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_decimation.v Line: 92
+Warning (10230): Verilog HDL assignment warning at zoom_out_decimation.v(95): truncated value with size 32 to match size of target (9) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_decimation.v Line: 95
+Warning (10230): Verilog HDL assignment warning at zoom_out_decimation.v(96): truncated value with size 32 to match size of target (8) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_decimation.v Line: 96
+Warning (10230): Verilog HDL assignment warning at zoom_out_decimation.v(117): truncated value with size 32 to match size of target (17) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_decimation.v Line: 117
+Warning (10230): Verilog HDL assignment warning at zoom_out_decimation.v(118): truncated value with size 32 to match size of target (19) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_decimation.v Line: 118
+Info (12128): Elaborating entity "zoom_in_nearest_neighbor" for hierarchy "processing_unit:processing_unit_inst|zoom_in_nearest_neighbor:zi_nn_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/processing_unit.v Line: 91
+Warning (10230): Verilog HDL assignment warning at zoom_in_nearest_neighbor.v(81): truncated value with size 32 to match size of target (9) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_nearest_neighbor.v Line: 81
+Warning (10230): Verilog HDL assignment warning at zoom_in_nearest_neighbor.v(84): truncated value with size 32 to match size of target (10) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_nearest_neighbor.v Line: 84
+Warning (10230): Verilog HDL assignment warning at zoom_in_nearest_neighbor.v(102): truncated value with size 32 to match size of target (17) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_nearest_neighbor.v Line: 102
+Warning (10230): Verilog HDL assignment warning at zoom_in_nearest_neighbor.v(105): truncated value with size 32 to match size of target (19) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_in_nearest_neighbor.v Line: 105
+Info (12128): Elaborating entity "zoom_out_block_average" for hierarchy "processing_unit:processing_unit_inst|zoom_out_block_average:zo_ba_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/processing_unit.v Line: 98
+Warning (10230): Verilog HDL assignment warning at zoom_out_block_average.v(73): truncated value with size 10 to match size of target (8) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 73
+Warning (10230): Verilog HDL assignment warning at zoom_out_block_average.v(81): truncated value with size 32 to match size of target (7) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 81
+Warning (10230): Verilog HDL assignment warning at zoom_out_block_average.v(84): truncated value with size 32 to match size of target (8) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 84
+Warning (10230): Verilog HDL assignment warning at zoom_out_block_average.v(100): truncated value with size 32 to match size of target (19) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 100
+Warning (10230): Verilog HDL assignment warning at zoom_out_block_average.v(104): truncated value with size 32 to match size of target (17) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 104
+Warning (10230): Verilog HDL assignment warning at zoom_out_block_average.v(105): truncated value with size 32 to match size of target (17) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 105
+Warning (10230): Verilog HDL assignment warning at zoom_out_block_average.v(106): truncated value with size 32 to match size of target (17) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 106
+Warning (10230): Verilog HDL assignment warning at zoom_out_block_average.v(107): truncated value with size 32 to match size of target (17) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 107
+Info (10264): Verilog HDL Case Statement information at zoom_out_block_average.v(103): all case item expressions in this case statement are onehot File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/zoom_out_block_average.v Line: 103
+Info (12128): Elaborating entity "memory_module" for hierarchy "memory_module:mem_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/main.v Line: 127
+Info (12128): Elaborating entity "rom" for hierarchy "memory_module:mem_inst|rom:inst_rom" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/memory_module.v Line: 34
+Info (12128): Elaborating entity "altsyncram" for hierarchy "memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/rom.v Line: 82
+Info (12130): Elaborated megafunction instantiation "memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/rom.v Line: 82
+Info (12133): Instantiated megafunction "memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component" with the following parameter: File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/rom.v Line: 82
+    Info (12134): Parameter "address_aclr_a" = "NONE"
+    Info (12134): Parameter "clock_enable_input_a" = "BYPASS"
+    Info (12134): Parameter "clock_enable_output_a" = "BYPASS"
+    Info (12134): Parameter "init_file" = "../Images_processing/tree.mif"
+    Info (12134): Parameter "intended_device_family" = "Cyclone V"
+    Info (12134): Parameter "lpm_hint" = "ENABLE_RUNTIME_MOD=NO"
+    Info (12134): Parameter "lpm_type" = "altsyncram"
+    Info (12134): Parameter "numwords_a" = "76800"
+    Info (12134): Parameter "operation_mode" = "ROM"
+    Info (12134): Parameter "outdata_aclr_a" = "NONE"
+    Info (12134): Parameter "outdata_reg_a" = "CLOCK0"
+    Info (12134): Parameter "widthad_a" = "17"
+    Info (12134): Parameter "width_a" = "8"
+    Info (12134): Parameter "width_byteena_a" = "1"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_4bh1.tdf
+    Info (12023): Found entity 1: altsyncram_4bh1 File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/altsyncram_4bh1.tdf Line: 32
+Info (12128): Elaborating entity "altsyncram_4bh1" for hierarchy "memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated" File: c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_g2a.tdf
+    Info (12023): Found entity 1: decode_g2a File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/decode_g2a.tdf Line: 23
+Info (12128): Elaborating entity "decode_g2a" for hierarchy "memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated|decode_g2a:rden_decode" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/altsyncram_4bh1.tdf Line: 41
+Info (12021): Found 1 design units, including 1 entities, in source file db/mux_7hb.tdf
+    Info (12023): Found entity 1: mux_7hb File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/mux_7hb.tdf Line: 23
+Info (12128): Elaborating entity "mux_7hb" for hierarchy "memory_module:mem_inst|rom:inst_rom|altsyncram:altsyncram_component|altsyncram_4bh1:auto_generated|mux_7hb:mux2" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/altsyncram_4bh1.tdf Line: 42
+Warning (12125): Using design file ram.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+    Info (12023): Found entity 1: ram File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/ram.v Line: 40
+Info (12128): Elaborating entity "ram" for hierarchy "memory_module:mem_inst|ram:inst_ram" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/memory_module.v Line: 44
+Info (12128): Elaborating entity "altsyncram" for hierarchy "memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/ram.v Line: 86
+Info (12130): Elaborated megafunction instantiation "memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/ram.v Line: 86
+Info (12133): Instantiated megafunction "memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component" with the following parameter: File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/ram.v Line: 86
+    Info (12134): Parameter "clock_enable_input_a" = "BYPASS"
+    Info (12134): Parameter "clock_enable_output_a" = "BYPASS"
+    Info (12134): Parameter "intended_device_family" = "Cyclone V"
+    Info (12134): Parameter "lpm_hint" = "ENABLE_RUNTIME_MOD=NO"
+    Info (12134): Parameter "lpm_type" = "altsyncram"
+    Info (12134): Parameter "numwords_a" = "307200"
+    Info (12134): Parameter "operation_mode" = "SINGLE_PORT"
+    Info (12134): Parameter "outdata_aclr_a" = "NONE"
+    Info (12134): Parameter "outdata_reg_a" = "CLOCK0"
+    Info (12134): Parameter "power_up_uninitialized" = "FALSE"
+    Info (12134): Parameter "read_during_write_mode_port_a" = "NEW_DATA_NO_NBE_READ"
+    Info (12134): Parameter "widthad_a" = "19"
+    Info (12134): Parameter "width_a" = "8"
+    Info (12134): Parameter "width_byteena_a" = "1"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_3rl1.tdf
+    Info (12023): Found entity 1: altsyncram_3rl1 File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/altsyncram_3rl1.tdf Line: 34
+Info (12128): Elaborating entity "altsyncram_3rl1" for hierarchy "memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated" File: c:/intelfpga_lite/24.1std/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_3na.tdf
+    Info (12023): Found entity 1: decode_3na File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/decode_3na.tdf Line: 23
+Info (12128): Elaborating entity "decode_3na" for hierarchy "memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|decode_3na:decode3" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/altsyncram_3rl1.tdf Line: 45
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_s2a.tdf
+    Info (12023): Found entity 1: decode_s2a File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/decode_s2a.tdf Line: 23
+Info (12128): Elaborating entity "decode_s2a" for hierarchy "memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|decode_s2a:rden_decode" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/altsyncram_3rl1.tdf Line: 46
+Info (12021): Found 1 design units, including 1 entities, in source file db/mux_jhb.tdf
+    Info (12023): Found entity 1: mux_jhb File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/mux_jhb.tdf Line: 23
+Info (12128): Elaborating entity "mux_jhb" for hierarchy "memory_module:mem_inst|ram:inst_ram|altsyncram:altsyncram_component|altsyncram_3rl1:auto_generated|mux_jhb:mux2" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/db/altsyncram_3rl1.tdf Line: 47
+Info (12128): Elaborating entity "video_controller" for hierarchy "video_controller:video_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/main.v Line: 141
+Info (10264): Verilog HDL Case Statement information at video_controller.v(37): all case item expressions in this case statement are onehot File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/video_controller.v Line: 37
+Warning (10230): Verilog HDL assignment warning at video_controller.v(45): truncated value with size 32 to match size of target (10) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/video_controller.v Line: 45
+Warning (10230): Verilog HDL assignment warning at video_controller.v(46): truncated value with size 32 to match size of target (10) File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/video_controller.v Line: 46
+Info (12128): Elaborating entity "vga_module" for hierarchy "video_controller:video_inst|vga_module:vga_inst" File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/video_controller.v Line: 84
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "sync" is stuck at GND File: C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/main.v Line: 16
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 23 registers lost all their fanouts during netlist optimizations.
+Info (144001): Generated suppressed messages file C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/output_files/zoom_digital.map.smsg
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 1441 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 5 input pins
+    Info (21059): Implemented 29 output pins
+    Info (21061): Implemented 1022 logic cells
+    Info (21064): Implemented 384 RAM segments
+    Info (21062): Implemented 1 DSP elements
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 30 warnings
+    Info: Peak virtual memory: 4873 megabytes
+    Info: Processing ended: Fri Oct  3 20:33:04 2025
+    Info: Elapsed time: 00:00:16
+    Info: Total CPU time (on all processors): 00:00:27
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in C:/Users/Usuário/Desktop/Rafael/Uefs/Sistemas Digitais/quartus/Sistemas-Digitais/Project/output_files/zoom_digital.map.smsg.
+
+

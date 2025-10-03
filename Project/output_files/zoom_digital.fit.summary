@@ -1,0 +1,20 @@
+Fitter Status : Successful - Fri Oct  3 20:34:50 2025
+Quartus Prime Version : 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+Revision Name : zoom_digital
+Top-level Entity Name : main
+Family : Cyclone V
+Device : 5CSEMA5F31C6
+Timing Models : Final
+Logic utilization (in ALMs) : 591 / 32,070 ( 2 % )
+Total registers : 332
+Total pins : 34 / 457 ( 7 % )
+Total virtual pins : 0
+Total block memory bits : 3,072,000 / 4,065,280 ( 76 % )
+Total RAM Blocks : 376 / 397 ( 95 % )
+Total DSP Blocks : 1 / 87 ( 1 % )
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total PLLs : 0 / 6 ( 0 % )
+Total DLLs : 0 / 4 ( 0 % )

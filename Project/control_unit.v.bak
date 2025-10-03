@@ -1,0 +1,8 @@
+module control_unit (
+
+);
+
+	localparam WAITING = 1'b0;
+	localparam PROCESSING = 1'b1;
+
+endmodule
