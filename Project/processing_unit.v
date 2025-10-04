@@ -4,7 +4,6 @@ module processing_unit (
     input wire algorithm_select, 
     input wire program_state,
     input wire [1:0] operation,
-    // REMOVIDA: input wire [1:0] display_mode (Não era usada internamente)
 
     input  wire [7:0]  rom_q_out_in,
     output wire [16:0] rom_addr_out,
@@ -18,7 +17,7 @@ module processing_unit (
     localparam WAITING    = 1'b0;
     localparam PROCESSING = 1'b1;
     
-    // Codificação das Operações (Deve ser a mesma usada em control_unit)
+    // Codificação das Operações
     localparam ORIGINAL = 2'b00;
     localparam ZOOM_OUT = 2'b01; 
     localparam ZOOM_IN  = 2'b10;
@@ -55,9 +54,9 @@ module processing_unit (
     wire [16:0] rom_addr_zo2; wire [18:0] ram_addr_zo2; wire [7:0] ram_data_zo2;
     wire ram_wren_zo2; wire done_zo2;
 
-    // =================================================================
-    // 3. INSTANCIAÇÃO DOS ALGORITMOS (Assumindo que os módulos existem)
-    // =================================================================
+    // ==============================
+    // 3. INSTANCIAÇÃO DOS ALGORITMOS 
+    // ==============================
 
     // Módulo de Cópia (Original/Copy)
     original original_inst (
