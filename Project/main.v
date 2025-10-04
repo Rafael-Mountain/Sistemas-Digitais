@@ -1,4 +1,3 @@
-// main.v - Top-Level Module (Modularizado e Corrigido)
 module main (
     // Entradas da FPGA
     input wire clock_50,          // Clock de 50MHz da placa
@@ -38,7 +37,7 @@ module main (
     // Sinais de Memória do Processador (Vindos da processing_unit)
     wire [18:0] proc_ram_address;
     wire [7:0]  proc_ram_data_in;
-    wire        proc_ram_wren; // Corrigido para 1 bit, se ram_wren for 1 bit
+    wire        proc_ram_wren;
     wire [16:0] proc_rom_address;
     
     // Sinais de Memória Final (Árbitro)
@@ -62,7 +61,7 @@ module main (
         .clock_out(clock_25)
     );
     
-    // Módulo de Sincronização e Reset (garante reset síncrono)
+    // Módulo de Sincronização e Reset
     sync_reset_button sync_reset_button_inst (
         .clock(clock_25),
         .reset_button_in(reset_button), // Botão ativo-baixo
@@ -102,14 +101,13 @@ module main (
         .ram_wren_out(proc_ram_wren),
         
         .processing_done(processing_done)
-        // A porta 'display_mode' foi removida do módulo, pois não era utilizada.
     );
     
     // =========================================================
     // 4. MÓDULOS CORE (Memória e Vídeo)
     // =========================================================
 
-    // MÓDULO DE ARBITRAGEM DE MEMÓRIA FINAL (Processador vs. VGA)
+    // ARBITRAGEM DE MEMÓRIA (Processador vs. VGA)
     // O Processador (program_state = 1) tem prioridade de escrita.
     assign final_ram_address = (program_state == 1'b1) ? proc_ram_address : video_ram_address;
     assign final_ram_wren    = (program_state == 1'b1) ? proc_ram_wren : 1'b0;
