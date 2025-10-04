@@ -5,7 +5,7 @@
 
 module memory_module(
     input  wire        clock,
-    input  wire        reset,            // Não utilizado diretamente aqui
+    input  wire        reset,
 
     // --- Interface externa RAM ---
     input  wire [18:0] ram_address,      // Endereço final vindo do árbitro em 'main'
@@ -17,8 +17,7 @@ module memory_module(
     input  wire [16:0] rom_address_ext,  // Endereço vindo do árbitro em 'main'
     output wire [7:0]  q_out_rom,        // Dado lido da ROM
 
-    // --- Saída não utilizada ---
-    output wire        done              // Esta porta não é mais necessária aqui
+    output wire        done
 );
 
     // Conecta diretamente a saída 'done' a um valor fixo, pois a lógica de 'done'
