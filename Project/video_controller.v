@@ -23,8 +23,8 @@ module video_controller (
     // --- PARÂMETROS ---
     parameter [7:0] BACKGROUND_COLOR = 8'h24; 
     
-    // Parâmetros para o modo de exibição (Combinam com o Control Unit)
-    localparam D_ORIGINAL = 2'd0, D_ZOOM_OUT = 2'd1, D_ZOOM_IN = 2'd2; // Corrigido a ordem para bater com sua codificação
+    // Parâmetros para o modo de exibição
+    localparam D_ORIGINAL = 2'd0, D_ZOOM_OUT = 2'd1, D_ZOOM_IN = 2'd2;
 
     // Fios internos
     wire [9:0] vga_x, vga_y;
@@ -41,11 +41,11 @@ module video_controller (
         endcase
     end
     
-    // O restante do módulo (cálculo de offset, ram_addr_out) permanece como antes.
+    // Cálculo de Offset
     wire [9:0] offset_x = (640 - current_img_width) >> 1;
     wire [9:0] offset_y = (480 - current_img_height) >> 1;
 
-    // Lógica principal de cálculo de endereço para a RAM (sem alterações)
+    // Lógica principal de cálculo de endereço para a RAM
     always @(posedge clk) begin
         if (reset) begin
             ram_addr_out <= 19'd0;
@@ -59,7 +59,7 @@ module video_controller (
         end
     end
     
-    // ... (is_in_image_area e lógica de cor)
+    // Lógica de cor
     assign is_in_image_area = (vga_x >= offset_x) && (vga_x < offset_x + current_img_width) &&
                               (vga_y >= offset_y) && (vga_y < offset_y + current_img_height);
                                   
