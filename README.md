@@ -5,6 +5,7 @@ Este repositório contém o código-fonte em **Verilog** para um sistema de proc
 O projeto foi desenvolvido com foco em modularidade, clareza e eficiência, demonstrando conceitos chave de design de hardware digital, como **Máquinas de Estados Finitos (FSMs)**, **arbitragem de memória** e **pipelines de processamento de dados (data-path)**.
 
 <img width="927" height="485" alt="Diagrama do Data-Path" src="https://github.com/user-attachments/assets/8cd3c43d-8976-408b-a987-4e3d435c17cf" />
+
 *Diagrama conceitual do fluxo de dados durante o processamento de imagem.*
 
 ---
