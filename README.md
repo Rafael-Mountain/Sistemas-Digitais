@@ -20,7 +20,7 @@ O sistema oferece as seguintes capacidades:
     -   **Zoom In:** Amplia a imagem para 640x480.
     -   **Zoom Out:** Reduz a imagem para 160x120.
 -   **Seleção de Algoritmos:** Uma chave física permite alternar entre dois conjuntos de algoritmos para as operações de zoom:
-    -   **Set 1 (Rápido):** **Replicação de Pixels** (Zoom In) e **Dizimação** (Zoom Out).
+    -   **Set 1 (Rápido):** **Replicação de Pixels** (Zoom In) e **Decimação** (Zoom Out).
     -   **Set 2 (Qualidade):** **Vizinho Mais Próximo** (Zoom In) e **Média de Bloco** (Zoom Out).
 -   **Controle Interativo:** Botões de `reset`, `zoom_in` e `zoom_out` para controle pelo usuário.
 
@@ -86,7 +86,7 @@ assign final_ram_wren    = (program_state == 1'b1) ? proc_ram_wren : 1'b0;
 
 ### Algoritmos de Zoom Out (Redução)
 
-#### Dizimação (`zoom_out_decimation.v`):
+#### Decimação (`zoom_out_decimation.v`):
 
 -   **Conceito:** O método mais simples de redução. Simplesmente descarta pixels, mantendo um a cada bloco de 2x2.
 -   **Resultado:** Extremamente rápido, mas com perda significativa de informação, o que pode causar serrilhamento (aliasing).
@@ -94,7 +94,7 @@ assign final_ram_wren    = (program_state == 1'b1) ? proc_ram_wren : 1'b0;
 #### Média de Bloco (`zoom_out_block_average.v`):
 
 -   **Conceito:** Calcula a cor média de cada bloco 2x2 da imagem original para gerar um único pixel na imagem de destino.
--   **Resultado:** Qualidade visual superior à dizimação, produzindo uma imagem reduzida mais suave e fiel à original.
+-   **Resultado:** Qualidade visual superior à decimação, produzindo uma imagem reduzida mais suave e fiel à original.
 
 ---
 
@@ -111,5 +111,37 @@ assign final_ram_wren    = (program_state == 1'b1) ? proc_ram_wren : 1'b0;
 -   `zoom_in_button`: Pressione para aplicar o algoritmo de Zoom In selecionado.
 -   `zoom_out_button`: Pressione para aplicar o algoritmo de Zoom Out selecionado.
 -   `algorithm_select` (chave):
-    -   **Posição 0:** Ativa o Set 1 (Replicação / Dizimação).
+    -   **Posição 0:** Ativa o Set 1 (Replicação / Decimação).
     -   **Posição 1:** Ativa o Set 2 (Vizinho Mais Próximo / Média de Bloco).
+
+## ▶️ Demonstração
+
+1. Estado Inicial (Modo ORIGINAL - Cópia)
+Este estado é alcançado após o Power-On Reset (POR) ou um reset manual, ativando o Coprocessador original.v (Cópia ROM -> RAM).
+
+![IMG_20251003_144021](https://github.com/user-attachments/assets/e463e674-ad8e-4257-85f5-c258168110c9)
+
+*Imagem original (320x240)*
+
+2. Algoritmos do Set 1 (Replicação e Decimação)
+Estes algoritmos são selecionados quando a chave algorithm_select está desligada (0).
+
+![IMG_20251003_144056](https://github.com/user-attachments/assets/65950197-b7af-4e03-950e-cd4f4922687d)
+
+*Imagem ampliada utilizando o algoritmo de replicação (640x480)*
+
+![IMG_20251003_144108](https://github.com/user-attachments/assets/73c584c3-886c-4de3-b697-4f1689d074b2)
+
+*Imagem reduzida utilizando o algoritmo de decimação (160x120)*
+
+3. Algoritmos do Set 2 (Vizinho Mais Próximo e Média de Blocos)
+Estes algoritmos são selecionados quando a chave algorithm_select está ligada (1).
+
+![IMG_20251003_144120](https://github.com/user-attachments/assets/4a80c443-70d5-48ac-9aef-97425b45bede)
+
+*Imagem ampliada utilizando o algoritmo de Vizinho Mais Próximo (640x480)*
+
+![IMG_20251003_144126](https://github.com/user-attachments/assets/845ea525-b4e6-4b6f-b08b-0ed1d724e0db)
+
+*Imagem reduzida utilizando o algoritmo de Média de Blocos (160x120)*
+
