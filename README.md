@@ -119,29 +119,29 @@ assign final_ram_wren    = (program_state == 1'b1) ? proc_ram_wren : 1'b0;
 1. Estado Inicial (Modo ORIGINAL - Cópia)
 Este estado é alcançado após o Power-On Reset (POR) ou um reset manual, ativando o Coprocessador original.v (Cópia ROM -> RAM).
 
-![IMG_20251003_144021](https://github.com/user-attachments/assets/e463e674-ad8e-4257-85f5-c258168110c9)
+<img src="https://github.com/user-attachments/assets/e463e674-ad8e-4257-85f5-c258168110c9" width="300px" alt="Imagem original (320x240)">
 
 *Imagem original (320x240)*
 
 2. Algoritmos do Set 1 (Replicação e Decimação)
 Estes algoritmos são selecionados quando a chave algorithm_select está desligada (0).
 
-![IMG_20251003_144056](https://github.com/user-attachments/assets/65950197-b7af-4e03-950e-cd4f4922687d)
+<img src="https://github.com/user-attachments/assets/65950197-b7af-4e03-950e-cd4f4922687d" width="300px" alt="Imagem ampliada utilizando o algoritmo de replicação (640x480)">
 
 *Imagem ampliada utilizando o algoritmo de replicação (640x480)*
 
-![IMG_20251003_144108](https://github.com/user-attachments/assets/73c584c3-886c-4de3-b697-4f1689d074b2)
+<img src="https://github.com/user-attachments/assets/73c584c3-886c-4de3-b697-4f1689d074b2" width="300px" alt="Imagem reduzida utilizando o algoritmo de decimação (160x120)">
 
 *Imagem reduzida utilizando o algoritmo de decimação (160x120)*
 
 3. Algoritmos do Set 2 (Vizinho Mais Próximo e Média de Blocos)
 Estes algoritmos são selecionados quando a chave algorithm_select está ligada (1).
 
-![IMG_20251003_144120](https://github.com/user-attachments/assets/4a80c443-70d5-48ac-9aef-97425b45bede)
+<img src="https://github.com/user-attachments/assets/4a80c443-70d5-48ac-9aef-97425b45bede" width="300px" alt="Imagem ampliada utilizando o algoritmo de Vizinho Mais Próximo (640x480)">
 
 *Imagem ampliada utilizando o algoritmo de Vizinho Mais Próximo (640x480)*
 
-![IMG_20251003_144126](https://github.com/user-attachments/assets/845ea525-b4e6-4b6f-b08b-0ed1d724e0db)
+<img src="https://github.com/user-attachments/assets/845ea525-b4e6-4b6f-b08b-0ed1d724e0db" width="300px" alt="Imagem reduzida utilizando o algoritmo de Média de Blocos (160x120)">
 
 *Imagem reduzida utilizando o algoritmo de Média de Blocos (160x120)*
 
