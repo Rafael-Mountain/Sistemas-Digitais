@@ -1,19 +1,19 @@
-// (C) 2001-2025 Altera Corporation. All rights reserved.
-// Your use of Altera Corporation's design tools, logic functions and other 
+// (C) 2001-2023 Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
 // files from any of the foregoing (including device programming or simulation 
 // files), and any associated documentation or information are expressly subject 
-// to the terms and conditions of the Altera Program License Subscription 
-// Agreement, Altera IP License Agreement, or other applicable 
+// to the terms and conditions of the Intel Program License Subscription 
+// Agreement, Intel FPGA IP License Agreement, or other applicable 
 // license agreement, including, without limitation, that your use is for the 
-// sole purpose of programming logic devices manufactured by Altera and sold by 
-// Altera or its authorized distributors.  Please refer to the applicable 
+// sole purpose of programming logic devices manufactured by Intel and sold by 
+// Intel or its authorized distributors.  Please refer to the applicable 
 // agreement for further details.
 
 
-// $Id: //acds/rel/24.1std/ip/merlin/altera_merlin_demultiplexer/altera_merlin_demultiplexer.sv.terp#1 $
+// $Id: //acds/rel/23.1std/ip/merlin/altera_merlin_demultiplexer/altera_merlin_demultiplexer.sv.terp#1 $
 // $Revision: #1 $
-// $Date: 2023/12/11 $
+// $Date: 2022/10/30 $
 // $Author: psgswbuild $
 
 // -------------------------------------
@@ -28,7 +28,7 @@
 // ------------------------------------------
 // Generation parameters:
 //   output_name:         soc_system_mm_interconnect_1_cmd_demux
-//   ST_DATA_W:           118
+//   ST_DATA_W:           112
 //   ST_CHANNEL_W:        2
 //   NUM_OUTPUTS:         2
 //   VALID_WIDTH:         2
@@ -46,7 +46,7 @@ module soc_system_mm_interconnect_1_cmd_demux
     // Sink
     // -------------------
     input  [2-1      : 0]   sink_valid,
-    input  [118-1    : 0]   sink_data, // ST_DATA_W=118
+    input  [112-1    : 0]   sink_data, // ST_DATA_W=112
     input  [2-1 : 0]   sink_channel, // ST_CHANNEL_W=2
     input                         sink_startofpacket,
     input                         sink_endofpacket,
@@ -56,14 +56,14 @@ module soc_system_mm_interconnect_1_cmd_demux
     // Sources 
     // -------------------
     output reg                      src0_valid,
-    output reg [118-1    : 0] src0_data, // ST_DATA_W=118
+    output reg [112-1    : 0] src0_data, // ST_DATA_W=112
     output reg [2-1 : 0] src0_channel, // ST_CHANNEL_W=2
     output reg                      src0_startofpacket,
     output reg                      src0_endofpacket,
     input                           src0_ready,
 
     output reg                      src1_valid,
-    output reg [118-1    : 0] src1_data, // ST_DATA_W=118
+    output reg [112-1    : 0] src1_data, // ST_DATA_W=112
     output reg [2-1 : 0] src1_channel, // ST_CHANNEL_W=2
     output reg                      src1_startofpacket,
     output reg                      src1_endofpacket,

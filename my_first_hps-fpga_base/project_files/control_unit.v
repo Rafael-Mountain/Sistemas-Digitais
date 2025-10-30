@@ -1,109 +1,93 @@
+// Arquivo: control_unit.v (COMPLETO E ATUALIZADO)
+
 module control_unit (
-	input wire clock,           // Clock principal de 25MHz
-	input wire reset,           // Sinal de Reset Sincronizado
-	input wire zoom_out_signal, // Sinal do botão de zoom-out (ativo-alto)
-	input wire zoom_in_signal,  // Sinal do botão de zoom-out (ativo-alto)
-	input wire processing_done, // Sinal de conclusão de processamento
+	input wire clock,
+	input wire reset,
+	input wire processing_done,
 	
-	output wire program_state,    // Estadual atual do programa (WAITING, PROCESSING)
-	output reg [1:0] operation,   // Comando de operação (ORIGINAL, ZOOM_OUT, ZOOM_IN, NONE)
-	output reg [1:0] display_mode // Modo de exibição atual (ORIGINAL, ZOOM_OUT, ZOOM_IN)
+    input wire [31:0] instruct,
+	input wire begin_f,
+        
+    output reg done_instruction,
+
+	output wire program_state,
+	output reg [3:0] operation,
+	output reg [1:0] display_mode,
+    
+    output reg [7:0] pixel_out_1,
+    output reg [7:0] pixel_out_2,
+    output reg [7:0] pixel_out_3,
+    output reg upload_reset_out
 );
 
-	// Codificação dos Estados
 	localparam WAITING    = 1'b0;
 	localparam PROCESSING = 1'b1;
 	
-	// Codificação das Operações e Modos de Exibição
-	localparam ORIGINAL = 2'b00;
-	localparam ZOOM_OUT = 2'b01; 
-	localparam ZOOM_IN  = 2'b10;
-	localparam NONE     = 2'b11;
+	localparam D_ORIGINAL = 2'b00, D_ZOOM_OUT = 2'b01, D_ZOOM_IN  = 2'b10;
 	
-	reg state;      // Registrador de Estado Atual
-	reg next_state; // Registrador do Próximo Estado
-	
-	// Saída indicando o estado atual do programa
+    localparam [3:0]
+        OP_NONE            = 4'h0, OP_REPLICATION     = 4'h1,
+        OP_DECIMATION      = 4'h2, OP_NN              = 4'h3,
+        OP_BA              = 4'h4, OP_UPLOAD          = 4'h5,
+        OP_ORIGINAL        = 4'hF;
+
+	reg state, next_state;
 	assign program_state = state;
 	
-	// --- Detecção de Borda/Debounce ---
+	wire [2:0] opcode;
+    wire [7:0] pixel1_in, pixel2_in, pixel3_in;
+    wire       upload_reset_in;
+
+    instruct_decoder decoder_inst (
+        .instr(instruct), .state(opcode), .pixel1(pixel1_in),
+        .pixel2(pixel2_in), .pixel3(pixel3_in), .upload_reset_flag(upload_reset_in)
+    );
 	
-	reg zoom_in_r, zoom_in_r_ant;
-	reg zoom_out_r, zoom_out_r_ant;
-	
-	// Sincronização dos botões
-	 always @(posedge clock) begin
-		  zoom_in_r      <= zoom_in_signal;
-		  zoom_in_r_ant  <= zoom_in_r;
-		  zoom_out_r     <= zoom_out_signal;
-		  zoom_out_r_ant <= zoom_out_r;
-	 end
-	 
-	// Geração do pulso 'pressed' na borda de subida (0 -> 1)
-	wire zoom_in_pressed  = ~zoom_in_r_ant & zoom_in_r;
-	wire zoom_out_pressed = ~zoom_out_r_ant & zoom_out_r;
-	
-	// --- Lógica Síncrona (Atualização de Estado, Operação e Modo de Exibição) ---
 	always @(posedge clock or posedge reset) begin
 		if (reset) begin
-		
-			// Reset: Inicia o processo para mostrar imagem original
-			state          <= PROCESSING;
-			operation      <= ORIGINAL;
-			display_mode   <= ORIGINAL;
-			
+			state <= WAITING; operation <= OP_ORIGINAL; display_mode <= D_ORIGINAL;
+            done_instruction <= 1'b0; upload_reset_out <= 1'b0;
+            pixel_out_1 <= 0; pixel_out_2 <= 0; pixel_out_3 <= 0;
 		end else begin
-		
-			state <= next_state; // Transição de Estado
+			state <= next_state;
 			
-			// Definição da NOVA OPERAÇÃO (ocorre apenas no ciclo WAITING -> PROCESSING)
+            if (state == PROCESSING && next_state == WAITING) done_instruction <= 1'b1;
+            else done_instruction <= 1'b0;
+
 			if (state == WAITING && next_state == PROCESSING) begin
+				case(opcode)
+                    3'b000:  operation <= OP_REPLICATION;
+                    3'b001:  operation <= OP_DECIMATION;
+                    3'b010:  operation <= OP_NN;
+                    3'b011:  operation <= OP_BA;
+                    3'b100:  begin
+                        operation <= OP_UPLOAD; pixel_out_1 <= pixel1_in;
+                        pixel_out_2 <= pixel2_in; pixel_out_3 <= pixel3_in;
+                        upload_reset_out <= upload_reset_in;
+                    end
+                    default: begin
+                        operation <= OP_NONE; upload_reset_out <= 1'b0;
+                    end
+                endcase
+			end else begin
+                upload_reset_out <= 1'b0;
+            end
 			
-				// Voltar ao Original (se apertar zoom_in quando estiver em zoom_out)
-				if      (zoom_in_pressed  && display_mode == ZOOM_OUT) operation <= ORIGINAL;
-				
-				// Voltar ao Original (se apertar zoom_out quando estiver em zoom_in)
-				else if (zoom_out_pressed && display_mode == ZOOM_IN)  operation <= ORIGINAL;
-				
-				// Zoom In (se ainda não estiver no modo Zoom In)
-				else if (zoom_in_pressed  && display_mode != ZOOM_IN)  operation <= ZOOM_IN;
-				
-				// Zoom Out (se ainda não estiver no modo Zoom Out)
-				else if (zoom_out_pressed && display_mode != ZOOM_OUT) operation <= ZOOM_OUT;
-				
-				// Nenhuma operação válida
-				else                                                   operation <= NONE;
-			end
-			
-			// Atualização do MODO DE EXIBIÇÃO (após o processamento ser concluído)
 			if (state == PROCESSING && processing_done) begin
 				case(operation)
-					ZOOM_IN:     display_mode <= ZOOM_IN;
-					ZOOM_OUT:    display_mode <= ZOOM_OUT;
-					default:     display_mode <= ORIGINAL;
+					OP_REPLICATION, OP_NN: display_mode <= D_ZOOM_IN;
+					OP_DECIMATION, OP_BA:  display_mode <= D_ZOOM_OUT;
+					default:               display_mode <= display_mode;
 				endcase
 			end
 		end
 	end
 
-	// --- Lógica Combinacional (Calcula a Próxima Transição) ---
 	always @(*) begin
-		next_state = state; // Mantém o estado, a menos que haja uma transição
+		next_state = state;
 		case(state)
-			WAITING:
-			
-				// Transiciona para PROCESSING se houver um clique que exija uma mudança de modo
-				if ((zoom_in_pressed && display_mode != ZOOM_IN) || (zoom_out_pressed && display_mode != ZOOM_OUT)) begin
-					next_state = PROCESSING;
-				end
-				
-			PROCESSING:
-			
-				// Transiciona para WAITING (após o processamento ser concluído)
-				if (processing_done) begin
-					next_state = WAITING;
-				end
-				
+			WAITING:    if (begin_f) next_state = PROCESSING;
+			PROCESSING: if (processing_done) next_state = WAITING;
 		endcase
 	end
 

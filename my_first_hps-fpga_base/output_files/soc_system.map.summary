@@ -1,7 +1,7 @@
-Analysis & Synthesis Status : Failed - Tue Oct 28 23:31:32 2025
-Quartus Prime Version : 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+Analysis & Synthesis Status : Failed - Thu Oct 30 11:41:52 2025
+Quartus Prime Version : 23.1std.0 Build 991 11/28/2023 SC Lite Edition
 Revision Name : soc_system
-Top-level Entity Name : main
+Top-level Entity Name : ghrd_top
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A until Partition Merge
 Total registers : N/A until Partition Merge

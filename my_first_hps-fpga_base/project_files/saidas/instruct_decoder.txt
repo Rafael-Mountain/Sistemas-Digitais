@@ -1,0 +1,54 @@
+module instruct_decoder (
+    input  wire [31:0] instr,
+    output reg  [2:0]  state,
+    output reg  [7:0]  pixel1,
+    output reg  [7:0]  pixel2,
+    output reg  [7:0]  pixel3
+);
+
+    // Identificação dos tipos
+    localparam [2:0]
+        REPLICATION      = 3'b000,
+        DECIMATION       = 3'b001,
+        NEAREST_NEIGHBOR = 3'b010,
+        BLOCK_AVERAGE    = 3'b011,
+        IMAGE_UPLOAD     = 3'b100;
+
+    always @(*) begin
+        // Extrai opcode (bits 31:29)
+        state = instr[31:29];
+
+        // Default (sem dados válidos)
+        pixel1 = 8'd0;
+        pixel2 = 8'd0;
+        pixel3 = 8'd0;
+
+        // Decodificação baseada no tipo
+        case (state)
+            IMAGE_UPLOAD: begin
+                // D-Type → contém dados de pixels
+                pixel1 = instr[28:21];
+                pixel2 = instr[20:13];
+                pixel3 = instr[12:5];
+            end
+
+            REPLICATION,
+            DECIMATION,
+            NEAREST_NEIGHBOR,
+            BLOCK_AVERAGE: begin
+                // E-Type → sem pixels, apenas comando
+                pixel1 = 8'd0;
+                pixel2 = 8'd0;
+                pixel3 = 8'd0;
+            end
+
+            default: begin
+                // Instrução inválida
+                pixel1 = 8'd0;
+                pixel2 = 8'd0;
+                pixel3 = 8'd0;
+            end
+        endcase
+    end
+
+endmodule
