@@ -319,8 +319,53 @@ soc_system u0 (
     .hps_0_h2f_reset_reset_n               (hps_fpga_reset_n),          //                hps_0_h2f_reset.reset_n
     .hps_0_f2h_warm_reset_req_reset_n      (~hps_warm_reset),           //       hps_0_f2h_warm_reset_req.reset_n
     .hps_0_f2h_debug_reset_req_reset_n     (~hps_debug_reset),          //      hps_0_f2h_debug_reset_req.reset_n
-    .hps_0_f2h_cold_reset_req_reset_n      (~hps_cold_reset)            //       hps_0_f2h_cold_reset_req.reset_n
+    .hps_0_f2h_cold_reset_req_reset_n      (~hps_cold_reset),           //       hps_0_f2h_cold_reset_req.reset_n
+	 .pio_instruction_external_connection_export (pio_instruction)
 );
+
+// --- Instância do Módulo 'main' ---
+	
+	wire [31:0]pio_instruction;
+	wire zoom_in, zoom_out;
+	
+	assign LEDR[0] = zoom_in;
+	assign LEDR[1] = ~zoom_in;
+	assign LEDR[2] = zoom_out;
+	assign LEDR[3] = ~zoom_out;
+	assign LEDR[9:4] = 0;
+	
+main main_inst (
+    // Entradas da FPGA
+    .clock_50          		(CLOCK_50), // input  wire        - Conecte ao pino de clock de 50MHz
+    .reset_button      		(KEY[0]), // input  wire        - Conecte ao pino do botão de reset
+    
+    // Entradas para o display de 7 segmentos
+    .hps_pio_bus_in      	(pio_instruction), // input  wire [31:0] - Conecte ao barramento de dados (ex: PIO)
+    .debug_display_select  (SW[0]), // input  wire        - Conecte à chave seletora de display (High/Low)
+
+   // Saídas para o conector VGA
+    .hsync             		( VGA_HS ),
+    .vsync             		( VGA_VS ),
+    .red               		( VGA_R ),
+    .green             		( VGA_G ),
+    .blue              		( VGA_B ),
+    .sync              		( VGA_SYNC_N ),
+    .clk_out           		( VGA_CLK ),
+    .blank             		( VGA_BLANK_N ),
+
+    .zoom_in_algo_select_wire(zoom_in),
+	 .zoom_out_algo_select_wire(zoom_out),
+	 
+	 
+	 // Saídas para os displays de 7 segmentos
+    .seg0_output       		( HEX0 ),
+    .seg1_output       		( HEX1 ),
+    .seg2_output      		( HEX2 ),
+    .seg3_output       		( HEX3 ),
+    .seg4_output       		( HEX4 ),
+    .seg5_output       		( HEX5 )
+);
+
   
 // Source/Probe megawizard instance
 hps_reset hps_reset_inst (

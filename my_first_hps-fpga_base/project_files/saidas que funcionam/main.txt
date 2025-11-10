@@ -1,0 +1,159 @@
+module main (
+    // Entradas da FPGA
+    input wire clock_50,          // Clock de 50MHz da placa
+    input wire reset_button,      // Botão de reset (ativo-baixo)
+    input wire zoom_out_button,
+    input wire zoom_in_button,
+    input wire algorithm_select,  // Chave: 0 para Set 1, 1 para Set 2
+
+    // Entradas para o display de 7 segmentos
+    input wire [31:0] hps_pio_data,      // Entrada de 32 bits (ex: de um PIO do HPS)
+    input wire        display_select,    // Chave para selecionar parte alta/baixa do dado
+
+    // Saidas para o VGA
+    output wire hsync,
+    output wire vsync,
+    output wire [7:0] red,
+    output wire [7:0] green,
+    output wire [7:0] blue,
+    output wire sync,
+    output wire clk_out,
+    output wire blank,
+
+    // Saídas para os displays de 7 segmentos
+    output [6:0] seg0_output,
+    output [6:0] seg1_output,
+    output [6:0] seg2_output,
+    output [6:0] seg3_output,
+    output [6:0] seg4_output,
+    output [6:0] seg5_output
+);
+
+    // --- PARÂMETROS GLOBAIS ---
+    localparam [7:0] SCREEN_COLOR = 8'h24;
+
+    // =========================================================
+    // 1. FIOS DE CONTROLE E DADOS
+    // =========================================================
+    
+    // Clock e Reset
+    wire clock_25;     // Clock de 25MHz
+    wire reset_sync;   // Reset sincronizado (ativo-alto)
+    
+    // Sinais de Controle da FSM
+    wire program_state;
+    wire [1:0] operation;
+    wire [1:0] display_mode;
+    wire processing_done;
+
+    // Sinais de Memória do Processador
+    wire [18:0] proc_ram_address;
+    wire [7:0]  proc_ram_data_in;
+    wire        proc_ram_wren;
+    wire [16:0] proc_rom_address;
+    
+    // Sinais de Memória Final (Árbitro)
+    wire [18:0] final_ram_address;
+    wire        final_ram_wren;
+    
+    // Sinais de Dados
+    wire [7:0]  proc_rom_q_out;
+    wire [7:0]  ram_q_out;
+
+    // Sinais de Memória do Vídeo
+    wire [18:0] video_ram_address;
+
+    // =========================================================
+    // 2. MÓDULOS BASE (Clock e Reset)
+    // =========================================================
+
+    clock_divider clock_divider_inst (
+        .clock_in(clock_50),
+        .clock_out(clock_25)
+    );
+    
+    sync_reset_button sync_reset_button_inst (
+        .clock(clock_25),
+        .reset_button_in(reset_button),
+        .reset_sync_out(reset_sync)
+    );
+
+    // =========================================================
+    // 3. UNIDADES DE CONTROLE E PROCESSAMENTO
+    // =========================================================
+
+    control_unit control_unit_inst (
+        .clock(clock_25),
+        .reset(reset_sync),
+        .zoom_in_signal(~zoom_in_button),
+        .zoom_out_signal(~zoom_out_button),
+        .processing_done(processing_done),
+        .program_state(program_state), 
+        .operation(operation),       
+        .display_mode(display_mode)  
+    );
+    
+    processing_unit processing_unit_inst (
+        .clock(clock_25),
+        .reset(reset_sync),
+        .algorithm_select(algorithm_select),
+        .program_state(program_state),
+        .operation(operation),
+        .rom_q_out_in(proc_rom_q_out),
+        .rom_addr_out(proc_rom_address),
+        .ram_addr_out(proc_ram_address),
+        .ram_data_out(proc_ram_data_in),
+        .ram_wren_out(proc_ram_wren),
+        .processing_done(processing_done)
+    );
+    
+    // =========================================================
+    // 4. MÓDULOS CORE (Memória e Vídeo)
+    // =========================================================
+
+    assign final_ram_address = (program_state == 1'b1) ? proc_ram_address : video_ram_address;
+    assign final_ram_wren    = (program_state == 1'b1) ? proc_ram_wren : 1'b0;
+
+    memory_module mem_inst (
+        .clock(clock_25), .reset(reset_sync),
+        .ram_address(final_ram_address),
+        .ram_data_in(proc_ram_data_in),
+        .wren_in(final_ram_wren),
+        .q_out_ram(ram_q_out),
+        .rom_address_ext(proc_rom_address),
+        .q_out_rom(proc_rom_q_out),
+        .done()
+    );
+
+    video_controller video_inst (
+        .clk(clock_25),
+        .reset(reset_sync),
+        .display_mode(display_mode),
+        .ram_data_in(ram_q_out),           
+        .processing_active(program_state), 
+        .ram_addr_out(video_ram_address),   
+        .hsync(hsync), .vsync(vsync), .red(red), .green(green), 
+        .blue(blue), .sync(sync), .clk_out(clk_out), .blank(blank)
+    );
+    defparam video_inst.BACKGROUND_COLOR = SCREEN_COLOR;
+
+
+    // =======================================================================
+    // 5. MÓDULOS DE EXIBIÇÃO (Display 7-Segmentos)
+    // =======================================================================
+
+    // Instancia o top_module, que contém toda a lógica para os displays.
+    // As portas do 'main' são conectadas diretamente às portas correspondentes
+    // da instância do 'top_module'.
+    top_module seven_segment_controller_inst (
+        .hps_pio_data   (hps_pio_data),
+        .display_select (display_select),
+        .seg0_output    (seg0_output),
+        .seg1_output    (seg1_output),
+        .seg2_output    (seg2_output),
+        .seg3_output    (seg3_output),
+        .seg4_output    (seg4_output),
+        .seg5_output    (seg5_output)
+    );
+
+endmodule

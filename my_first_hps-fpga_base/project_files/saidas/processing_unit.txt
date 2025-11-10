@@ -1,0 +1,89 @@
+// processing_unit.v (COMPLETO E FINAL - Com Seleção Individual de Algoritmo)
+module processing_unit (
+    input wire clock,
+    input wire reset,
+    
+    // ENTRADAS DE SELEÇÃO DE ALGORITMO
+    input wire zoom_in_algo_select,
+    input wire zoom_out_algo_select,
+
+    input wire program_state,
+    input wire [2:0] operation,
+    input wire [7:0] rom_q_out_in,
+
+    // SAÍDAS PARA MEMÓRIA
+    output wire [16:0] rom_addr_out,
+    output wire [18:0] ram_addr_out,
+    output wire [7:0] ram_data_out,
+    output wire ram_wren_out,
+    output wire processing_done
+);
+    // PARÂMETROS
+    localparam PROCESSING = 1'b1;
+    localparam ZOOM_OUT_4X = 3'b000, ZOOM_OUT_2X = 3'b001, ORIGINAL = 3'b010;
+    localparam ZOOM_IN_2X = 3'b011, ZOOM_IN_4X = 3'b100;
+
+    // SINAIS DE 'START' INTERNOS
+    wire start_original = (program_state == PROCESSING) && (operation == ORIGINAL);
+    wire start_zi_2x_rep = (program_state == PROCESSING) && (operation == ZOOM_IN_2X) && (!zoom_in_algo_select);
+    wire start_zi_4x_rep = (program_state == PROCESSING) && (operation == ZOOM_IN_4X) && (!zoom_in_algo_select);
+    wire start_zo_2x_dec = (program_state == PROCESSING) && (operation == ZOOM_OUT_2X) && (!zoom_out_algo_select);
+    wire start_zo_4x_dec = (program_state == PROCESSING) && (operation == ZOOM_OUT_4X) && (!zoom_out_algo_select);
+    wire start_zi_2x_nn = (program_state == PROCESSING) && (operation == ZOOM_IN_2X) && (zoom_in_algo_select);
+    wire start_zi_4x_nn = (program_state == PROCESSING) && (operation == ZOOM_IN_4X) && (zoom_in_algo_select);
+    wire start_zo_2x_ba = (program_state == PROCESSING) && (operation == ZOOM_OUT_2X) && (zoom_out_algo_select);
+    wire start_zo_4x_ba = (program_state == PROCESSING) && (operation == ZOOM_OUT_4X) && (zoom_out_algo_select);
+
+    // FIOS DE SAÍDA DE TODOS OS SUBMÓDULOS
+    wire [16:0] rom_addr_copy; wire [18:0] ram_addr_copy; wire [7:0] ram_data_copy; wire ram_wren_copy; wire done_copy;
+    wire [16:0] rom_addr_zi2x_rep; wire [18:0] ram_addr_zi2x_rep; wire [7:0] ram_data_zi2x_rep; wire ram_wren_zi2x_rep; wire done_zi2x_rep;
+    wire [16:0] rom_addr_zi4x_rep; wire [18:0] ram_addr_zi4x_rep; wire [7:0] ram_data_zi4x_rep; wire ram_wren_zi4x_rep; wire done_zi4x_rep;
+    wire [16:0] rom_addr_zo2x_dec; wire [18:0] ram_addr_zo2x_dec; wire [7:0] ram_data_zo2x_dec; wire ram_wren_zo2x_dec; wire done_zo2x_dec;
+    wire [16:0] rom_addr_zo4x_dec; wire [18:0] ram_addr_zo4x_dec; wire [7:0] ram_data_zo4x_dec; wire ram_wren_zo4x_dec; wire done_zo4x_dec;
+    wire [16:0] rom_addr_zi2x_nn; wire [18:0] ram_addr_zi2x_nn; wire [7:0] ram_data_zi2x_nn; wire ram_wren_zi2x_nn; wire done_zi2x_nn;
+    wire [16:0] rom_addr_zi4x_nn; wire [18:0] ram_addr_zi4x_nn; wire [7:0] ram_data_zi4x_nn; wire ram_wren_zi4x_nn; wire done_zi4x_nn;
+    wire [16:0] rom_addr_zo2x_ba; wire [18:0] ram_addr_zo2x_ba; wire [7:0] ram_data_zo2x_ba; wire ram_wren_zo2x_ba; wire done_zo2x_ba;
+    wire [16:0] rom_addr_zo4x_ba; wire [18:0] ram_addr_zo4x_ba; wire [7:0] ram_data_zo4x_ba; wire ram_wren_zo4x_ba; wire done_zo4x_ba;
+
+    // INSTÂNCIA DE TODOS OS SUBMÓDULOS
+    original original_inst(.clk(clock), .reset(reset), .start(start_original), .rom_data(rom_q_out_in), .rom_addr(rom_addr_copy), .ram_addr(ram_addr_copy), .ram_data(ram_data_copy), .ram_wren(ram_wren_copy), .done(done_copy));
+    zoom_in_2x_replication zi_2x_rep_inst(.clk(clock), .reset(reset), .start(start_zi_2x_rep), .rom_data(rom_q_out_in), .rom_addr(rom_addr_zi2x_rep), .ram_addr(ram_addr_zi2x_rep), .ram_data(ram_data_zi2x_rep), .ram_wren(ram_wren_zi2x_rep), .done(done_zi2x_rep));
+    zoom_in_4x_replication zi_4x_rep_inst(.clk(clock), .reset(reset), .start(start_zi_4x_rep), .rom_data(rom_q_out_in), .rom_addr(rom_addr_zi4x_rep), .ram_addr(ram_addr_zi4x_rep), .ram_data(ram_data_zi4x_rep), .ram_wren(ram_wren_zi4x_rep), .done(done_zi4x_rep));
+    zoom_out_2x_decimation zo_2x_dec_inst(.clk(clock), .reset(reset), .start(start_zo_2x_dec), .rom_data(rom_q_out_in), .rom_addr(rom_addr_zo2x_dec), .ram_addr(ram_addr_zo2x_dec), .ram_data(ram_data_zo2x_dec), .ram_wren(ram_wren_zo2x_dec), .done(done_zo2x_dec));
+    zoom_out_4x_decimation zo_4x_dec_inst(.clk(clock), .reset(reset), .start(start_zo_4x_dec), .rom_data(rom_q_out_in), .rom_addr(rom_addr_zo4x_dec), .ram_addr(ram_addr_zo4x_dec), .ram_data(ram_data_zo4x_dec), .ram_wren(ram_wren_zo4x_dec), .done(done_zo4x_dec));
+    zoom_in_2x_nearest_neighbor zi_2x_nn_inst(.clk(clock), .reset(reset), .start(start_zi_2x_nn), .rom_data(rom_q_out_in), .rom_addr(rom_addr_zi2x_nn), .ram_addr(ram_addr_zi2x_nn), .ram_data(ram_data_zi2x_nn), .ram_wren(ram_wren_zi2x_nn), .done(done_zi2x_nn));
+    zoom_in_4x_nearest_neighbor zi_4x_nn_inst(.clk(clock), .reset(reset), .start(start_zi_4x_nn), .rom_data(rom_q_out_in), .rom_addr(rom_addr_zi4x_nn), .ram_addr(ram_addr_zi4x_nn), .ram_data(ram_data_zi4x_nn), .ram_wren(ram_wren_zi4x_nn), .done(done_zi4x_nn));
+    zoom_out_2x_block_average zo_2x_ba_inst(.clk(clock), .reset(reset), .start(start_zo_2x_ba), .rom_data(rom_q_out_in), .rom_addr(rom_addr_zo2x_ba), .ram_addr(ram_addr_zo2x_ba), .ram_data(ram_data_zo2x_ba), .ram_wren(ram_wren_zo2x_ba), .done(done_zo2x_ba));
+    zoom_out_4x_block_average zo_4x_ba_inst(.clk(clock), .reset(reset), .start(start_zo_4x_ba), .rom_data(rom_q_out_in), .rom_addr(rom_addr_zo4x_ba), .ram_addr(ram_addr_zo4x_ba), .ram_data(ram_data_zo4x_ba), .ram_wren(ram_wren_zo4x_ba), .done(done_zo4x_ba));
+
+    // LÓGICA DE ARBITRAGEM (MULTIPLEXADOR)
+    reg [16:0] rom_addr_out_reg;
+    reg [18:0] ram_addr_out_reg;
+    reg [7:0] ram_data_out_reg;
+    reg ram_wren_out_reg;
+    reg processing_done_reg;
+
+    always @(*) begin
+        // Default
+        rom_addr_out_reg = 17'd0; ram_addr_out_reg = 19'd0; ram_data_out_reg = 8'd0;
+        ram_wren_out_reg = 1'b0; processing_done_reg = 1'b0;
+
+        case(operation)
+            ORIGINAL: begin rom_addr_out_reg=rom_addr_copy; ram_addr_out_reg=ram_addr_copy; ram_data_out_reg=ram_data_copy; ram_wren_out_reg=ram_wren_copy; processing_done_reg=done_copy; end
+            ZOOM_IN_2X: if (zoom_in_algo_select) begin rom_addr_out_reg=rom_addr_zi2x_nn; ram_addr_out_reg=ram_addr_zi2x_nn; ram_data_out_reg=ram_data_zi2x_nn; ram_wren_out_reg=ram_wren_zi2x_nn; processing_done_reg=done_zi2x_nn; end
+                        else begin rom_addr_out_reg=rom_addr_zi2x_rep; ram_addr_out_reg=ram_addr_zi2x_rep; ram_data_out_reg=ram_data_zi2x_rep; ram_wren_out_reg=ram_wren_zi2x_rep; processing_done_reg=done_zi2x_rep; end
+            ZOOM_IN_4X: if (zoom_in_algo_select) begin rom_addr_out_reg=rom_addr_zi4x_nn; ram_addr_out_reg=ram_addr_zi4x_nn; ram_data_out_reg=ram_data_zi4x_nn; ram_wren_out_reg=ram_wren_zi4x_nn; processing_done_reg=done_zi4x_nn; end
+                        else begin rom_addr_out_reg=rom_addr_zi4x_rep; ram_addr_out_reg=ram_addr_zi4x_rep; ram_data_out_reg=ram_data_zi4x_rep; ram_wren_out_reg=ram_wren_zi4x_rep; processing_done_reg=done_zi4x_rep; end
+            ZOOM_OUT_2X: if (zoom_out_algo_select) begin rom_addr_out_reg=rom_addr_zo2x_ba; ram_addr_out_reg=ram_addr_zo2x_ba; ram_data_out_reg=ram_data_zo2x_ba; ram_wren_out_reg=ram_wren_zo2x_ba; processing_done_reg=done_zo2x_ba; end
+                         else begin rom_addr_out_reg=rom_addr_zo2x_dec; ram_addr_out_reg=ram_addr_zo2x_dec; ram_data_out_reg=ram_data_zo2x_dec; ram_wren_out_reg=ram_wren_zo2x_dec; processing_done_reg=done_zo2x_dec; end
+            ZOOM_OUT_4X: if (zoom_out_algo_select) begin rom_addr_out_reg=rom_addr_zo4x_ba; ram_addr_out_reg=ram_addr_zo4x_ba; ram_data_out_reg=ram_data_zo4x_ba; ram_wren_out_reg=ram_wren_zo4x_ba; processing_done_reg=done_zo4x_ba; end
+                         else begin rom_addr_out_reg=rom_addr_zo4x_dec; ram_addr_out_reg=ram_addr_zo4x_dec; ram_data_out_reg=ram_data_zo4x_dec; ram_wren_out_reg=ram_wren_zo4x_dec; processing_done_reg=done_zo4x_dec; end
+        endcase
+    end
+    
+    assign rom_addr_out = rom_addr_out_reg;
+    assign ram_addr_out = ram_addr_out_reg;
+    assign ram_data_out = ram_data_out_reg;
+    assign ram_wren_out = ram_wren_out_reg;
+    assign processing_done = processing_done_reg;
+endmodule
