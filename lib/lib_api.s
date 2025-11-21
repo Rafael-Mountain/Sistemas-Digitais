@@ -1,6 +1,6 @@
 @ =============================================================================
 @
-@   Arquivo:      lib_api.s (Revisado e Comentado)
+@   Arquivo:      lib_api.s
 @   Descrição:    Este programa controla um hardware customizado (FPGA) via
 @                 registradores PIO (Parallel I/O) mapeados em memória.
 @                 Ele utiliza exclusivamente chamadas de sistema (syscalls)
@@ -12,13 +12,6 @@
 @   - Faz o upload de uma imagem PGM (formato P5, binário) para o hardware.
 @   - Utiliza a syscall 'lseek' para pular eficientemente o cabeçalho
 @     do arquivo de imagem.
-@
-@   Correção Crucial:
-@   O programa diferencia "Ações" (eventos únicos, como zoom) de
-@   "Configurações" (modos persistentes, como o algoritmo de interpolação).
-@   Ações são seguidas por um comando NOP (No Operation) para evitar que
-@   sejam reexecutadas continuamente pelo FPGA, prevenindo uma condição de
-@   corrida. Configurações não recebem o NOP para que permaneçam ativas.
 @
 @ =============================================================================
 
