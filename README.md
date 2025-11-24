@@ -1,4 +1,3 @@
-<img width="902" height="1600" alt="image" src="https://github.com/user-attachments/assets/d47a2272-f627-46e9-ac47-f8ac176c49aa" />
 # 🚀 Sistema de Processamento de Imagem em FPGA com Co-processamento HPS
 
 Este repositório contém o código-fonte em **Verilog** para um sistema avançado de processamento de imagem em tempo real implementado em uma **FPGA Intel Cyclone V**, operando em um modo de **co-processamento com o Hard Processor System (HPS)**.
@@ -23,7 +22,7 @@ Estes diagramas ilustram a arquitetura geral do sistema, a integração com o HP
 
 ### 3. Sincronização e Decodificação de Instruções HPS-FPGA
 ![Sincronização HPS-FPGA](https://github.com/user-attachments/assets/8d276ad8-88cc-4430-9fb9-26b98103535b)
-*Detalhes do processo de sincronização do barramento PIO e detecção de mudança de instruções.*
+*Detalhes do processo de sincronização do barramento PIO e detecção de strobe de instruções.*
 
 ### 4. Data-Path da Operação de Upload de Imagem
 ![Upload da imagem do HPS para a RAM da FPGA](https://github.com/user-attachments/assets/7c1dd556-7ce2-40f8-9472-3317c2957459)
@@ -160,6 +159,7 @@ O cerne do sistema é a forma como ele gerencia o acesso às **memórias RAM**, 
     - Enviar `INST_ZOOM_IN` para executar o zoom in (aplicando o algoritmo configurado).
     - Enviar `INST_ZOOM_OUT` para executar o zoom out (aplicando o algoritmo configurado).
 - Um botão de `reset` físico ainda reiniciaria o sistema FPGA.
+
 ---
 
 ## ▶️ Demonstração
@@ -185,6 +185,3 @@ O HPS envia um comando de `ZOOM_IN`, e a FPGA amplia a imagem para uma resoluç�
 O HPS envia um comando de `ZOOM_OUT`, e a FPGA reduz a imagem para uma resolução menor (e.g., 160x120 ou 80x60) usando o algoritmo de redução previamente configurado (ex: Decimação ou Média de Bloco).
 
 ![Imagem reduzida (160x120) utilizando um algoritmo de zoom out.](https://github.com/user-attachments/assets/f42a702a-a707-4e3e-b8c6-845610687052)
-
-*Imagem: Exemplo de imagem reduzida no monitor VGA.*
-````http://googleusercontent.com/image_generation_content/8
