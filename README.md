@@ -1,4 +1,4 @@
-
+<img width="902" height="1600" alt="image" src="https://github.com/user-attachments/assets/d47a2272-f627-46e9-ac47-f8ac176c49aa" />
 # 🚀 Sistema de Processamento de Imagem em FPGA com Co-processamento HPS
 
 Este repositório contém o código-fonte em **Verilog** para um sistema avançado de processamento de imagem em tempo real implementado em uma **FPGA Intel Cyclone V**, operando em um modo de **co-processamento com o Hard Processor System (HPS)**.
@@ -162,16 +162,29 @@ O cerne do sistema é a forma como ele gerencia o acesso às **memórias RAM**, 
 - Um botão de `reset` físico ainda reiniciaria o sistema FPGA.
 ---
 
-## ▶️ Demonstração (Imagens Exemplo)
+## ▶️ Demonstração
 
-1.  **Estado Inicial (Pós-Reset ou Upload da Imagem Base)**
-    Após o reset, o sistema exibe a imagem original de 160x120 pixels, carregada (ou copiada da `ram_image` para `ram_op`).
-    // Imagens
+### 1. Upload e Estado Inicial (Pós-Reset ou Imagem Base)
 
-2.  **Exemplo de Zoom In (utilizando algoritmo configurável)**
-    O HPS envia um comando de `ZOOM_IN`, e a FPGA amplia a imagem usando o algoritmo previamente selecionado (e.g., Replicação).
-    // Imagens
+Assista ao vídeo abaixo para ver o processo de upload da imagem pixel a pixel do HPS para a FPGA, resultando na imagem original de 160x120 pixels exibida no monitor. Este estado é alcançado após o Power-On Reset (POR), um reset manual, ou após a conclusão de um upload pelo HPS.
 
-3.  **Exemplo de Zoom Out (utilizando algoritmo configurável)**
-    O HPS envia um comando de `ZOOM_OUT`, e a FPGA reduz a imagem usando o algoritmo previamente selecionado (e.g., Decimação).
-    // Imagens
+https://github.com/user-attachments/assets/4c2c63f6-1bf0-4a35-b36c-06b1719bf2d4
+
+*Vídeo: Upload dinâmico da imagem para a FPGA e exibição inicial.*
+
+### 2. Exemplo de Zoom In (Utilizando algoritmo configurável)
+
+O HPS envia um comando de `ZOOM_IN`, e a FPGA amplia a imagem para uma resolução maior (e.g., 640x480) usando o algoritmo de ampliação previamente configurado (ex: Replicação de Pixels ou Vizinho Mais Próximo).
+
+![Imagem ampliada (640x480) utilizando um algoritmo de zoom in.](https://github.com/user-attachments/assets/bf9b42b7-0afa-4fcd-a15e-61571451d44c)
+
+*Imagem: Exemplo de imagem ampliada no monitor VGA.*
+
+### 3. Exemplo de Zoom Out (Utilizando algoritmo configurável)
+
+O HPS envia um comando de `ZOOM_OUT`, e a FPGA reduz a imagem para uma resolução menor (e.g., 160x120 ou 80x60) usando o algoritmo de redução previamente configurado (ex: Decimação ou Média de Bloco).
+
+![Imagem reduzida (160x120) utilizando um algoritmo de zoom out.](https://github.com/user-attachments/assets/f42a702a-a707-4e3e-b8c6-845610687052)
+
+*Imagem: Exemplo de imagem reduzida no monitor VGA.*
+````http://googleusercontent.com/image_generation_content/8
