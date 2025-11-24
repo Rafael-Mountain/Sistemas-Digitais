@@ -1,3 +1,4 @@
+
 # 🚀 Sistema de Processamento de Imagem em FPGA com Co-processamento HPS
 
 Este repositório contém o código-fonte em **Verilog** para um sistema avançado de processamento de imagem em tempo real implementado em uma **FPGA Intel Cyclone V**, operando em um modo de **co-processamento com o Hard Processor System (HPS)**.
@@ -6,9 +7,31 @@ Ao contrário de uma implementação stand-alone, este sistema permite que o **H
 
 O projeto demonstra conceitos chave de design de hardware digital, como **Máquinas de Estados Finitos (FSMs)**, **arbitragem de memória**, **interface assíncrona/síncrona** com o HPS e **pipelines de processamento de dados (data-path)**, oferecendo grande flexibilidade através de comandos via software.
 
-// Imagens
- 
-*Diagramas do fluxo de dados durante o processamento de imagem com HPS.*
+---
+
+## 🎨 Diagramas de Arquitetura e Fluxo de Dados
+
+Estes diagramas ilustram a arquitetura geral do sistema, a integração com o HPS, a lógica de sincronização, e o fluxo de dados para as operações de upload e processamento de imagem.
+
+### 1. Visão Geral da Arquitetura do Sistema
+![Visão Geral da Arquitetura do Sistema](https://github.com/user-attachments/assets/2b8b7dad-09af-4849-a93e-880468e3dcb2)
+*Diagrama de blocos de alto nível mostrando os principais módulos da FPGA e sua conexão com o HPS.*
+
+### 2. Integração do HPS com a FPGA na DE1-SoC
+![Integração do HPS com a FPGA na DE1-SoC](https://github.com/user-attachments/assets/aa0116a6-3178-44a8-92aa-b335520e1ea3)
+*Ilustração da comunicação entre o HPS e a FPGA, destacando o barramento PIO.*
+
+### 3. Sincronização e Decodificação de Instruções HPS-FPGA
+![Sincronização HPS-FPGA](https://github.com/user-attachments/assets/8d276ad8-88cc-4430-9fb9-26b98103535b)
+*Detalhes do processo de sincronização do barramento PIO e detecção de strobe de instruções.*
+
+### 4. Data-Path da Operação de Upload de Imagem
+![Upload da imagem do HPS para a RAM da FPGA](https://github.com/user-attachments/assets/7c1dd556-7ce2-40f8-9472-3317c2957459)
+*Fluxo de dados da instrução de upload do HPS para as RAMs da FPGA, pixel por pixel.*
+
+### 5. Data-Path do Processamento de Imagem (Zoom)
+![Processamento da imagem](https://github.com/user-attachments/assets/9d1487bf-ee81-4115-a823-a6feb968b8bb)
+*Fluxo de dados durante uma operação de zoom, lendo da `ram_image` e escrevendo na `ram_op`.*
 
 ---
 
