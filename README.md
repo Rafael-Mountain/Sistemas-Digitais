@@ -23,7 +23,7 @@ Estes diagramas ilustram a arquitetura geral do sistema, a integração com o HP
 
 ### 3. Sincronização e Decodificação de Instruções HPS-FPGA
 ![Sincronização HPS-FPGA](https://github.com/user-attachments/assets/8d276ad8-88cc-4430-9fb9-26b98103535b)
-*Detalhes do processo de sincronização do barramento PIO e detecção de strobe de instruções.*
+*Detalhes do processo de sincronização do barramento PIO e detecção de mudança de instruções.*
 
 ### 4. Data-Path da Operação de Upload de Imagem
 ![Upload da imagem do HPS para a RAM da FPGA](https://github.com/user-attachments/assets/7c1dd556-7ce2-40f8-9472-3317c2957459)
