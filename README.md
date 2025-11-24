@@ -1,100 +1,122 @@
-# 🚀 Sistema de Processamento de Imagem em FPGA com Zoom
+# 🚀 Sistema de Processamento de Imagem em FPGA com Co-processamento HPS
 
-Este repositório contém o código-fonte em **Verilog** para um sistema de processamento de imagem em tempo real implementado em uma **FPGA**. O sistema é capaz de carregar uma imagem de uma memória ROM, aplicar diferentes algoritmos de zoom (in e out) e exibir o resultado em um monitor **VGA**.
+Este repositório contém o código-fonte em **Verilog** para um sistema avançado de processamento de imagem em tempo real implementado em uma **FPGA Intel Cyclone V**, operando em um modo de **co-processamento com o Hard Processor System (HPS)**.
 
-O projeto foi desenvolvido com foco em modularidade, clareza e eficiência, demonstrando conceitos chave de design de hardware digital, como **Máquinas de Estados Finitos (FSMs)**, **arbitragem de memória** e **pipelines de processamento de dados (data-path)**.
+Ao contrário de uma implementação stand-alone, este sistema permite que o **HPS controle dinamicamente** as operações da FPGA, incluindo o **upload de imagens arbitrárias**, seleção de algoritmos e execução de transformações de zoom, com o resultado sendo exibido em um monitor **VGA**.
 
-<img width="927" height="485" alt="Diagrama do Data-Path" src="https://github.com/user-attachments/assets/8cd3c43d-8976-408b-a987-4e3d435c17cf" />
+O projeto demonstra conceitos chave de design de hardware digital, como **Máquinas de Estados Finitos (FSMs)**, **arbitragem de memória**, **interface assíncrona/síncrona** com o HPS e **pipelines de processamento de dados (data-path)**, oferecendo grande flexibilidade através de comandos via software.
 
-*Diagrama conceitual do fluxo de dados durante o processamento de imagem.*
+// Imagens
+ 
+*Diagramas do fluxo de dados durante o processamento de imagem com HPS.*
 
 ---
 
 ## ✨ Funcionalidades
 
-O sistema oferece as seguintes capacidades:
+O sistema oferece as seguintes capacidades, controladas dinamicamente pelo HPS:
 
--   **Exibição em VGA:** Saída de vídeo com resolução de **640x480 @ 60Hz**.
--   **Carregamento de Imagem:** A imagem original (320x240) é lida de uma **memória ROM** interna.
--   **Operações de Zoom:**
-    -   **Zoom In:** Amplia a imagem para 640x480.
-    -   **Zoom Out:** Reduz a imagem para 160x120.
--   **Seleção de Algoritmos:** Uma chave física permite alternar entre dois conjuntos de algoritmos para as operações de zoom:
-    -   **Set 1 (Rápido):** **Replicação de Pixels** (Zoom In) e **Decimação** (Zoom Out).
-    -   **Set 2 (Qualidade):** **Vizinho Mais Próximo** (Zoom In) e **Média de Bloco** (Zoom Out).
--   **Controle Interativo:** Botões de `reset`, `zoom_in` e `zoom_out` para controle pelo usuário.
+- **Exibição em VGA:** Saída de vídeo com resolução de **640x480 @ 60Hz**.
+- **Upload de Imagem Dinâmico:** A imagem original é carregada pixel a pixel para uma **RAM dedicada (`ram_image`)** via barramento PIO do HPS, permitindo processar qualquer imagem enviada por software.
+- **Operações de Zoom Controladas por Software:**
+    - **Zoom In (2x e 4x):** Amplia a imagem (e.g., de 160x120 para 320x240, ou para 640x480).
+    - **Zoom Out (1/2x e 1/4x):** Reduz a imagem (e.g., de 320x240 para 160x120, ou para 80x60).
+- **Seleção de Algoritmos por Software:** O HPS pode configurar qual algoritmo será usado para cada operação de zoom:
+    - **Zoom In:**
+        - **Replicação de Pixels** (rápido).
+        - **Vizinho Mais Próximo** (qualidade).
+    - **Zoom Out:**
+        - **Decimação** (rápido).
+        - **Média de Bloco** (qualidade).
+- **Controle e Debug via HPS:** Comandos enviados pelo HPS via barramento PIO assíncrono.
+- **Debug Visual:** Saídas de depuração para seleção de algoritmo e displays de 7 segmentos para monitorar o barramento de instruções do HPS.
 
 ---
 
 ## 🔧 Arquitetura do Projeto
 
-O sistema é dividido em módulos com responsabilidades bem definidas, orquestrados pelo módulo *top-level* `main.v`.
+O sistema é dividido em módulos com responsabilidades bem definidas, orquestrados pelo módulo *top-level* `main.v`, com ênfase na comunicação assíncrona/síncrona com o HPS.
 
--   `main.v`: O módulo *top-level* que instancia e conecta todos os outros componentes.
--   `control_unit.v`: O cérebro do sistema. Uma **FSM** que gerencia os estados (`WAITING`, `PROCESSING`) e interpreta os comandos dos botões.
--   `processing_unit.v`: O gerente de operações. Ativa o módulo de algoritmo correto e gerencia o fluxo de dados para a memória.
--   `memory_module.v`: Um invólucro que contém as instâncias da **ROM** (imagem original) e da **RAM** (framebuffer de vídeo).
--   `video_controller.v`: Lê continuamente a RAM e gera os sinais de sincronismo (`HSYNC`, `VSYNC`) e os dados de cor (`RGB`) para o monitor VGA.
--   **Módulos de Algoritmos:** Cada algoritmo (`original.v`, `zoom_in_replication.v`, etc.) é um módulo separado que implementa uma única tarefa de processamento.
-
----
-
-## 🧠 Lógica de Funcionamento: Data-Path e Arbitragem
-
-O cerne do sistema é a forma como ele gerencia o acesso à **memória RAM**, um recurso compartilhado entre o processador (escrita) e o controlador de vídeo (leitura).
-
-O sistema opera em dois modos principais, controlados pelo sinal `program_state`:
-
-1.  **Modo de Exibição (`program_state = 0`):**
-    -   Este é o estado ocioso (padrão).
-    -   O `video_controller` tem acesso de **leitura** à RAM, enviando os pixels para o monitor.
-    -   A `processing_unit` está inativa.
-
-2.  **Modo de Processamento (`program_state = 1`):**
-    -   Iniciado quando um botão de zoom é pressionado.
-    -   A `processing_unit` ganha **prioridade total** de acesso à RAM.
-    -   Um dos algoritmos é ativado, lendo dados da ROM, processando-os e **escrevendo** o resultado na RAM.
-    -   Enquanto isso, o `video_controller` é "pausado" e exibe uma cor de fundo sólida para evitar artefatos visuais.
-
-A arbitragem é implementada de forma simples e eficaz no `main.v` com multiplexadores:
-
-```verilog
-// O Processador (program_state = 1) tem prioridade de acesso.
-assign final_ram_address = (program_state == 1'b1) ? proc_ram_address : video_ram_address;
-assign final_ram_wren    = (program_state == 1'b1) ? proc_ram_wren : 1'b0;
-```
+- `main.v`: O módulo *top-level* que instancia e conecta todos os outros componentes. Inclui o sincronizador do barramento HPS PIO e o detector de strobe de instrução.
+- `synchronizer.v`: Garante a sincronização dos sinais assíncronos do HPS com o clock da FPGA.
+- `instruction_strobe_detector.v`: Detecta novas instruções válidas no barramento HPS PIO sincronizado.
+- `control_unit.v`: O cérebro do sistema. Uma **FSM** que gerencia os estados (`WAITING`, `PROCESSING`), interpreta os opcodes de instrução do HPS e configura as seleções de algoritmo.
+- `processing_unit.v`: O gerente de operações. Ativa o módulo de algoritmo ou de upload correto e gerencia o fluxo de dados entre as duas RAMs.
+- `memory_module.v`: Um invólucro que contém as instâncias da **RAM de Imagem (`ram_image`)** (para a imagem original, carregável) e da **RAM de Operação (`ram_op`)** (o framebuffer de vídeo onde os resultados processados são escritos).
+- `video_controller.v`: Lê continuamente a `ram_op` e gera os sinais de sincronismo (`HSYNC`, `VSYNC`) e os dados de cor (`RGB`) para o monitor VGA.
+- `image_upload.v`: **NOVO MÓDULO**. Responsável por escrever pixels, um a um, nas duas RAMs (`ram_image` e `ram_op`) durante a operação de upload.
+- **Módulos de Algoritmos:** Cada algoritmo (`original.v`, `zoom_in_replication.v`, etc.) é um módulo separado que implementa uma única tarefa de processamento, lendo da `ram_image` e escrevendo na `ram_op`.
+- `top_module`: Módulo para controlar os displays de 7 segmentos, exibindo informações de debug do barramento HPS.
 
 ---
 
-## 💡 Descrição dos Algoritmos
+## 🧠 Lógica de Funcionamento: Co-processamento e Arbitragem de Memória
 
-### Operação Inicial: `original.v`
+O cerne do sistema é a forma como ele gerencia o acesso às **memórias RAM**, recursos compartilhados entre o processador (escrita) e o controlador de vídeo (leitura), sob comando do HPS.
 
--   **Função:** Copia a imagem 320x240 da ROM para a RAM e preenche o restante do framebuffer (640x480) com a cor preta. É executado no reset para exibir a imagem inicial.
+### Duas RAMs Dedicadas:
+
+1.  **`ram_image` (Imagem Original):**
+    - Endereçada em 15 bits (para 160x120 pixels).
+    - A `image_upload` escreve nesta RAM (com dados do HPS).
+    - Os módulos de algoritmo de zoom leem desta RAM.
+2.  **`ram_op` (Imagem Processada/Exibida):**
+    - Endereçada em 19 bits (para 640x480 pixels).
+    - A `image_upload` escreve nesta RAM (com dados do HPS).
+    - Os módulos de algoritmo de zoom escrevem nesta RAM.
+    - O `video_controller` lê continuamente desta RAM.
+
+### Fluxo de Controle via HPS:
+
+1.  **Comandos Assíncronos:** O HPS envia instruções de 32 bits para a FPGA via um barramento PIO.
+2.  **Sincronização:** Os módulos `synchronizer` e `instruction_strobe_detector` garantem que a `control_unit` receba comandos síncronos e estáveis.
+3.  **Decodificação:** A `control_unit` decodifica o `opcode` da instrução:
+    - **Ações (ex: `UPLOAD`, `ZOOM_IN`, `ZOOM_OUT`):** Mudam o `program_state` para `PROCESSING`. A `processing_unit` ativa o módulo correspondente, que lê da `ram_image` e/ou escreve na `ram_op`.
+    - **Configurações (ex: `REPLICATION`, `NEAREST_NEIGHBOR`):** A `control_unit` atualiza os sinais `zoom_in_algo_select` ou `zoom_out_algo_select` sem alterar o `program_state`.
+4.  **Arbitragem de `ram_op`:** O `main.v` implementa a arbitragem para o acesso à `ram_op`:
+    ```verilog
+    assign final_op_addr = (program_state == 1'b1) ? proc_op_addr : video_ram_address;
+    assign final_op_wren = (program_state == 1'b1) ? proc_op_wren : 1'b0;
+    ```
+    - No **Modo de Exibição (`program_state = 0` / `WAITING`):** O `video_controller` tem acesso exclusivo de **leitura** à `ram_op`.
+    - No **Modo de Processamento (`program_state = 1` / `PROCESSING`):** A `processing_unit` (ou o módulo `image_upload` sendo ativo) ganha **prioridade total de escrita** na `ram_op`. O `video_controller` continua a ler, exibindo o processamento em tempo real (ou a imagem carregada).
+
+---
+
+## 💡 Descrição das Operações e Algoritmos
+
+### Upload de Imagem (`image_upload.v`)
+
+- **Função:** Recebe o endereço e os dados de um pixel diretamente do HPS. Escreve esse pixel na `ram_image` (a imagem original) e na `ram_op` (para exibição imediata).
+- **Resolução Base:** A imagem original é de 160x120 pixels.
+
+### Operação Inicial/Cópia (`original.v`)
+
+- **Função:** Copia a imagem de 160x120 da `ram_image` para a `ram_op` e, opcionalmente, preenche o restante da `ram_op` (se a resolução de destino for maior) com uma cor de fundo. É acionada no reset ou para exibir a imagem base de 160x120.
 
 ### Algoritmos de Zoom In (Ampliação)
 
 #### Replicação de Pixels (`zoom_in_replication.v`):
 
--   **Conceito:** Cada pixel da imagem original é repetido para preencher um bloco de 2x2 pixels na imagem de destino.
--   **Resultado:** Rápido e simples, mas pode criar um efeito de "pixelização".
+- **Conceito:** Cada pixel da imagem de origem é repetido para preencher um bloco de pixels na imagem de destino (e.g., um pixel vira um bloco 2x2).
+- **Resultado:** Rápido e simples, mas pode criar um efeito de "pixelização".
 
 #### Vizinho Mais Próximo (`zoom_in_nearest_neighbor.v`):
 
--   **Conceito:** Para cada pixel na imagem de destino (grande), calcula qual seria o pixel "vizinho mais próximo" na imagem de origem (pequena) e copia sua cor.
--   **Resultado:** Visualmente idêntico à replicação, mas implementado com uma lógica de mapeamento inverso.
+- **Conceito:** Para cada pixel na imagem de destino, calcula qual seria o pixel "vizinho mais próximo" na imagem de origem e copia sua cor.
+- **Resultado:** Visualmente idêntico à replicação para ampliações inteiras, mas com uma lógica de mapeamento inverso.
 
 ### Algoritmos de Zoom Out (Redução)
 
 #### Decimação (`zoom_out_decimation.v`):
 
--   **Conceito:** O método mais simples de redução. Simplesmente descarta pixels, mantendo um a cada bloco de 2x2.
--   **Resultado:** Extremamente rápido, mas com perda significativa de informação, o que pode causar serrilhamento (aliasing).
+- **Conceito:** O método mais simples de redução. Simplesmente descarta pixels, mantendo um a cada bloco de pixels na imagem de origem.
+- **Resultado:** Extremamente rápido, mas com perda significativa de informação, o que pode causar serrilhamento (aliasing).
 
 #### Média de Bloco (`zoom_out_block_average.v`):
 
--   **Conceito:** Calcula a cor média de cada bloco 2x2 da imagem original para gerar um único pixel na imagem de destino.
--   **Resultado:** Qualidade visual superior à decimação, produzindo uma imagem reduzida mais suave e fiel à original.
+- **Conceito:** Calcula a cor média de um bloco de pixels da imagem original para gerar um único pixel na imagem de destino.
+- **Resultado:** Qualidade visual superior à decimação, produzindo uma imagem reduzida mais suave e fiel à original.
 
 ---
 
@@ -102,46 +124,31 @@ assign final_ram_wren    = (program_state == 1'b1) ? proc_ram_wren : 1'b0;
 
 ### Requisitos
 
--   **Hardware:** Placa FPGA com um chip da família Intel Cyclone V (ou similar), com memória RAM suficiente, botões, chaves e uma saída de vídeo VGA.
--   **Software:** Intel Quartus Prime (ou o software equivalente para sua FPGA).
+- **Hardware:** Placa FPGA com um chip da família Intel Cyclone V (ou similar), incluindo o **Hard Processor System (HPS)**, memória RAM suficiente, e uma saída de vídeo VGA.
+- **Software:** Intel Quartus Prime para síntese e programação da FPGA. Um ambiente Linux (embarcado no HPS ou externo) para rodar o software de controle (ex: programa em C) que se comunica via barramento PIO com a FPGA.
 
-### Controles Físicos
+### Controles (via Software HPS)
 
--   `reset_button`: Pressione para reiniciar o sistema e carregar a imagem original.
--   `zoom_in_button`: Pressione para aplicar o algoritmo de Zoom In selecionado.
--   `zoom_out_button`: Pressione para aplicar o algoritmo de Zoom Out selecionado.
--   `algorithm_select` (chave):
-    -   **Posição 0:** Ativa o Set 1 (Replicação / Decimação).
-    -   **Posição 1:** Ativa o Set 2 (Vizinho Mais Próximo / Média de Bloco).
+- As operações e seleções de algoritmo são controladas por **instruções de 32 bits enviadas via barramento PIO do HPS**.
+- Um programa em C rodando no HPS seria responsável por:
+    - Enviar sequências de `UPLOAD` para carregar uma imagem.
+    - Enviar `INST_REPLICATION` ou `INST_NEAREST_NEIGHBOR` para configurar o algoritmo de Zoom In.
+    - Enviar `INST_DECIMATION` ou `INST_BLOCK_AVERAGE` para configurar o algoritmo de Zoom Out.
+    - Enviar `INST_ZOOM_IN` para executar o zoom in (aplicando o algoritmo configurado).
+    - Enviar `INST_ZOOM_OUT` para executar o zoom out (aplicando o algoritmo configurado).
+- Um botão de `reset` físico ainda reiniciaria o sistema FPGA.
+---
 
-## ▶️ Demonstração
+## ▶️ Demonstração (Imagens Exemplo)
 
-1. Estado Inicial (Modo ORIGINAL - Cópia)
-Este estado é alcançado após o Power-On Reset (POR) ou um reset manual, ativando o Coprocessador original.v (Cópia ROM -> RAM).
+1.  **Estado Inicial (Pós-Reset ou Upload da Imagem Base)**
+    Após o reset, o sistema exibe a imagem original de 160x120 pixels, carregada (ou copiada da `ram_image` para `ram_op`).
+    // Imagens
 
-<img src="https://github.com/user-attachments/assets/e463e674-ad8e-4257-85f5-c258168110c9" width="300px" alt="Imagem original (320x240)">
+2.  **Exemplo de Zoom In (utilizando algoritmo configurável)**
+    O HPS envia um comando de `ZOOM_IN`, e a FPGA amplia a imagem usando o algoritmo previamente selecionado (e.g., Replicação).
+    // Imagens
 
-*Imagem original (320x240)*
-
-2. Algoritmos do Set 1 (Replicação e Decimação)
-Estes algoritmos são selecionados quando a chave algorithm_select está desligada (0).
-
-<img src="https://github.com/user-attachments/assets/65950197-b7af-4e03-950e-cd4f4922687d" width="300px" alt="Imagem ampliada utilizando o algoritmo de replicação (640x480)">
-
-*Imagem ampliada utilizando o algoritmo de replicação (640x480)*
-
-<img src="https://github.com/user-attachments/assets/73c584c3-886c-4de3-b697-4f1689d074b2" width="300px" alt="Imagem reduzida utilizando o algoritmo de decimação (160x120)">
-
-*Imagem reduzida utilizando o algoritmo de decimação (160x120)*
-
-3. Algoritmos do Set 2 (Vizinho Mais Próximo e Média de Blocos)
-Estes algoritmos são selecionados quando a chave algorithm_select está ligada (1).
-
-<img src="https://github.com/user-attachments/assets/4a80c443-70d5-48ac-9aef-97425b45bede" width="300px" alt="Imagem ampliada utilizando o algoritmo de Vizinho Mais Próximo (640x480)">
-
-*Imagem ampliada utilizando o algoritmo de Vizinho Mais Próximo (640x480)*
-
-<img src="https://github.com/user-attachments/assets/845ea525-b4e6-4b6f-b08b-0ed1d724e0db" width="300px" alt="Imagem reduzida utilizando o algoritmo de Média de Blocos (160x120)">
-
-*Imagem reduzida utilizando o algoritmo de Média de Blocos (160x120)*
-
+3.  **Exemplo de Zoom Out (utilizando algoritmo configurável)**
+    O HPS envia um comando de `ZOOM_OUT`, e a FPGA reduz a imagem usando o algoritmo previamente selecionado (e.g., Decimação).
+    // Imagens
