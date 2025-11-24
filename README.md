@@ -185,3 +185,4 @@ O HPS envia um comando de `ZOOM_IN`, e a FPGA amplia a imagem para uma resoluç�
 O HPS envia um comando de `ZOOM_OUT`, e a FPGA reduz a imagem para uma resolução menor (e.g., 160x120 ou 80x60) usando o algoritmo de redução previamente configurado (ex: Decimação ou Média de Bloco).
 
 ![Imagem reduzida (160x120) utilizando um algoritmo de zoom out.](https://github.com/user-attachments/assets/88909764-4217-4cd1-8df2-9e875911d092)
+*Imagem: Exemplo de imagem reduzida no monitor VGA.*
