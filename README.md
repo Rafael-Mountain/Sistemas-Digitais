@@ -176,7 +176,7 @@ https://github.com/user-attachments/assets/4c2c63f6-1bf0-4a35-b36c-06b1719bf2d4
 
 O HPS envia um comando de `ZOOM_IN`, e a FPGA amplia a imagem para uma resolução maior (e.g., 640x480) usando o algoritmo de ampliação previamente configurado (ex: Replicação de Pixels ou Vizinho Mais Próximo).
 
-![Imagem ampliada (640x480) utilizando um algoritmo de zoom in.](https://github.com/user-attachments/assets/bf9b42b7-0afa-4fcd-a15e-61571451d44c)
+![Imagem ampliada (640x480) utilizando um algoritmo de zoom in.](https://github.com/user-attachments/assets/01c9837a-7e41-461e-ac2f-95d939ab41d6)
 
 *Imagem: Exemplo de imagem ampliada no monitor VGA.*
 
@@ -184,4 +184,4 @@ O HPS envia um comando de `ZOOM_IN`, e a FPGA amplia a imagem para uma resoluç�
 
 O HPS envia um comando de `ZOOM_OUT`, e a FPGA reduz a imagem para uma resolução menor (e.g., 160x120 ou 80x60) usando o algoritmo de redução previamente configurado (ex: Decimação ou Média de Bloco).
 
-![Imagem reduzida (160x120) utilizando um algoritmo de zoom out.](https://github.com/user-attachments/assets/f42a702a-a707-4e3e-b8c6-845610687052)
+![Imagem reduzida (160x120) utilizando um algoritmo de zoom out.](https://github.com/user-attachments/assets/88909764-4217-4cd1-8df2-9e875911d092)
