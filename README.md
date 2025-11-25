@@ -160,6 +160,44 @@ O cerne do sistema é a forma como ele gerencia o acesso às **memórias RAM**, 
     - Enviar `INST_ZOOM_OUT` para executar o zoom out (aplicando o algoritmo configurado).
 - Um botão de `reset` físico ainda reiniciaria o sistema FPGA.
 
+### Compilação e Execução do Software HPS
+
+Para compilar e executar o código que roda no HPS (assumindo que você tem um arquivo `lib_api.s` com o código assembly/C que interage com o PIO da FPGA, e um `Makefile` no mesmo diretório):
+
+1.  **Acesse o ambiente Linux no HPS:**
+    Conecte-se via SSH ou terminal serial ao sistema Linux rodando no HPS da sua DE1-SoC.
+
+2.  **Navegue até o diretório do seu código:**
+    ```bash
+    cd /caminho/para/seu/diretorio/do/software_hps
+    ```
+
+3.  **Compile o código usando o `Makefile`:**
+    Execute o comando `make` no terminal. Este comando irá usar o `Makefile` para montar (`as`) o arquivo `lib_api.s` em um arquivo objeto (`lib_api.o`) e depois linká-lo (`ld`) para criar o executável final (`lib_api`).
+
+    ```bash
+    make
+    ```
+    *Saída esperada (ou similar):*
+    ```
+    as -o lib_api.o lib_api.s
+    ld -o lib_api lib_api.o
+    ```
+
+4.  **Execute o programa:**
+    Após a compilação bem-sucedida, você pode executar o programa. Este executável irá interagir com o PIO da FPGA, enviando as instruções para controlar o sistema de processamento de imagem.
+
+    ```bash
+    ./lib_api
+    ```
+
+5.  **Limpeza (Opcional):**
+    Para remover os arquivos gerados pela compilação (`.o` e o executável `lib_api`), você pode usar o comando `make clean`.
+
+    ```bash
+    make clean
+    ```
+
 ---
 
 ## ▶️ Demonstração
