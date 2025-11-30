@@ -10,9 +10,6 @@
 @   - Exibe um menu de controle para o usuário.
 @   - Envia comandos para o FPGA, como zoom e seleção de algoritmos.
 @   - Faz o upload de uma imagem PGM (formato P5, binário) para o hardware.
-@   - Utiliza a syscall 'lseek' para pular eficientemente o cabeçalho
-@     do arquivo de imagem.
-@
 @ =============================================================================
 
 .arch armv7-a
