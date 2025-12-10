@@ -112,12 +112,73 @@
          type = "String";
       }
    }
+   element pio_blank
+   {
+      datum _sortIndex
+      {
+         value = "11";
+         type = "int";
+      }
+   }
+   element pio_blank.s1
+   {
+      datum baseAddress
+      {
+         value = "48";
+         type = "String";
+      }
+   }
+   element pio_data
+   {
+      datum _sortIndex
+      {
+         value = "9";
+         type = "int";
+      }
+   }
+   element pio_data.s1
+   {
+      datum _lockedAddress
+      {
+         value = "0";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "16";
+         type = "String";
+      }
+   }
+   element pio_done
+   {
+      datum _sortIndex
+      {
+         value = "10";
+         type = "int";
+      }
+   }
+   element pio_done.s1
+   {
+      datum baseAddress
+      {
+         value = "32";
+         type = "String";
+      }
+   }
    element pio_instruction
    {
       datum _sortIndex
       {
          value = "8";
          type = "int";
+      }
+   }
+   element pio_instruction.s1
+   {
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
       }
    }
    element sysid_qsys
@@ -191,6 +252,21 @@
  <interface name="hps_0_h2f_user0_clock" internal="hps_0.h2f_user0_clock" />
  <interface name="hps_0_hps_io" internal="hps_0.hps_io" type="conduit" dir="end" />
  <interface name="memory" internal="hps_0.memory" type="conduit" dir="end" />
+ <interface
+   name="pio_blank_external_connection"
+   internal="pio_blank.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="pio_data_external_connection"
+   internal="pio_data.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="pio_done_external_connection"
+   internal="pio_done.external_connection"
+   type="conduit"
+   dir="end" />
  <interface
    name="pio_instruction_external_connection"
    internal="pio_instruction.external_connection"
@@ -820,6 +896,48 @@
   <parameter name="useShallowMemBlocks" value="false" />
   <parameter name="writable" value="true" />
  </module>
+ <module name="pio_blank" kind="altera_avalon_pio" version="23.1" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="direction" value="Output" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="1" />
+ </module>
+ <module name="pio_data" kind="altera_avalon_pio" version="23.1" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="8" />
+ </module>
+ <module name="pio_done" kind="altera_avalon_pio" version="23.1" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="1" />
+ </module>
  <module
    name="pio_instruction"
    kind="altera_avalon_pio"
@@ -866,6 +984,33 @@
  <connection
    kind="avalon"
    version="23.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="pio_data.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0010" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="23.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="pio_done.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0020" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="23.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="pio_blank.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0030" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="23.1"
    start="fpga_only_master.master"
    end="jtag_uart.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
@@ -903,7 +1048,7 @@
    kind="avalon"
    version="23.1"
    start="fpga_only_master.master"
-   end="onchip_memory2_0.s1">
+   end="pio_instruction.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
@@ -925,6 +1070,9 @@
    version="23.1"
    start="clk_0.clk"
    end="pio_instruction.clk" />
+ <connection kind="clock" version="23.1" start="clk_0.clk" end="pio_data.clk" />
+ <connection kind="clock" version="23.1" start="clk_0.clk" end="pio_done.clk" />
+ <connection kind="clock" version="23.1" start="clk_0.clk" end="pio_blank.clk" />
  <connection
    kind="clock"
    version="23.1"
@@ -989,6 +1137,21 @@
    version="23.1"
    start="clk_0.clk_reset"
    end="pio_instruction.reset" />
+ <connection
+   kind="reset"
+   version="23.1"
+   start="clk_0.clk_reset"
+   end="pio_done.reset" />
+ <connection
+   kind="reset"
+   version="23.1"
+   start="clk_0.clk_reset"
+   end="pio_data.reset" />
+ <connection
+   kind="reset"
+   version="23.1"
+   start="clk_0.clk_reset"
+   end="pio_blank.reset" />
  <connection
    kind="reset"
    version="23.1"

@@ -77,5 +77,53 @@
 #define PIO_INSTRUCTION_IRQ_TYPE NONE
 #define PIO_INSTRUCTION_RESET_VALUE 0
 
+/*
+ * Macros for device 'pio_data', class 'altera_avalon_pio'
+ * The macros are prefixed with 'PIO_DATA_'.
+ * The prefix is the slave descriptor.
+ */
+#define PIO_DATA_COMPONENT_TYPE altera_avalon_pio
+#define PIO_DATA_COMPONENT_NAME pio_data
+#define PIO_DATA_BASE 0x10
+#define PIO_DATA_SPAN 16
+#define PIO_DATA_END 0x1f
+#define PIO_DATA_BIT_CLEARING_EDGE_REGISTER 0
+#define PIO_DATA_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PIO_DATA_CAPTURE 0
+#define PIO_DATA_DATA_WIDTH 8
+#define PIO_DATA_DO_TEST_BENCH_WIRING 0
+#define PIO_DATA_DRIVEN_SIM_VALUE 0
+#define PIO_DATA_EDGE_TYPE NONE
+#define PIO_DATA_FREQ 50000000
+#define PIO_DATA_HAS_IN 1
+#define PIO_DATA_HAS_OUT 0
+#define PIO_DATA_HAS_TRI 0
+#define PIO_DATA_IRQ_TYPE NONE
+#define PIO_DATA_RESET_VALUE 0
+
+/*
+ * Macros for device 'pio_done', class 'altera_avalon_pio'
+ * The macros are prefixed with 'PIO_DONE_'.
+ * The prefix is the slave descriptor.
+ */
+#define PIO_DONE_COMPONENT_TYPE altera_avalon_pio
+#define PIO_DONE_COMPONENT_NAME pio_done
+#define PIO_DONE_BASE 0x20
+#define PIO_DONE_SPAN 16
+#define PIO_DONE_END 0x2f
+#define PIO_DONE_BIT_CLEARING_EDGE_REGISTER 0
+#define PIO_DONE_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PIO_DONE_CAPTURE 0
+#define PIO_DONE_DATA_WIDTH 1
+#define PIO_DONE_DO_TEST_BENCH_WIRING 0
+#define PIO_DONE_DRIVEN_SIM_VALUE 0
+#define PIO_DONE_EDGE_TYPE NONE
+#define PIO_DONE_FREQ 50000000
+#define PIO_DONE_HAS_IN 1
+#define PIO_DONE_HAS_OUT 0
+#define PIO_DONE_HAS_TRI 0
+#define PIO_DONE_IRQ_TYPE NONE
+#define PIO_DONE_RESET_VALUE 0
+
 
 #endif /* _ALTERA_HPS_0_H_ */

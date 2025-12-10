@@ -31,55 +31,131 @@ h_state.H_FRONT_STATE 0 0 1 1
 h_state.H_PULSE_STATE 0 1 0 1 
 h_state.H_BACK_STATE 1 0 0 1 
 
+State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|image_read:read_inst|state
+Name state.S_WAIT_2 state.S_WAIT_1 state.S_REQ state.S_IDLE state.S_DONE 
+state.S_IDLE 0 0 0 0 0 
+state.S_REQ 0 0 1 1 0 
+state.S_WAIT_1 0 1 0 1 0 
+state.S_WAIT_2 1 0 0 1 0 
+state.S_DONE 0 0 0 1 1 
+
+State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|image_upload:upload_inst|state
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_IDLE 
+state.S_IDLE 0 0 0 0 
+state.S_WRITE_1 0 0 1 1 
+state.S_WRITE_2 0 1 0 1 
+state.S_DONE 1 0 0 1 
+
+State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|zoom_out_4x_block_average:zo_4x_ba_inst|state
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_CALC state.S_STORE state.S_WAIT_RAM state.S_SET_ADDR state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 0 0 
+state.S_SET_ADDR 0 0 0 0 0 0 1 1 
+state.S_WAIT_RAM 0 0 0 0 0 1 0 1 
+state.S_STORE 0 0 0 0 1 0 0 1 
+state.S_CALC 0 0 0 1 0 0 0 1 
+state.S_WRITE_1 0 0 1 0 0 0 0 1 
+state.S_WRITE_2 0 1 0 0 0 0 0 1 
+state.S_DONE 1 0 0 0 0 0 0 1 
+
 State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|zoom_out_2x_block_average:zo_2x_ba_inst|state
-Name state.S_DONE state.S_CALC_WRITE state.S_READ_11 state.S_READ_10 state.S_READ_01 state.S_READ_00 state.S_IDLE 
-state.S_IDLE 0 0 0 0 0 0 0 
-state.S_READ_00 0 0 0 0 0 1 1 
-state.S_READ_01 0 0 0 0 1 0 1 
-state.S_READ_10 0 0 0 1 0 0 1 
-state.S_READ_11 0 0 1 0 0 0 1 
-state.S_CALC_WRITE 0 1 0 0 0 0 1 
-state.S_DONE 1 0 0 0 0 0 1 
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_CALC state.S_WAIT_11 state.S_ADDR_11 state.S_WAIT_10 state.S_ADDR_10 state.S_WAIT_01 state.S_ADDR_01 state.S_WAIT_00 state.S_ADDR_00 state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 0 0 0 0 0 0 0 
+state.S_ADDR_00 0 0 0 0 0 0 0 0 0 0 0 1 1 
+state.S_WAIT_00 0 0 0 0 0 0 0 0 0 0 1 0 1 
+state.S_ADDR_01 0 0 0 0 0 0 0 0 0 1 0 0 1 
+state.S_WAIT_01 0 0 0 0 0 0 0 0 1 0 0 0 1 
+state.S_ADDR_10 0 0 0 0 0 0 0 1 0 0 0 0 1 
+state.S_WAIT_10 0 0 0 0 0 0 1 0 0 0 0 0 1 
+state.S_ADDR_11 0 0 0 0 0 1 0 0 0 0 0 0 1 
+state.S_WAIT_11 0 0 0 0 1 0 0 0 0 0 0 0 1 
+state.S_CALC 0 0 0 1 0 0 0 0 0 0 0 0 1 
+state.S_WRITE_1 0 0 1 0 0 0 0 0 0 0 0 0 1 
+state.S_WRITE_2 0 1 0 0 0 0 0 0 0 0 0 0 1 
+state.S_DONE 1 0 0 0 0 0 0 0 0 0 0 0 1 
 
 State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|zoom_in_4x_nearest_neighbor:zi_4x_nn_inst|state
-Name state.S_DONE state.S_WRITE_RAM state.S_READ_ROM state.S_IDLE 
-state.S_IDLE 0 0 0 0 
-state.S_READ_ROM 0 0 1 1 
-state.S_WRITE_RAM 0 1 0 1 
-state.S_DONE 1 0 0 1 
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_WAIT state.S_READ_ROM state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 
+state.S_READ_ROM 0 0 0 0 1 1 
+state.S_WAIT 0 0 0 1 0 1 
+state.S_WRITE_1 0 0 1 0 0 1 
+state.S_WRITE_2 0 1 0 0 0 1 
+state.S_DONE 1 0 0 0 0 1 
 
 State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|zoom_in_2x_nearest_neighbor:zi_2x_nn_inst|state
-Name state.S_DONE state.S_WRITE_RAM state.S_READ_ROM state.S_IDLE 
-state.S_IDLE 0 0 0 0 
-state.S_READ_ROM 0 0 1 1 
-state.S_WRITE_RAM 0 1 0 1 
-state.S_DONE 1 0 0 1 
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_WAIT state.S_READ_ROM state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 
+state.S_READ_ROM 0 0 0 0 1 1 
+state.S_WAIT 0 0 0 1 0 1 
+state.S_WRITE_1 0 0 1 0 0 1 
+state.S_WRITE_2 0 1 0 0 0 1 
+state.S_DONE 1 0 0 0 0 1 
 
 State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|zoom_out_4x_decimation:zo_4x_dec_inst|state
-Name state.S_IDLE state.S_DONE state.S_PROCESS 
-state.S_IDLE 0 0 0 
-state.S_PROCESS 1 0 1 
-state.S_DONE 1 1 0 
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_WAIT state.S_READ state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 
+state.S_READ 0 0 0 0 1 1 
+state.S_WAIT 0 0 0 1 0 1 
+state.S_WRITE_1 0 0 1 0 0 1 
+state.S_WRITE_2 0 1 0 0 0 1 
+state.S_DONE 1 0 0 0 0 1 
 
 State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|zoom_out_2x_decimation:zo_2x_dec_inst|state
-Name state.S_IDLE state.S_DONE state.S_PROCESS 
-state.S_IDLE 0 0 0 
-state.S_PROCESS 1 0 1 
-state.S_DONE 1 1 0 
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_WAIT state.S_READ state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 
+state.S_READ 0 0 0 0 1 1 
+state.S_WAIT 0 0 0 1 0 1 
+state.S_WRITE_1 0 0 1 0 0 1 
+state.S_WRITE_2 0 1 0 0 0 1 
+state.S_DONE 1 0 0 0 0 1 
 
 State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|zoom_in_4x_replication:zi_4x_rep_inst|state
-Name state.S_DONE state.S_WRITE_RAM state.S_READ_ROM state.S_IDLE 
-state.S_IDLE 0 0 0 0 
-state.S_READ_ROM 0 0 1 1 
-state.S_WRITE_RAM 0 1 0 1 
-state.S_DONE 1 0 0 1 
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_WAIT state.S_READ state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 
+state.S_READ 0 0 0 0 1 1 
+state.S_WAIT 0 0 0 1 0 1 
+state.S_WRITE_1 0 0 1 0 0 1 
+state.S_WRITE_2 0 1 0 0 0 1 
+state.S_DONE 1 0 0 0 0 1 
 
 State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|zoom_in_2x_replication:zi_2x_rep_inst|state
-Name state.S_DONE state.S_WRITE_RAM state.S_READ_ROM state.S_IDLE 
-state.S_IDLE 0 0 0 0 
-state.S_READ_ROM 0 0 1 1 
-state.S_WRITE_RAM 0 1 0 1 
-state.S_DONE 1 0 0 1 
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_WAIT state.S_READ state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 
+state.S_READ 0 0 0 0 1 1 
+state.S_WAIT 0 0 0 1 0 1 
+state.S_WRITE_1 0 0 1 0 0 1 
+state.S_WRITE_2 0 1 0 0 0 1 
+state.S_DONE 1 0 0 0 0 1 
+
+State Machine - |ghrd_top|main:main_inst|processing_unit:processing_unit_inst|original:original_inst|state
+Name state.S_DONE state.S_WRITE_2 state.S_WRITE_1 state.S_WAIT state.S_READ state.S_IDLE 
+state.S_IDLE 0 0 0 0 0 0 
+state.S_READ 0 0 0 0 1 1 
+state.S_WAIT 0 0 0 1 0 1 
+state.S_WRITE_1 0 0 1 0 0 1 
+state.S_WRITE_2 0 1 0 0 0 1 
+state.S_DONE 1 0 0 0 0 1 
+
+State Machine - |ghrd_top|soc_system:u0|soc_system_mm_interconnect_1:mm_interconnect_1|altera_merlin_burst_adapter:pio_blank_s1_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter|state
+Name state.ST_IDLE state.ST_UNCOMP_WR_SUBBURST state.ST_UNCOMP_TRANS state.ST_COMP_TRANS 
+state.ST_IDLE 0 0 0 0 
+state.ST_COMP_TRANS 1 0 0 1 
+state.ST_UNCOMP_TRANS 1 0 1 0 
+state.ST_UNCOMP_WR_SUBBURST 1 1 0 0 
+
+State Machine - |ghrd_top|soc_system:u0|soc_system_mm_interconnect_1:mm_interconnect_1|altera_merlin_burst_adapter:pio_done_s1_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter|state
+Name state.ST_IDLE state.ST_UNCOMP_WR_SUBBURST state.ST_UNCOMP_TRANS state.ST_COMP_TRANS 
+state.ST_IDLE 0 0 0 0 
+state.ST_COMP_TRANS 1 0 0 1 
+state.ST_UNCOMP_TRANS 1 0 1 0 
+state.ST_UNCOMP_WR_SUBBURST 1 1 0 0 
+
+State Machine - |ghrd_top|soc_system:u0|soc_system_mm_interconnect_1:mm_interconnect_1|altera_merlin_burst_adapter:pio_data_s1_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter|state
+Name state.ST_IDLE state.ST_UNCOMP_WR_SUBBURST state.ST_UNCOMP_TRANS state.ST_COMP_TRANS 
+state.ST_IDLE 0 0 0 0 
+state.ST_COMP_TRANS 1 0 0 1 
+state.ST_UNCOMP_TRANS 1 0 1 0 
+state.ST_UNCOMP_WR_SUBBURST 1 1 0 0 
 
 State Machine - |ghrd_top|soc_system:u0|soc_system_mm_interconnect_1:mm_interconnect_1|altera_merlin_burst_adapter:pio_instruction_s1_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter|state
 Name state.ST_IDLE state.ST_UNCOMP_WR_SUBBURST state.ST_UNCOMP_TRANS state.ST_COMP_TRANS 

@@ -43,9 +43,9 @@
 //   ARBITRATION_SHARES:  1
 //   ARBITRATION_SCHEME   "no-arb"
 //   PIPELINE_ARB:        0
-//   PKT_TRANS_LOCK:      108 (arbitration locking enabled)
-//   ST_DATA_W:           163
-//   ST_CHANNEL_W:        4
+//   PKT_TRANS_LOCK:      106 (arbitration locking enabled)
+//   ST_DATA_W:           159
+//   ST_CHANNEL_W:        2
 // ------------------------------------------
 
 module soc_system_mm_interconnect_0_rsp_mux
@@ -54,8 +54,8 @@ module soc_system_mm_interconnect_0_rsp_mux
     // Sinks
     // ----------------------
     input                       sink0_valid,
-    input [163-1   : 0]  sink0_data,
-    input [4-1: 0]  sink0_channel,
+    input [159-1   : 0]  sink0_data,
+    input [2-1: 0]  sink0_channel,
     input                       sink0_startofpacket,
     input                       sink0_endofpacket,
     output                      sink0_ready,
@@ -65,8 +65,8 @@ module soc_system_mm_interconnect_0_rsp_mux
     // Source
     // ----------------------
     output                      src_valid,
-    output [163-1    : 0] src_data,
-    output [4-1 : 0] src_channel,
+    output [159-1    : 0] src_data,
+    output [2-1 : 0] src_channel,
     output                      src_startofpacket,
     output                      src_endofpacket,
     input                       src_ready,
@@ -77,13 +77,13 @@ module soc_system_mm_interconnect_0_rsp_mux
     input clk,
     input reset
 );
-    localparam PAYLOAD_W        = 163 + 4 + 2;
+    localparam PAYLOAD_W        = 159 + 2 + 2;
     localparam NUM_INPUTS       = 1;
     localparam SHARE_COUNTER_W  = 1;
     localparam PIPELINE_ARB     = 0;
-    localparam ST_DATA_W        = 163;
-    localparam ST_CHANNEL_W     = 4;
-    localparam PKT_TRANS_LOCK   = 108;
+    localparam ST_DATA_W        = 159;
+    localparam ST_CHANNEL_W     = 2;
+    localparam PKT_TRANS_LOCK   = 106;
 
     assign	src_valid			=  sink0_valid;
     assign	src_data			=  sink0_data;

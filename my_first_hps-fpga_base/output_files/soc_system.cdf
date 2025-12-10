@@ -6,7 +6,7 @@ JedecChain;
 	P ActionCode(Ign)
 		Device PartName(SOCVHPS) MfrSpec(OpMask(0));
 	P ActionCode(Cfg)
-		Device PartName(5CSEMA5F31) Path("/home/aluno/Downloads/montanha/Sistemas-Digitais/my_first_hps-fpga_base/output_files/") File("soc_system.sof") MfrSpec(OpMask(1));
+		Device PartName(5CSEMA5F31) Path("/home/aluno/Downloads/clarinha_toca_boliche/PBL_QUE_ANDA(1)/PBL_QUE_ANDA/clarinha_toca_boliche/Sistemas-Digitais_finalizado_v1/Sistemas-Digitais/my_first_hps-fpga_base/output_files/") File("soc_system.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

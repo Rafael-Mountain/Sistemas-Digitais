@@ -1,29 +1,10 @@
 // ================================================================================
 // Módulo: main.v
 //
-// Descrição:
-// Este é o módulo de mais alto nível da lógica customizada na FPGA. Ele atua como
-// um integrador central, conectando todos os sub-módulos do sistema de
-// processamento de imagem.
-//
-// Arquitetura:
-// 1. Recebe o clock principal (50MHz) e gera o clock de 25MHz para o VGA e a lógica.
-// 2. Sincroniza as entradas assíncronas, como o botão de reset e o barramento de
-//    instruções vindo do HPS, para evitar problemas de metastabilidade.
-// 3. Implementa a unidade de controle (`control_unit`) que decodifica as instruções
-//    e gerencia o estado do sistema (parado vs. processando).
-// 4. Implementa a unidade de processamento (`processing_unit`) que executa os
-//    algoritmos de imagem.
-// 5. Gerencia o acesso às duas memórias RAM:
-//    - `ram_image`: Armazena a imagem original de 160x120. Acessada para
-//                   leitura pela `processing_unit` e para escrita pelo HPS
-//                   (através do módulo de upload).
-//    - `ram_op`: Armazena a imagem processada/exibida (até 640x480). O acesso a
-//                ela é compartilhado (arbitrado) entre a `processing_unit` (para
-//                escrita) e o `video_controller` (para leitura).
-// 6. Controla o gerador de sinal VGA (`video_controller`) para exibir o conteúdo
-//    da `ram_op`.
-// 7. Fornece saídas de depuração para os displays de 7 segmentos e LEDs.
+// Alterações:
+// - Adicionada entrada 'hps_blank_in'.
+// - Adicionado Sincronizador para o sinal de Blank.
+// - Conectado ao video_controller.
 // ================================================================================
 
 module main (
@@ -32,18 +13,24 @@ module main (
     input wire reset_button,    // Botão de reset físico (assíncrono).
 
     // --- Entradas do HPS e de Controle ---
-    input wire [31:0] hps_pio_bus_in,       // Barramento de 32 bits do PIO do HPS, usado para enviar instruções.
-    input wire        debug_display_select, // Chave (SW[0]) para selecionar qual parte da instrução exibir nos displays.
+    input wire [31:0] hps_pio_bus_in,       // Barramento de 32 bits do PIO do HPS (Instruções).
+    input wire        debug_display_select, // Chave (SW[0]) para selecionar display 7-seg.
+    
+    // --- NOVA ENTRADA DE CONTROLE ---
+    input wire        hps_blank_in,         // PIO de 1 bit do HPS para apagar a tela.
+
+    // --- SAÍDAS PARA O HPS ---
+    output reg [7:0]  hps_pio_data_out,    
+    output reg        hps_pio_done_out,    
 
     // --- Saídas para o Controlador VGA ---
-    output wire hsync,         // Sinal de sincronismo horizontal.
-    output wire vsync,         // Sinal de sincronismo vertical.
-    output wire [7:0] red, green, blue, // Dados de cor (formato RRRGGGBB).
-    output wire sync, clk_out, blank,    // Outros sinais de controle VGA.
+    output wire hsync, vsync,
+    output wire [7:0] red, green, blue, 
+    output wire sync, clk_out, blank,    
 	 
     // --- Saídas de Debug para os LEDs ---
-    output wire zoom_in_algo_select_wire,  // Indica o algoritmo de zoom in selecionado.
-    output wire zoom_out_algo_select_wire, // Indica o algoritmo de zoom out selecionado.
+    output wire zoom_in_algo_select_wire,  
+    output wire zoom_out_algo_select_wire, 
 	 
     // --- Saídas para os Displays de 7 Segmentos ---
     output wire [6:0] seg0_output, seg1_output, seg2_output,
@@ -52,58 +39,49 @@ module main (
 
     //============================================================================
     // FIOS INTERNOS (WIRES)
-    // Descrição: Sinais que conectam os diferentes sub-módulos.
     //============================================================================
 
-    // --- Sinais de Clock e Reset ---
-    wire clock_25;     // Clock de 25MHz, derivado do `clock_50`, para a lógica e o VGA.
-    wire reset_sync;   // Sinal de reset, sincronizado com o `clock_25`.
+    wire clock_25;     
+    wire reset_sync;   
     
-    // --- Barramento de Instrução ---
-    wire [31:0] hps_pio_bus_sync; // Versão sincronizada do barramento de instruções do HPS.
+    wire [31:0] hps_pio_bus_sync;
     
-    // --- Fios de Controle do Sistema ---
-    wire program_state;      // Sinal da `control_unit`: 0 = WAITING (esperando instrução), 1 = PROCESSING (executando).
-    wire processing_done;    // Pulso da `processing_unit` para a `control_unit` indicando que a operação terminou.
-    wire instruction_strobe; // Pulso que indica a chegada de uma nova instrução do HPS.
-    wire [2:0] operation;    // Código da operação (ex: ZOOM_IN_2X) que a `processing_unit` deve executar.
-    wire [2:0] display_mode; // Modo de exibição (ex: 160x120, 320x240) para o `video_controller`.
-    
-    // --- Fios de Seleção de Algoritmo ---
-    wire zoom_in_algo_select;  // 0 = Replication, 1 = Nearest Neighbor.
-    wire zoom_out_algo_select; // 0 = Decimation, 1 = Block Average.
+    // --- Fio para o Blank Sincronizado ---
+    wire hps_blank_sync;
 
-    // --- Fios para a Interface da `ram_image` (Imagem Original) ---
-    // A `processing_unit` é a única que controla esta RAM para leitura.
-    wire [14:0] proc_img_addr;    // Endereço de leitura gerado pela `processing_unit`.
-    wire [7:0]  proc_img_data_in; // Dados de escrita (não usado pela PU, apenas pelo upload).
-    wire        proc_img_wren;    // Habilitação de escrita (não usado pela PU, apenas pelo upload).
-    wire [7:0]  img_q_out;        // Dado lido da `ram_image` e enviado para a `processing_unit`.
+    wire program_state;      
+    wire processing_done;    
+    wire instruction_strobe; 
+    wire [2:0] operation;    
+    wire [2:0] display_mode; 
+    
+    wire zoom_in_algo_select;
+    wire zoom_out_algo_select;
 
-    // --- Fios para a Interface da `ram_op` (Imagem de Operação) ---
-    // O acesso a esta RAM é compartilhado entre a PU (escrita) e o Video Controller (leitura).
-    wire [18:0] proc_op_addr;       // Endereço de escrita gerado pela `processing_unit`.
-    wire [18:0] video_ram_address;  // Endereço de leitura gerado pelo `video_controller`.
-    wire [18:0] final_op_addr;      // Endereço final (selecionado pelo árbitro) enviado à RAM.
-    wire [7:0]  proc_op_data_in;    // Dados de escrita gerados pela `processing_unit`.
-    wire        proc_op_wren;       // Sinal de escrita gerado pela `processing_unit`.
-    wire        final_op_wren;      // Sinal de escrita final (selecionado pelo árbitro).
-    wire [7:0]  op_q_out;           // Dado lido da `ram_op` e enviado para o `video_controller`.
+    wire [14:0] proc_img_addr;
+    wire [7:0]  proc_img_data_in;
+    wire        proc_img_wren;
+    wire [7:0]  img_q_out;
+
+    wire [18:0] proc_op_addr;       
+    wire [18:0] video_ram_address;  
+    wire [18:0] final_op_addr;      
+    wire [7:0]  proc_op_data_in;    
+    wire        proc_op_wren;       
+    wire        final_op_wren;      
+    wire [7:0]  op_q_out;           
+
+    wire [7:0]  pu_read_data;       
+
+    localparam READ_OP_CODE = 3'b110; 
 
     //============================================================================
     // INSTÂNCIA DOS MÓDULOS
     //============================================================================
 
-    //----------------------------------------------------------------------------
-    // Seção 1: Módulos Base e Sincronizadores
-    // Geram os sinais de clock e reset estáveis e sincronizam as entradas externas.
-    //----------------------------------------------------------------------------
     clock_divider clock_divider_inst (.clock_in(clock_50), .clock_out(clock_25));
     sync_reset_button sync_reset_button_inst (.clock(clock_25), .reset_button_in(reset_button), .reset_sync_out(reset_sync));
 
-    // Sincronizador de 2 estágios para o barramento do HPS. Essencial para
-    // transferir dados de forma segura do domínio de clock do HPS para o
-    // domínio de clock da FPGA (`clock_25`).
     synchronizer #( .WIDTH(32) ) pio_bus_synchronizer (
         .clk(clock_25),
         .reset(reset_sync),
@@ -111,13 +89,14 @@ module main (
         .data_out(hps_pio_bus_sync)
     );
 
-    //----------------------------------------------------------------------------
-    // Seção 2: Núcleo de Processamento de Imagem
-    // Contém os módulos que formam a lógica principal do sistema.
-    //----------------------------------------------------------------------------
+    // --- NOVO SINCRONIZADOR PARA O BLANK ---
+    synchronizer #( .WIDTH(1) ) blank_sync_inst (
+        .clk(clock_25),
+        .reset(reset_sync),
+        .data_in(hps_blank_in),
+        .data_out(hps_blank_sync)
+    );
 
-    // Detecta uma mudança no barramento de instrução e gera um pulso (`instruction_strobe`).
-    // Isso age como uma "campainha" para a `control_unit`.
     instruction_strobe_detector strobe_inst (
         .clock(clock_25),
         .reset(reset_sync),
@@ -125,8 +104,6 @@ module main (
         .strobe_out(instruction_strobe)
     );
 
-    // A "mente" do sistema. Decodifica instruções, controla a máquina de estados
-    // principal (WAITING/PROCESSING) e dita o que os outros módulos devem fazer.
     control_unit control_unit_inst (
         .clock(clock_25),
         .reset(reset_sync),
@@ -140,8 +117,6 @@ module main (
         .zoom_out_algo_select(zoom_out_algo_select)
     );
     
-    // O "músculo" do sistema. Recebe um comando de `operation` da `control_unit`
-    // e executa o algoritmo de processamento de imagem correspondente.
     processing_unit processing_unit_inst (
         .clock(clock_25),
         .reset(reset_sync),
@@ -157,17 +132,14 @@ module main (
         .ram_op_addr_out(proc_op_addr),
         .ram_op_data_out(proc_op_data_in),
         .ram_op_wren_out(proc_op_wren),
+        .ram_op_q_in(op_q_out),        
+        .read_data_out(pu_read_data),  
         .processing_done(processing_done)
     );
     
-    // --- ÁRBITRO DE ACESSO PARA A RAM DE OPERAÇÃO (`ram_op`) ---
-    // Lógica simples (multiplexador) que decide quem controla a `ram_op`.
-    // Se `program_state` é 1 (PROCESSING), a `processing_unit` tem controle para escrever.
-    // Se `program_state` é 0 (WAITING), o `video_controller` tem controle para ler.
     assign final_op_addr = (program_state == 1'b1) ? proc_op_addr : video_ram_address;
     assign final_op_wren = (program_state == 1'b1) ? proc_op_wren : 1'b0;
 
-    // Módulo que encapsula as duas memórias RAM (`ram_image` e `ram_op`).
     memory_module mem_inst (
         .clock(clock_25), 
         .image_address(proc_img_addr),
@@ -177,33 +149,42 @@ module main (
         .op_address(final_op_addr),
         .op_data_in(proc_op_data_in),
         .op_wren(final_op_wren),
-        .op_q_out(op_q_out)
+        .op_q_out(op_q_out) 
     );
 
-    // Gera os sinais de sincronismo VGA e lê os dados de pixel da `ram_op`
-    // para exibi-los na tela. Centraliza a imagem com base no `display_mode`.
+    // --- Controlador de Vídeo ATUALIZADO ---
     video_controller video_inst (
         .clk(clock_25),
         .reset(reset_sync),
         .display_mode(display_mode),
         .ram_data_in(op_q_out),
         .processing_active(program_state), 
+        
+        .external_blank(hps_blank_sync), // <--- Conexão do Blank
+        
         .ram_addr_out(video_ram_address),   
         .hsync(hsync), .vsync(vsync), .red(red), .green(green), 
         .blue(blue), .sync(sync), .clk_out(clk_out), .blank(blank)
     );
 
-    //----------------------------------------------------------------------------
-    // Seção 3: Saídas de Debug e Display de 7 Segmentos
-    //----------------------------------------------------------------------------
-    
-    // Expõe os fios internos de seleção de algoritmo para as portas de saída do
-    // módulo, permitindo que sejam conectados a LEDs para depuração visual.
+    always @(posedge clock_25 or posedge reset_sync) begin
+        if (reset_sync) begin
+            hps_pio_data_out <= 8'd0;
+            hps_pio_done_out <= 1'b0;
+        end else begin
+            if (instruction_strobe) begin
+                hps_pio_done_out <= 1'b0;
+            end
+            else if (processing_done && (operation == READ_OP_CODE)) begin
+                hps_pio_data_out <= pu_read_data; 
+                hps_pio_done_out <= 1'b1;         
+            end
+        end
+    end
+
     assign zoom_in_algo_select_wire = zoom_in_algo_select;
     assign zoom_out_algo_select_wire = zoom_out_algo_select;
 
-    // Controla os displays de 7 segmentos para mostrar o valor hexadecimal
-    // da instrução atualmente no barramento do HPS.
     top_module seven_segment_controller_inst (
         .hps_pio_data   (hps_pio_bus_sync),
         .display_select (debug_display_select),

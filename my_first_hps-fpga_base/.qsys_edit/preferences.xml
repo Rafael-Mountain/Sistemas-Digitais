@@ -9,7 +9,7 @@
   </columns>
  </systemtable>
  <library
-   expandedCategories="Library/Interface Protocols/PCI Express/QSYS Example Designs,Library/Interface Protocols,Library/Interface Protocols/PCI Express,Library,Library/Processors and Peripherals,Project,Library/Processors and Peripherals/Peripherals" />
+   expandedCategories="Library/Processors and Peripherals/Peripherals,Library/Interface Protocols/PCI Express,Library,Project,Library/Processors and Peripherals,Library/Interface Protocols/PCI Express/QSYS Example Designs,Library/Interface Protocols" />
  <window width="1854" height="1011" x="-8" y="-8" />
  <hdlexample language="VERILOG" />
 </preferences>
